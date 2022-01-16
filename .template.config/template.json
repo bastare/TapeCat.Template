@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "bastare",
+  "classifications": ["Web"],
+  "name": "tape-cat.webapi",
+  "identity": "WebApi.MassTransit",
+  "groupIdentity": "WebApi.MassTransit",
+  "shortName": "tape-cat.webapi",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "TapeCat.Template",
+  "preferNameDirectory": true
+}
