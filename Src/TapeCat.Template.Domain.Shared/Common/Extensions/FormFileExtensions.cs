@@ -1,16 +1,14 @@
 namespace TapeCat.Template.Domain.Shared.Common.Extensions;
 
 using Microsoft.AspNetCore.Http;
-using System.IO;
-using System.Threading.Tasks;
 
 public static class FormFileExtensions
 {
-	public static async Task<byte[]> ToByteArrayAsync ( this IFormFile formFile )
+	public static async Task<byte[]> ToByteArrayAsync ( this IFormFile formFile , CancellationToken cancellationToken = default )
 	{
 		using var memoryStream = new MemoryStream ();
 
-		await formFile.CopyToAsync ( memoryStream );
+		await formFile.CopyToAsync ( memoryStream , cancellationToken );
 
 		return memoryStream.ToArray ();
 	}

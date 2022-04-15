@@ -12,4 +12,21 @@
         <EnablePreviewFeatures>true</EnablePreviewFeatures>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Using Include="System" />
+        <Using Include="System.Net" />
+        <Using Include="System.Text" />
+        <Using Include="System.IO" />
+        <Using Include="System.Collections" />
+        <Using Include="System.Collections.Generic" />
+        <Using Include="System.Collections.Immutable" />
+        <Using Include="System.Threading" />
+        <Using Include="System.Threading.Tasks" />
+        <Using Include="System.Linq" />
+        <Using Include="System.Linq.Expressions" />
+        <Using Include="System.Reflection" />
+        <Using Include="TapeCat.Template.Domain.Shared.Common.Extensions"/>
+        <Using Include="TapeCat.Template.Domain.Shared.Helpers.AssertGuard.Guard" Static="True"/>
+    </ItemGroup>
+
 </Project>

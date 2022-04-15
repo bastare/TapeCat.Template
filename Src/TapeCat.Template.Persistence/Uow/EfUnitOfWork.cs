@@ -5,12 +5,10 @@ using Domain.Core.Models;
 using Interfaces;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using Repositories;
-using Repositories.Interfaces;
-using System.Threading;
-using System.Threading.Tasks;
+using Persistence.Repositories;
+using Persistence.Repositories.Ef;
 
-public sealed class EfUnitOfWork<TContext, TKey> : IUnitOfWork<TKey>
+public sealed class EfUnitOfWork<TContext, TKey> : IEfUnitOfWork<TContext , TKey>
 	where TContext : DbContext
 {
 	private readonly TContext _context;
@@ -23,9 +21,12 @@ public sealed class EfUnitOfWork<TContext, TKey> : IUnitOfWork<TKey>
 		_typeAdapterConfig = typeAdapterConfig;
 	}
 
-	public IRepository<TModel , TKey> Repository<TModel> ()
+	public EfRepository<TModel , TKey , TContext> Repository<TModel> ()
 		where TModel : class, IModel<TKey>
-			=> new EfRepository<TModel , TKey , TContext> ( _context , _typeAdapterConfig );
+			=> new ( _context , _typeAdapterConfig );
+
+	IRepository<TModel , TKey> IUnitOfWork<TKey>.Repository<TModel> ()
+		=> Repository<TModel> ();
 
 	public async Task CommitAsync ( CancellationToken cancellationToken = default )
 	{
@@ -33,8 +34,11 @@ public sealed class EfUnitOfWork<TContext, TKey> : IUnitOfWork<TKey>
 			throw new DataWasNotSavedException ();
 	}
 
-	public async Task<bool> TryCommitAsync ( CancellationToken cancellationToken = default ) =>
-		await _context.SaveChangesAsync ( cancellationToken ) != 0;
+	public async Task<bool> TryCommitAsync ( CancellationToken cancellationToken = default )
+		=> await SaveChangesAsync ( cancellationToken ) != 0;
+
+	public async Task<int> SaveChangesAsync ( CancellationToken cancellationToken = default )
+		=> await _context.SaveChangesAsync ( cancellationToken );
 
 	public void Dispose ()
 	{

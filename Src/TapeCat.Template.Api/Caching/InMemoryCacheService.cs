@@ -5,7 +5,6 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using static Domain.Shared.Helpers.AssertGuard.Guard;
 
 public sealed class InMemoryCacheService : ICacheService
 {

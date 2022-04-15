@@ -1,8 +1,6 @@
 namespace TapeCat.Template.Persistence.Specifications;
 
 using Domain.Core.Models;
-using System.Linq;
-using static Domain.Shared.Helpers.AssertGuard.Guard;
 
 public static class QuerySpecificationEvaluator
 {
@@ -10,8 +8,8 @@ public static class QuerySpecificationEvaluator
 																	QuerySpecification<TModel , TKey> specification )
 		where TModel : class, IModel<TKey>
 	{
-		NotNull ( inputQuery , nameof ( inputQuery ) );
-		NotNull ( specification , nameof ( specification ) );
+		NotNull ( inputQuery );
+		NotNull ( specification );
 
 		if ( specification.Includes is not null )
 			InvokeIncludes ( ref inputQuery , in specification );

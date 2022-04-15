@@ -1,7 +1,6 @@
 namespace TapeCat.Template.Domain.Shared.Common.Interfaces;
 
 using Equ;
-using System;
 
 public abstract class ValueObject<TSelf> : CloneableValueObject, IEquatable<TSelf>
 	where TSelf : ValueObject<TSelf>
@@ -25,7 +24,7 @@ public abstract class ValueObject<TSelf> : CloneableValueObject, IEquatable<TSel
 			&& otherObject is null;
 
 	public override bool Equals ( object? other )
-		=> Equals ( ( TSelf ) other! );
+		=> Equals ( other! as TSelf );
 
 	public bool Equals ( TSelf? other )
 		=> EquCompare<TSelf>.Equals ( ( TSelf ) this , other! );

@@ -1,9 +1,6 @@
 namespace TapeCat.Template.Persistence.Pagination.Common.Extensions;
 
 using Pagination;
-using System;
-using System.Linq;
-using static Domain.Shared.Helpers.AssertGuard.Guard;
 
 public static class PagedListExtensions
 {

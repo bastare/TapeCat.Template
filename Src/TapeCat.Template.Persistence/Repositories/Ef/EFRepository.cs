@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Persistence.Uow.Repositories;
+namespace TapeCat.Template.Persistence.Repositories.Ef;
 
 using Common.Exceptions;
 using Common.Extensions;
@@ -6,18 +6,10 @@ using Domain.Core.Models;
 using Domain.Shared.Common.Exceptions;
 using Domain.Shared.Common.Extensions;
 using EFCore.BulkExtensions;
-using Interfaces;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Pagination;
 using Specifications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using static Domain.Shared.Helpers.AssertGuard.Guard;
 
 public sealed class EfRepository<TModel, TKey, TContext> :
 	IRepository<TModel , TKey>,
@@ -41,11 +33,10 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 	{
 		NotNull ( model , nameof ( model ) );
 
-		var entityEntry =
-			await _context.Set<TModel> ()
-				.AddAsync ( model , cancellationToken );
+		return ( await _context.Set<TModel> ()
+			.AddAsync ( model , cancellationToken ) )
 
-		return entityEntry.Entity;
+			.Entity;
 	}
 
 	public async Task<List<TModel>> GetAllAsync ( bool isTracking , CancellationToken cancellationToken = default )
@@ -222,35 +213,37 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 		=> await _context.Set<TModel> ( isTracking: false )
 			.AnyAsync ( predicate , cancellationToken );
 
-	public async Task RemoveByAsync ( Expression<Func<TModel , bool>> predicate , CancellationToken cancellationToken = default )
+	public async Task<TModel?> RemoveByAsync ( Expression<Func<TModel , bool>> predicate , CancellationToken cancellationToken = default )
 	{
 		NotNull ( predicate , nameof ( predicate ) );
 
-		var entityToRemove =
-			await FindByAsync ( predicate , isTracking: true , cancellationToken ) ??
-				throw new NotFoundException ( message: "No entity was founded according this expression" );
+		return ( await FindByAsync ( predicate , isTracking: true , cancellationToken ) )!
 
-		var entityState = _context.Set<TModel> ()
-			.Remove ( entityToRemove );
+			.Tap ( entityToRemove =>
+			 {
+				 if ( entityToRemove is null )
+					 throw new NotFoundException ( message: "No entity was founded according this expression" );
 
-		if ( entityState.State != EntityState.Deleted )
-			throw new RepositoryException ( "Entity wasn`t removed" );
+				 var entityState = _context.Set<TModel> ()
+					.Remove ( entityToRemove );
+
+				 if ( entityState is { State: not EntityState.Deleted } )
+					 throw new RepositoryException ( "Entity wasn`t removed" );
+			 } )!;
 	}
 
-	public Task<TKey> RemoveAsync ( TModel model , CancellationToken cancellationToken = default )
+	public Task<TModel?> RemoveAsync ( TModel model , CancellationToken cancellationToken = default )
 		=> Task.FromResult (
 			result: model.Tap ( model =>
 			  {
 				  NotNull ( model , nameof ( model ) );
 
 				  var entityState = _context.Set<TModel> ()
-					  .Remove ( model );
+				   .Remove ( model );
 
-				  if ( entityState.State != EntityState.Deleted )
+				  if ( entityState is { State: not EntityState.Deleted } )
 					  throw new RepositoryException ( "Entity wasn`t removed" );
-
-				  return model.Id;
-			  } ) );
+			  } ) )!;
 
 	public async Task RemoveRangeAsync ( IEnumerable<TModel> models , CancellationToken cancellationToken = default )
 	{
@@ -266,7 +259,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 			var entityState = _context.Set<TModel> ()
 				.Remove ( entityToRemove );
 
-			if ( entityState.State != EntityState.Deleted )
+			if ( entityState is { State: not EntityState.Deleted } )
 				throw new RepositoryException ( "Entity wasn`t removed" );
 		}
 	}

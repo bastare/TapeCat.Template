@@ -1,14 +1,12 @@
 namespace TapeCat.Template.Domain.Shared.Helpers.AssertGuard;
 
-using Common.Extensions;
 using FluentValidation;
 using FluentValidation.Results;
 using Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections;
-using System.Text;
+using System.Runtime.CompilerServices;
+using TapeCat.Template.Domain.Shared.Common.Extensions;
 
 public sealed class Guard : IGuard
 {
@@ -19,100 +17,119 @@ public sealed class Guard : IGuard
 		_httpContextAccessor = httpContextAccessor;
 	}
 
-	public static void NotNullOrEmpty<TException> ( string? @string ,
-													string variableName = IGuard.DefaultVariableName ,
-													string? message = default )
+	public static string NotNullOrEmpty<TException> ( string? @string ,
+													  [CallerArgumentExpression ( "string" )] string? variableName = default ,
+													  string? message = default )
 		where TException : ArgumentNullException
 	{
 		message ??= $"`{variableName}` is null or empty";
 
 		if ( string.IsNullOrEmpty ( @string ) )
-			RaiseException<TException> ( variableName , message );
+			RaiseException<TException> ( variableName! , message );
+
+		return @string!;
 	}
 
-	public void Validate<TValidator, TValue, TException> ( TValue value , string variableName = IGuard.DefaultVariableName )
+	public TValue Validate<TValidator, TValue, TException> ( TValue value , [CallerArgumentExpression ( "value" )] string? variableName = default )
 		where TValidator : IValidator<TValue>
 		where TException : ArgumentException
 	{
-		var validator = ResolveValidator<TValidator , TValue> ();
+		var validationResult = ResolveValidator ()
+			.Validate ( value );
 
-		var validationResult = validator.Validate ( value );
+		if ( validationResult is { IsValid: false } )
+			RaiseValidatorException ( variableName! , validationResult );
 
-		if ( !validationResult.IsValid )
-		{
-			var errorMessage = ResolveErrorMessage ( validationResult );
+		return value;
 
-			RaiseException<TException> ( variableName , errorMessage );
-		}
-	}
-
-	private static string ResolveErrorMessage ( ValidationResult validationResult ) =>
-		new StringBuilder ()
-			.AppendJoin (
-				separator: "\n" ,
-				values: validationResult.Errors )
-
-			.ToString ();
-
-	private TValidator ResolveValidator<TValidator, TValue> ()
-		where TValidator : IValidator<TValue>
+		TValidator ResolveValidator ()
 			=> _httpContextAccessor.HttpContext!.RequestServices
 				.GetRequiredService<TValidator> ();
 
-	public static void NotNullOrEmpty ( string? @string , string variableName = IGuard.DefaultVariableName , string? message = default )
+		static void RaiseValidatorException ( string variableName , ValidationResult validationResult )
+		{
+			RaiseException<TException> (
+				variableName ,
+				message: ResolveErrorMessage ( validationResult ) );
+
+			static string ResolveErrorMessage ( ValidationResult validationResult )
+				=> new StringBuilder ()
+					.AppendJoin (
+						separator: "\n" ,
+						values: validationResult.Errors )
+
+					.ToString ();
+		}
+	}
+
+	public static string NotNullOrEmpty ( string? @string ,
+										  [CallerArgumentExpression ( "string" )] string? variableName = default ,
+										  string? message = default )
 	{
 		message ??= $"`{variableName}` is null or empty";
 
 		if ( string.IsNullOrEmpty ( @string ) )
 			throw new ArgumentNullException ( variableName , message );
+
+		return @string!;
 	}
 
-	public static void NotNull<TException> ( object? value , string variableName = IGuard.DefaultVariableName , string? message = default )
+	public static object NotNull<TException> ( object? value ,
+											   [CallerArgumentExpression ( "value" )] string? variableName = default ,
+											   string? message = default )
 		where TException : ArgumentNullException
 	{
 		message ??= $"`{variableName}` is null";
 
 		if ( value is null )
-			RaiseException<TException> ( variableName , message );
+			RaiseException<TException> ( variableName! , message );
+
+		return value!;
 	}
 
-	public static void NotNull ( object? value , string variableName = IGuard.DefaultVariableName , string? message = default )
+	public static object NotNull ( object? value ,
+								   [CallerArgumentExpression ( "value" )] string? variableName = default ,
+								   string? message = default )
 	{
 		message ??= $"`{variableName}` is null";
 
 		if ( value is null )
 			throw new ArgumentNullException ( variableName , message );
+
+		return value!;
 	}
 
-	public static void NotNullOrEmpty<TException> ( IEnumerable? collection ,
-													string variableName = IGuard.DefaultVariableName ,
-													string? message = default )
+	public static IEnumerable NotNullOrEmpty<TException> ( IEnumerable? collection ,
+														   [CallerArgumentExpression ( "collection" )] string? variableName = default ,
+														   string? message = default )
 		where TException : ArgumentNullException
 	{
 		message ??= $"`{variableName}` is null or empty";
 
-		if ( EnumerableExtensions.IsNullOrEmpty ( collection ) )
-			RaiseException<TException> ( variableName , message );
+		if ( collection.IsNullOrEmpty () )
+			RaiseException<TException> ( variableName! , message );
+
+		return collection!;
 	}
 
-	public static void NotNullOrEmpty ( IEnumerable? collection , string variableName = IGuard.DefaultVariableName , string? message = default )
+	public static IEnumerable NotNullOrEmpty ( IEnumerable? collection ,
+											   [CallerArgumentExpression ( "collection" )] string? variableName = default ,
+											   string? message = default )
 	{
 		message ??= $"`{variableName}` is null or empty";
 
 		if ( collection.IsNullOrEmpty () )
 			throw new ArgumentNullException ( variableName , message );
+
+		return collection!;
 	}
 
 	private static void RaiseException<TException> ( string variableName , string message )
 		where TException : ArgumentException
 	{
-		var exception =
-			CreateException<TException> ( variableName , message );
+		throw CreateException ( variableName , message );
 
-		throw exception;
-	}
-
-	private static TException CreateException<TException> ( string? variableName , string? message )
-		where TException : ArgumentException
+		static TException CreateException ( string? variableName , string? message )
 			=> ( TException ) Activator.CreateInstance ( typeof ( TException ) , variableName , message )!;
+	}
 }

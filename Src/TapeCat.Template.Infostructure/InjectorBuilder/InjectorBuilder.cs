@@ -6,12 +6,6 @@ using Domain.Shared.Common.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MoreLinq;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Reflection;
-using static Domain.Shared.Helpers.AssertGuard.Guard;
 
 public static class InjectorBuilder
 {
@@ -21,57 +15,56 @@ public static class InjectorBuilder
 														IConfiguration configuration ,
 														IEnumerable<Assembly> assemblies )
 	{
-		NotNull ( serviceCollection , nameof ( serviceCollection ) );
-		NotNull ( configuration , nameof ( configuration ) );
-		NotNull ( assemblies , nameof ( assemblies ) );
+		NotNull ( serviceCollection );
+		NotNull ( configuration );
+		NotNullOrEmpty ( assemblies );
 
-		var injectorTypes = GetAllAssemblyTypes ( assemblies )
-			.GetAllInjectorTypes ()
-			.OrderByInjectionOrder ();
+		return ExecuteInjections (
+			ref serviceCollection ,
+			injectorTypes: ResolveInjectorTypes ( assemblies ) ,
+			configuration );
 
-		return ExecuteInjections ( injectorTypes , ref serviceCollection , configuration );
-	}
+		static IEnumerable<Type> ResolveInjectorTypes ( IEnumerable<Assembly> assemblies )
+			=> GetAllAssemblyTypes ( assemblies )
+				.Where ( IsInjectorType )
+				.OrderBy ( InjectionOrder );
 
-	private static IEnumerable<Type> GetAllAssemblyTypes ( IEnumerable<Assembly> assemblies )
-		=> assemblies
-			.Aggregate (
-				new HashSet<Type> () ,
-				( typeSet , assembly ) =>
-				  {
-					  var assemblyTypes = assembly.GetTypes ();
+		static IEnumerable<Type> GetAllAssemblyTypes ( IEnumerable<Assembly> assemblies )
+			=> assemblies
+				.Aggregate (
+					new HashSet<Type> () ,
+					( typeSet , assembly ) =>
+			 		  {
+						   typeSet.UnionWith (
+							   other: ResolveAssemblyTypes ( assembly ) );
 
-					  typeSet.UnionWith ( assemblyTypes );
+						   return typeSet;
 
-					  return typeSet;
-				  } );
+						   static IEnumerable<Type> ResolveAssemblyTypes ( Assembly assembly )
+							   => assembly.GetTypes ();
+					   } );
 
-	private static IEnumerable<Type> GetAllInjectorTypes ( this IEnumerable<Type> currentAssemblyTypes )
-		=> currentAssemblyTypes
-			.Where ( type =>
-				type.GetInterfaces ()
-					.Contains ( typeof ( IInjectable ) ) );
+		static bool IsInjectorType ( Type type )
+			=> type.GetInterfaces ()
+				.Contains ( typeof ( IInjectable ) );
 
-	private static IEnumerable<Type> OrderByInjectionOrder ( this IEnumerable<Type> injectorTypes )
-		=> injectorTypes
-			.OrderBy ( ResolveInjectionOrderPosition );
+		static uint InjectionOrder ( Type injectorType )
+			=> injectorType.GetCustomAttribute<InjectionOrderAttribute> ()?.Order ??
+				uint.MinValue;
 
-	private static uint ResolveInjectionOrderPosition ( Type injectorType )
-		=> injectorType.GetCustomAttribute<InjectionOrderAttribute> ()?.Order ??
-			uint.MinValue;
-
-	private static IServiceCollection ExecuteInjections ( IEnumerable<Type> injectorTypes ,
-														  ref IServiceCollection serviceCollection ,
-														  IConfiguration configuration )
-	{
-		foreach ( var injectorType in injectorTypes )
+		static IServiceCollection ExecuteInjections ( ref IServiceCollection serviceCollection ,
+													  IEnumerable<Type> injectorTypes ,
+													  IConfiguration configuration )
 		{
-			var methodInfo = injectorType.GetMethod ( InjectorMethodName ) ??
-				throw new ArgumentNullException (
-					nameof ( injectorType ) , $"No method with this name: {InjectorMethodName}" );
+			foreach ( var injectorType in injectorTypes )
+				ResolveInjectionMethod ( injectorType )
+					.Invoke ( injectorType , serviceCollection , configuration );
 
-			methodInfo.Invoke ( injectorType , serviceCollection , configuration );
+			return serviceCollection;
+
+			static MethodInfo ResolveInjectionMethod ( Type injectorType )
+				=> injectorType.GetMethod ( InjectorMethodName ) ??
+					throw new ArgumentNullException ( nameof ( injectorType ) , $"No method with this name: {InjectorMethodName}" );
 		}
-
-		return serviceCollection;
 	}
 }

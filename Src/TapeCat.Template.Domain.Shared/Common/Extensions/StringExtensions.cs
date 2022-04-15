@@ -1,10 +1,7 @@
 namespace TapeCat.Template.Domain.Shared.Common.Extensions;
 
 using Humanizer;
-using System;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 
 public static class StringExtensions
 {
@@ -21,9 +18,7 @@ public static class StringExtensions
 
 	public static string ToSHA256 ( this string @string )
 	{
-		var hashedCacheKey = GetHash ( @string );
-
-		return hashedCacheKey
+		return GetSHA256Hash ( @string )
 			.Aggregate (
 				new StringBuilder () ,
 				( stringBuilder , hashByte ) =>
@@ -31,8 +26,8 @@ public static class StringExtensions
 
 			.ToString ();
 
-		static byte[] GetHash ( string inputString )
+		static byte[] GetSHA256Hash ( string inputString )
 			=> SHA256.Create ()
-				.ComputeHash ( Encoding.UTF8.GetBytes ( inputString ) );
+				.ComputeHash ( buffer: Encoding.UTF8.GetBytes ( inputString ) );
 	}
 }

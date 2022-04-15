@@ -1,65 +1,59 @@
-namespace TapeCat.Template.Persistence.Common.Extensions
+namespace TapeCat.Template.Persistence.Common.Extensions;
+
+using Microsoft.EntityFrameworkCore;
+using Pagination;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+
+public static class QueryableExtensions
 {
-	using Microsoft.EntityFrameworkCore;
-	using Pagination;
-	using System;
-	using System.Linq;
-	using System.Linq.Dynamic.Core;
-	using System.Threading;
-	using System.Threading.Tasks;
-	using static Domain.Shared.Helpers.AssertGuard.Guard;
-
-	public static class QueryableExtensions
+	public async static Task<PagedList<T>> ToPagedListAsync<T> ( this IQueryable<T> queryable , int offset , int limit , CancellationToken cancellationToken = default )
 	{
-		public async static Task<PagedList<T>> ToPagedListAsync<T> ( this IQueryable<T> queryable , int offset , int limit , CancellationToken cancellationToken = default )
-		{
-			var count = await GetCountOfTableRecordsAsync ( queryable );
+		var count = await GetCountOfTableRecordsAsync ( queryable , cancellationToken );
 
-			var pagedData =
-				await GetPagedRecords ( queryable , offset , limit )
-					.ToListAsync ( cancellationToken );
+		var pagedData =
+			await GetPagedRecords ( queryable , offset , limit )
+				.ToListAsync ( cancellationToken );
 
-			return PagedList<T>.Create ( pagedData , count , offset , limit );
-		}
+		return PagedList<T>.Create ( pagedData , count , offset , limit );
 
-		private static async Task<int> GetCountOfTableRecordsAsync<T> ( IQueryable<T> queryable )
-			=> await queryable.CountAsync ();
+		static async Task<int> GetCountOfTableRecordsAsync ( IQueryable<T> queryable , CancellationToken cancellationToken = default )
+			=> await queryable.CountAsync ( cancellationToken );
 
-		private static IQueryable<T> GetPagedRecords<T> ( IQueryable<T> queryable , int offset , int limit )
-			=> offset switch
-			{
-				>= 1 =>
-					queryable
-						.Skip ( ( offset - 1 ) * limit )
-						.Take ( limit ),
+		static IQueryable<T> GetPagedRecords ( IQueryable<T> queryable , int offset , int limit )
+			 => offset switch
+			 {
+				 >= 1 =>
+					 queryable
+						 .Skip ( ( offset - 1 ) * limit )
+						 .Take ( limit ),
 
-				<= 0 =>
-					throw new ArgumentException ( "Offset can`t be a negative number" , nameof ( offset ) )
-			};
+				 <= 0 =>
+					 throw new ArgumentException ( "Offset can`t be a negative number" , nameof ( offset ) )
+			 };
+	}
 
-		public static IQueryable<TModel> OptionalWhere<TModel> ( this IQueryable<TModel> query , string? expression = default )
-		{
-			NotNull ( query , nameof ( query ) );
+	public static IQueryable<TModel> OptionalWhere<TModel> ( this IQueryable<TModel> query , string? expression = default )
+	{
+		NotNull ( query , nameof ( query ) );
 
-			return expression is null
-				? query
-				: query.Where ( expression );
-		}
+		return expression is null
+			? query
+			: query.Where ( expression );
+	}
 
-		public static IOrderedQueryable<TModel> OrderBy<TModel> ( this IQueryable<TModel> query , string orderableField , bool isDescending )
-		{
-			NotNull ( query , nameof ( query ) );
-			NotNullOrEmpty ( orderableField , nameof ( orderableField ) );
+	public static IOrderedQueryable<TModel> OrderBy<TModel> ( this IQueryable<TModel> query , string orderableField , bool isDescending )
+	{
+		NotNull ( query , nameof ( query ) );
+		NotNullOrEmpty ( orderableField , nameof ( orderableField ) );
 
-			var orderableExpression = CreateOrderableExpression ( orderableField , isDescending );
+		return query.OrderBy (
+			ordering: CreateOrderableExpression ( orderableField , isDescending ) );
 
-			return query.OrderBy ( orderableExpression );
-		}
+		static string CreateOrderableExpression ( string orderableField , bool isDescending )
+			=> string.Concat ( orderableField , " " , str2: ResolveStringLiteralFromOrder ( isDescending ) );
 
-		private static string CreateOrderableExpression ( string orderableField , bool isDescending )
-			=> string.Concat ( orderableField , " " , ResolveStringLiteralFromOrder ( isDescending ) );
-
-		private static string ResolveStringLiteralFromOrder ( bool isDescending )
+		static string ResolveStringLiteralFromOrder ( bool isDescending )
 			=> isDescending ? "desc" : "asc";
 	}
 }

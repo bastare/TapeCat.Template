@@ -1,11 +1,8 @@
-namespace TapeCat.Template.Persistence.Uow.Repositories.Interfaces;
+namespace TapeCat.Template.Persistence.Repositories;
 
 using Domain.Core.Models;
 using Pagination;
 using Specifications;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 public interface ISpecificationOperationRepository<TModel, TKey>
 	where TModel : class, IModel<TKey>

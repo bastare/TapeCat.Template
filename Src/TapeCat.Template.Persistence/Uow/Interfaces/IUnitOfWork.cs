@@ -1,10 +1,9 @@
 namespace TapeCat.Template.Persistence.Uow.Interfaces;
 
 using Domain.Core.Models;
-using Repositories.Interfaces;
-using System;
+using Repositories;
 
-public interface IUnitOfWork<TKey> : IDisposable, IAsyncDisposable, ITransaction
+public interface IUnitOfWork<TKey>
 {
 	IRepository<TModel , TKey> Repository<TModel> ()
 		where TModel : class, IModel<TKey>;

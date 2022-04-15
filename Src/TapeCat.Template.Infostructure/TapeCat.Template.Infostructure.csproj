@@ -4,5 +4,8 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Domain.Core\TapeCat.Template.Domain.Core.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Application\TapeCat.Template.Application.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Persistence\TapeCat.Template.Persistence.csproj" />
     </ItemGroup>
 </Project>

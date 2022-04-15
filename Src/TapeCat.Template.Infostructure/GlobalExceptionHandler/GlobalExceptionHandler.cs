@@ -6,12 +6,6 @@ using ExceptionHandlers.UnexpectableErrorHandlers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using static Domain.Shared.Helpers.AssertGuard.Guard;
 
 public sealed class GlobalExceptionHandler
 {
@@ -23,80 +17,80 @@ public sealed class GlobalExceptionHandler
 
 	internal GlobalExceptionHandler ( HttpContext? httpContext )
 	{
-		NotNull ( httpContext , nameof ( httpContext ) );
+		NotNull ( httpContext );
 
 		_httpContext = InvokeJsonErrorMediaType ( ref httpContext! );
 		_exceptionHandlers = ResolveErrorHandlers ( httpContext );
 
-		static HttpContext InvokeJsonErrorMediaType ( ref HttpContext httpContext ) =>
-			httpContext.Tap ( httpContext =>
+		static HttpContext InvokeJsonErrorMediaType ( ref HttpContext httpContext )
+			=> httpContext.Tap ( httpContext =>
 			  {
-				  httpContext.Response.ContentType = JsonErrorMediaType;
-			  } );
+				  httpContext!.Response.ContentType = JsonErrorMediaType;
+			  } )!;
 
 		static IEnumerable<IExceptionHandler> ResolveErrorHandlers ( HttpContext httpContext )
-		{
-			using var scopeService = httpContext.RequestServices.CreateScope ();
-
-			return scopeService.ServiceProvider.GetRequiredService<IEnumerable<IExceptionHandler>> ();
-		}
+			=> httpContext.RequestServices.GetRequiredService<IEnumerable<IExceptionHandler>> ();
 	}
 
 	public async Task FormErrorResponseAsync ( CancellationToken cancellationToken = default )
 	{
 		if ( TryHoldException ( out IExceptionHandler? exceptionHandler ) )
+		{
 			await FormExceptionHandlerErrorResponseAsync ( exceptionHandler! , cancellationToken );
-		else
-			await FormUnexpectableHandlerErrorResponseAsync ( cancellationToken );
-	}
 
-	private bool TryHoldException ( out IExceptionHandler? exceptionHandler )
-	{
-		var raisedException = ResolveRaisedException ();
+			return;
+		}
 
-		exceptionHandler =
-			_exceptionHandlers
-				.FirstOrDefault ( exceptionHandler => DoesErrorHandlerHoldException ( exceptionHandler , raisedException ) );
+		await FormUnexpectableHandlerErrorResponseAsync ( cancellationToken );
 
-		return exceptionHandler is not null;
-	}
+		bool TryHoldException ( out IExceptionHandler? exceptionHandler )
+		{
+			var raisedException = ResolveRaisedException ();
 
-	private static bool DoesErrorHandlerHoldException ( IExceptionHandler exceptionHandler , Exception raisedException ) =>
-		exceptionHandler is not UnexpectableErrorHandler
-			&& exceptionHandler.IsHold ( raisedException );
+			exceptionHandler =
+				_exceptionHandlers
+					.FirstOrDefault ( exceptionHandler => DoesErrorHandlerHoldException ( exceptionHandler , raisedException ) );
 
-	private Exception ResolveRaisedException ()
-		=> _httpContext.ResolveException () ??
-			throw new ArgumentNullException ( "No raised exception" );
+			return exceptionHandler is not null;
 
-	private async Task FormUnexpectableHandlerErrorResponseAsync ( CancellationToken cancellationToken = default )
-	{
-		var unexpectableErrorHandler = ResolveUnexpectableErrorHandler ();
+			static bool DoesErrorHandlerHoldException ( IExceptionHandler exceptionHandler , Exception raisedException ) =>
+				exceptionHandler is not UnexpectableErrorHandler
+					&& exceptionHandler.IsHold ( raisedException );
 
-		await FormExceptionHandlerErrorResponseAsync ( unexpectableErrorHandler , cancellationToken );
-	}
+			Exception ResolveRaisedException ()
+				=> _httpContext.ResolveException () ??
+					throw new ArgumentException ( "No raised exception" );
+		}
 
-	private IExceptionHandler ResolveUnexpectableErrorHandler ()
-		=> _exceptionHandlers.SingleOrDefault ( exceptionHandler => exceptionHandler is UnexpectableErrorHandler ) ??
-			throw new ArgumentNullException ( "No default error handler" );
+		async Task FormUnexpectableHandlerErrorResponseAsync ( CancellationToken cancellationToken = default )
+		{
+			var unexpectableErrorHandler = ResolveUnexpectableErrorHandler ();
 
-	private async Task FormExceptionHandlerErrorResponseAsync ( IExceptionHandler exceptionHandler ,
-																CancellationToken cancellationToken = default )
-	{
-		_httpContext.Response.StatusCode = ( int ) exceptionHandler.StatusCode!;
+			await FormExceptionHandlerErrorResponseAsync ( unexpectableErrorHandler , cancellationToken );
 
-		var errorResponse =
-			exceptionHandler.FormExceptionMessage!.Invoke ( _httpContext );
+			IExceptionHandler ResolveUnexpectableErrorHandler ()
+				=> _exceptionHandlers.SingleOrDefault ( exceptionHandler => exceptionHandler is UnexpectableErrorHandler ) ??
+					throw new ArgumentException ( "No default error handler" );
+		}
 
-		ExecuteExceptionHandlerCallback ( exceptionHandler );
+		async Task FormExceptionHandlerErrorResponseAsync ( IExceptionHandler exceptionHandler ,
+																	CancellationToken cancellationToken = default )
+		{
+			_httpContext.Response.StatusCode = ( int ) exceptionHandler.StatusCode!;
 
-		await _httpContext.Response.WriteAsync (
-			text: JsonConvert.SerializeObject ( errorResponse ) ,
-			cancellationToken );
-	}
+			var errorResponse =
+				exceptionHandler.FormExceptionMessage!.Invoke ( _httpContext );
 
-	private void ExecuteExceptionHandlerCallback ( IExceptionHandler exceptionHandler )
-	{
-		exceptionHandler.OnHold?.Invoke ( _httpContext );
+			ExecuteExceptionHandlerCallback ( exceptionHandler );
+
+			await _httpContext.Response.WriteAsync (
+				text: JsonConvert.SerializeObject ( errorResponse ) ,
+				cancellationToken );
+
+			void ExecuteExceptionHandlerCallback ( IExceptionHandler exceptionHandler )
+			{
+				exceptionHandler.OnHold?.Invoke ( _httpContext );
+			}
+		}
 	}
 }

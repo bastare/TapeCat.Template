@@ -4,13 +4,10 @@ using Autofac;
 using InjectorBuilder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System.Reflection;
-using static Domain.Shared.Helpers.AssertGuard.Guard;
 
 public static class InjectionBootstrapper
 {
-	private const string ParentNamespaceRoot = nameof ( TapeCat.Template );
+	private const string ParentNamespaceRoot = nameof ( TapeCat );
 
 	private static Assembly[] AssembliesForScanning { get; } =
 		Assembly.GetExecutingAssembly ()
@@ -18,14 +15,14 @@ public static class InjectionBootstrapper
 				.Where ( assemblyName =>
 					assemblyName.Name?.StartsWith ( ParentNamespaceRoot ) ?? false )
 
-				.Select ( assemblyName => Assembly.Load ( assemblyName ) )
+				.Select ( Assembly.Load )
 
 				.ToArray ();
 
 	public static IServiceCollection InjectLayersDependency ( this IServiceCollection serviceCollection , IConfiguration configuration )
 	{
-		NotNull ( serviceCollection , nameof ( serviceCollection ) );
-		NotNull ( configuration , nameof ( configuration ) );
+		NotNull ( serviceCollection );
+		NotNull ( configuration );
 
 		return InjectorBuilder.CreateDependency (
 			serviceCollection ,
@@ -35,7 +32,7 @@ public static class InjectionBootstrapper
 
 	public static void InjectLayersDependency ( this ContainerBuilder containerBuilder )
 	{
-		NotNull ( containerBuilder , nameof ( containerBuilder ) );
+		NotNull ( containerBuilder );
 
 		containerBuilder.RegisterAssemblyOpenGenericTypes ( AssembliesForScanning );
 		containerBuilder.RegisterAssemblyModules ( AssembliesForScanning );

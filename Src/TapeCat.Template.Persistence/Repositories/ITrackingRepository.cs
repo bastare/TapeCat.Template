@@ -1,12 +1,7 @@
-namespace TapeCat.Template.Persistence.Uow.Repositories.Interfaces;
+namespace TapeCat.Template.Persistence.Repositories;
 
 using Domain.Core.Models;
 using Pagination;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 public interface ITrackingRepository<TModel, TKey>
 	where TModel : class, IModel<TKey>

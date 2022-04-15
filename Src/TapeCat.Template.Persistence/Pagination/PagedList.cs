@@ -1,11 +1,13 @@
 namespace TapeCat.Template.Persistence.Pagination;
 
-using System;
-using System.Collections.Generic;
-using static Domain.Shared.Helpers.AssertGuard.Guard;
+using Interfaces;
 
-public sealed class PagedList<T> : List<T>
+public sealed record PagedList<T> : IPagedList<T>
 {
+	private readonly IImmutableList<T> _immutablePagedList;
+
+	public T? this[ int index ] => _immutablePagedList[ index ];
+
 	public int CurrentOffset { get; private set; }
 
 	public int TotalPages { get; private set; }
@@ -14,25 +16,36 @@ public sealed class PagedList<T> : List<T>
 
 	public int TotalCount { get; private set; }
 
+	public IEnumerator<T> GetEnumerator ()
+		=> _immutablePagedList.GetEnumerator ();
+
+	IEnumerator IEnumerable.GetEnumerator ()
+		=> GetEnumerator ();
+
 	private PagedList ( IEnumerable<T> items )
-		: base ( items )
-	{ }
+		=> _immutablePagedList = ImmutableList.CreateRange ( items );
 
 	public static PagedList<T> Create ( IEnumerable<T> items , int count , int offset , int limit )
 	{
 		NotNull ( items , nameof ( items ) );
-
-		var totalPages = CalculateTotalPages ( count , limit );
+		ParametersAreValid ( count , limit );
 
 		return new ( items )
 		{
 			CurrentOffset = offset ,
-			TotalPages = totalPages ,
+			TotalPages = CalculateTotalPages ( count , limit ) ,
 			Limit = limit ,
 			TotalCount = count
 		};
-	}
 
-	private static int CalculateTotalPages ( int count , int limit )
-		=> ( int ) Math.Ceiling ( count / ( double ) limit );
+		static void ParametersAreValid ( int count , int limit )
+		{
+			if ( count <= 0 || limit <= 0 )
+				throw new ArgumentException (
+					$"{nameof ( count )}: {count} or {nameof ( limit )}: {limit}, has the `zero` or negative value" );
+		}
+
+		static int CalculateTotalPages ( int count , int limit )
+			=> ( int ) Math.Ceiling ( count / ( double ) limit );
+	}
 }

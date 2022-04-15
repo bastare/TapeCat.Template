@@ -1,7 +1,5 @@
 namespace TapeCat.Template.Domain.Shared.Common.Exceptions;
 
-using System;
-
 public sealed class ForbiddenException : ArgumentException
 {
 	public ForbiddenException ()

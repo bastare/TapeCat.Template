@@ -1,12 +1,7 @@
-namespace TapeCat.Template.Persistence.Uow.Repositories.Interfaces;
+namespace TapeCat.Template.Persistence.Repositories;
 
 using Domain.Core.Models;
 using Pagination;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 public interface IRepository<TModel, TKey>
 	where TModel : class, IModel<TKey>
@@ -41,9 +36,9 @@ public interface IRepository<TModel, TKey>
 
 	Task<bool> IsExistAsync ( Expression<Func<TModel , bool>> predicate , CancellationToken cancellationToken = default );
 
-	Task<TKey> RemoveAsync ( TModel model , CancellationToken cancellationToken = default );
+	Task<TModel?> RemoveAsync ( TModel model , CancellationToken cancellationToken = default );
 
-	Task RemoveByAsync ( Expression<Func<TModel , bool>> predicate , CancellationToken cancellationToken = default );
+	Task<TModel?> RemoveByAsync ( Expression<Func<TModel , bool>> predicate , CancellationToken cancellationToken = default );
 
 	Task<TModel> UpdateAsync ( TModel model , CancellationToken cancellationToken = default );
 }

@@ -1,18 +1,15 @@
-namespace TapeCat.Template.Persistence.Common.Exceptions
+namespace TapeCat.Template.Persistence.Common.Exceptions;
+
+public sealed class RepositoryException : Exception
 {
-	using System;
+	public RepositoryException ()
+	{ }
 
-	public sealed class RepositoryException : Exception
-	{
-		public RepositoryException ()
-		{ }
+	public RepositoryException ( string? message = default )
+		: base ( message )
+	{ }
 
-		public RepositoryException ( string? message = default )
-			: base ( message )
-		{ }
-
-		public RepositoryException ( string message , Exception innerException )
-			: base ( message , innerException )
-		{ }
-	}
+	public RepositoryException ( string message , Exception innerException )
+		: base ( message , innerException )
+	{ }
 }

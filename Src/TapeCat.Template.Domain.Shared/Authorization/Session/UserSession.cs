@@ -9,8 +9,10 @@ public sealed class UserSession : ValueObject<UserSession>
 {
 	private readonly IHttpContextAccessor _httpContextAccessor;
 
+	private HttpContext HttpContext => _httpContextAccessor.HttpContext!;
+
 	public Guid? Id =>
-		_httpContextAccessor.HttpContext!.User
+		HttpContext.User
 			.FindFirst ( ClaimTypes.NameIdentifier )?.Value is string guid
 				? Guid.Parse ( guid )
 				: default;
@@ -22,7 +24,7 @@ public sealed class UserSession : ValueObject<UserSession>
 
 	public bool IsAuthorizedUser ()
 		=> Guid.TryParse (
-			input: _httpContextAccessor.HttpContext!.User
+			input: HttpContext.User
 				.FindFirst ( ClaimTypes.NameIdentifier )?.Value ,
 
 			result: out Guid _ );

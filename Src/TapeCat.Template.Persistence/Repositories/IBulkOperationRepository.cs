@@ -1,11 +1,6 @@
-namespace TapeCat.Template.Persistence.Uow.Repositories.Interfaces;
+namespace TapeCat.Template.Persistence.Repositories;
 
 using Domain.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 public interface IBulkOperationRepository<TModel, TKey>
 	where TModel : class, IModel<TKey>
