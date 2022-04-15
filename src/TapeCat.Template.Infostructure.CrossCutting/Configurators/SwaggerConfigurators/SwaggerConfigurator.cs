@@ -16,7 +16,6 @@ public static class SwaggerConfigurator
 		swaggerGenOptions
 			.AddSecurityRequirements ()
 			.AddSecurityDefinitions ()
-			.AddDocumentFilters ()
 			.AddSwaggerDocs ();
 	}
 
@@ -56,17 +55,6 @@ public static class SwaggerConfigurator
 				In = ParameterLocation.Header ,
 				Type = SecuritySchemeType.ApiKey ,
 				Scheme = "Bearer"
-			} );
-
-		return swaggerGenOptions;
-	}
-
-	private static SwaggerGenOptions AddDocumentFilters ( this SwaggerGenOptions swaggerGenOptions )
-	{
-		swaggerGenOptions.DocumentFilter<SignalRSwaggerGen> (
-			arguments: new List<Assembly>
-			{
-					Assembly.GetCallingAssembly ()
 			} );
 
 		return swaggerGenOptions;
