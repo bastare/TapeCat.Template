@@ -40,7 +40,7 @@ internal class JsonValueConfigurator
 			  }
 
 			  return builder;
-		  } );
+		  } )!;
 
 		bool TryResolvePropertiesWithJsonSerelizableAttribute ( out IEnumerable<PropertyInfo> propertiesForJsonConfiguration )
 		{

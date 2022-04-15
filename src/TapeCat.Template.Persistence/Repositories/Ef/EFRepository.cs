@@ -239,7 +239,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 				  NotNull ( model , nameof ( model ) );
 
 				  var entityState = _context.Set<TModel> ()
-				   .Remove ( model );
+				   .Remove ( model! );
 
 				  if ( entityState is { State: not EntityState.Deleted } )
 					  throw new RepositoryException ( "Entity wasn`t removed" );
@@ -309,10 +309,10 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 			  {
 				  NotNull ( model , nameof ( model ) );
 
-				  _context.Entry ( model ).State = EntityState.Modified;
+				  _context.Entry ( model! ).State = EntityState.Modified;
 
-				  return _context.Entry ( model ).Entity;
-			  } ) );
+				  return _context.Entry ( model! ).Entity;
+			  } ) )!;
 
 	public async Task BulkAddAsync ( IEnumerable<TModel> models , CancellationToken cancellationToken = default )
 	{

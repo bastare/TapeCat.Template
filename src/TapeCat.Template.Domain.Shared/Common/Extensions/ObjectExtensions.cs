@@ -8,7 +8,7 @@ public static class ObjectExtensions
 	public delegate ref TReturn TapFuncRef<TSelf, TReturn> ( ref TSelf self )
 		where TSelf : struct;
 
-	public static TSelf? Tap<TSelf> ( this TSelf? self , Action<TSelf?> tap )
+	public static TSelf Tap<TSelf> ( this TSelf self , Action<TSelf> tap )
 		where TSelf : notnull
 	{
 		tap ( self );
@@ -24,7 +24,7 @@ public static class ObjectExtensions
 		return ref self;
 	}
 
-	public static async Task<TSelf?> TapAsync<TSelf> ( this TSelf? self , Func<TSelf? , Task> tapAsync )
+	public static async Task<TSelf> TapAsync<TSelf> ( this TSelf self , Func<TSelf , Task> tapAsync )
 		where TSelf : notnull
 	{
 		await tapAsync ( self );
@@ -32,7 +32,7 @@ public static class ObjectExtensions
 		return self;
 	}
 
-	public static TReturn? Tap<TSelf, TReturn> ( this TSelf? self , Func<TSelf? , TReturn> tap )
+	public static TReturn? Tap<TSelf, TReturn> ( this TSelf self , Func<TSelf , TReturn> tap )
 		where TSelf : notnull
 			=> tap ( self );
 
@@ -40,7 +40,7 @@ public static class ObjectExtensions
 		where TSelf : struct
 			=> ref tap ( ref self );
 
-	public static async Task<TReturn?> TapAsync<TSelf, TReturn> ( this TSelf? self , Func<TSelf? , Task<TReturn>> tapAsync )
+	public static async Task<TReturn?> TapAsync<TSelf, TReturn> ( this TSelf self , Func<TSelf , Task<TReturn>> tapAsync )
 		where TSelf : notnull
 			=> await tapAsync ( self );
 }

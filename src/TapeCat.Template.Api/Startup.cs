@@ -13,6 +13,7 @@ using Infostructure.CrossCutting.Projections.DependencyInjectionBootstrapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,8 +47,11 @@ public sealed class Startup
 			.AddApiVersioning ( setupAction =>
 			  {
 				  setupAction.DefaultApiVersion = new ApiVersion ( 1 , 0 );
-
 				  setupAction.AssumeDefaultVersionWhenUnspecified = true;
+				  setupAction.ReportApiVersions = true;
+				  setupAction.ApiVersionReader = ApiVersionReader.Combine (
+					  new HeaderApiVersionReader ( "X-Version" ) ,
+					  new MediaTypeApiVersionReader ( "ver" ) );
 			  } )
 
 			.Configure<BrotliCompressionProviderOptions> ( options =>

@@ -52,7 +52,7 @@ public sealed class MongoDbRepository<TModel, TKey> : IRepository<TModel , TKey>
 			await ModelCollection.InsertOneAsync (
 				model ,
 				options: new () { BypassDocumentValidation = true } ,
-				cancellationToken ) );
+				cancellationToken ) )!;
 
 	public async Task<List<TModel>> FilterByAsync ( Expression<Func<TModel , bool>> predicate , CancellationToken cancellationToken = default )
 		=> await ModelQuery.Where ( predicate )
