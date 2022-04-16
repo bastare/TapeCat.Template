@@ -24,9 +24,9 @@ public static class MethodInfoExtensions
 
 	private static void SafeInvoke ( MethodInfo methodInfo , Type typeOfInstance , IEnumerable parameters )
 	{
-		NotNull ( methodInfo , nameof ( methodInfo ) );
-		NotNull ( typeOfInstance , nameof ( typeOfInstance ) );
-		NotNullOrEmpty ( parameters , nameof ( parameters ) );
+		NotNull ( methodInfo );
+		NotNull ( typeOfInstance );
+		NotNullOrEmpty ( parameters );
 
 		if ( !methodInfo.HasParameters ( passingParametersTypes: ResolveParametersFromPassingVariables ( parameters ) ) )
 			throw new ArgumentNullException (

@@ -2,9 +2,6 @@ namespace TapeCat.Template.Api.Caching;
 
 using Intrefaces;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 public sealed class InMemoryCacheService : ICacheService
 {
@@ -16,11 +13,8 @@ public sealed class InMemoryCacheService : ICacheService
 	}
 
 	public Task<TCachedValue> GetAsync<TCachedValue> ( string key , CancellationToken cancellationToken = default )
-	{
-		var cachedValue = _memoryCache.Get<TCachedValue> ( key );
-
-		return Task.FromResult ( cachedValue );
-	}
+		=> Task.FromResult (
+			result: _memoryCache.Get<TCachedValue> ( key ) );
 
 	public Task SetAsync<TCachedValue> ( string key , TCachedValue value , TimeSpan expiriSpan , CancellationToken cancellationToken = default )
 	{
@@ -32,12 +26,13 @@ public sealed class InMemoryCacheService : ICacheService
 	public bool TryGet<TCachedValue> ( string key , out TCachedValue value )
 		=> _memoryCache.TryGetValue ( key , out value );
 
-	public async Task<TCachedValue> GetOrCreateCacheValueAsync<TCachedValue> ( string key ,
-																			   TCachedValue value ,
-																			   TimeSpan expiriSpan ,
-																			   CancellationToken cancellationToken = default )
+	public async Task<TCachedValue> GetOrCreateCacheValueAsync<TCachedValue> (
+		string key ,
+		TCachedValue value ,
+		TimeSpan expiriSpan ,
+		CancellationToken cancellationToken = default )
 	{
-		NotNull ( key , nameof ( key ) );
+		NotNullOrEmpty ( key );
 
 		return await _memoryCache.GetOrCreateAsync (
 			key ,

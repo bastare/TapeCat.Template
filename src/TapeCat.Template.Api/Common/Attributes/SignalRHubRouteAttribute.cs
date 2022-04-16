@@ -7,7 +7,7 @@ public sealed class SignalRHubRouteAttribute : Attribute
 
 	public SignalRHubRouteAttribute ( string? path )
 	{
-		NotNullOrEmpty ( path , nameof ( path ) );
+		NotNullOrEmpty ( path );
 
 		Path = path!;
 	}

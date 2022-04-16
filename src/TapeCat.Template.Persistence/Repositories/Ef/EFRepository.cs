@@ -31,7 +31,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<TModel> AddAsync ( TModel model , CancellationToken cancellationToken = default )
 	{
-		NotNull ( model , nameof ( model ) );
+		NotNull ( model );
 
 		return ( await _context.Set<TModel> ()
 			.AddAsync ( model , cancellationToken ) )
@@ -69,7 +69,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<List<TModel>> FilterByAsync ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( predicate , nameof ( predicate ) );
+		NotNull ( predicate );
 
 		return await _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
@@ -79,7 +79,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<PagedList<TModel>> FilterByAsync ( Expression<Func<TModel , bool>> predicate , int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( predicate , nameof ( predicate ) );
+		NotNull ( predicate );
 
 		return await _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
@@ -89,7 +89,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<List<TModel>> FilterByAsync ( QuerySpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( specification , nameof ( specification ) );
+		NotNull ( specification );
 
 		return await _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
@@ -99,7 +99,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<PagedList<TModel>> FilterByAsync ( PaginationQuerySpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( specification , nameof ( specification ) );
+		NotNull ( specification );
 
 		return await _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
@@ -109,7 +109,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<List<TMappable>> FilterByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( predicate , nameof ( predicate ) );
+		NotNull ( predicate );
 
 		return await _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
@@ -121,7 +121,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<PagedList<TMappable>> FilterByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( predicate , nameof ( predicate ) );
+		NotNull ( predicate );
 
 		return await _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
@@ -133,7 +133,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<List<TMappable>> FilterByAsync<TMappable> ( QuerySpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( specification , nameof ( specification ) );
+		NotNull ( specification );
 
 		return await _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
@@ -145,7 +145,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<PagedList<TMappable>> FilterByAsync<TMappable> ( PaginationQuerySpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( specification , nameof ( specification ) );
+		NotNull ( specification );
 
 		return await _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
@@ -157,7 +157,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<TModel?> FindByAsync ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( predicate , nameof ( predicate ) );
+		NotNull ( predicate );
 
 		return await _context.Set<TModel> ( isTracking )
 			.SingleOrDefaultAsync ( predicate , cancellationToken );
@@ -165,7 +165,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<TMappable?> FindByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( predicate , nameof ( predicate ) );
+		NotNull ( predicate );
 
 		return await _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
@@ -177,7 +177,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<TModel?> FindByAsync ( QuerySpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( specification , nameof ( specification ) );
+		NotNull ( specification );
 
 		return await _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
@@ -187,7 +187,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<TMappable?> FindByAsync<TMappable> ( QuerySpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
-		NotNull ( specification , nameof ( specification ) );
+		NotNull ( specification );
 
 		return await _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
@@ -215,7 +215,7 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 
 	public async Task<TModel?> RemoveByAsync ( Expression<Func<TModel , bool>> predicate , CancellationToken cancellationToken = default )
 	{
-		NotNull ( predicate , nameof ( predicate ) );
+		NotNull ( predicate );
 
 		return ( await FindByAsync ( predicate , isTracking: true , cancellationToken ) )!
 

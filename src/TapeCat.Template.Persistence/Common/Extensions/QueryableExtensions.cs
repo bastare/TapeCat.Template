@@ -35,7 +35,7 @@ public static class QueryableExtensions
 
 	public static IQueryable<TModel> OptionalWhere<TModel> ( this IQueryable<TModel> query , string? expression = default )
 	{
-		NotNull ( query , nameof ( query ) );
+		NotNull ( query );
 
 		return expression is null
 			? query
@@ -44,8 +44,8 @@ public static class QueryableExtensions
 
 	public static IOrderedQueryable<TModel> OrderBy<TModel> ( this IQueryable<TModel> query , string orderableField , bool isDescending )
 	{
-		NotNull ( query , nameof ( query ) );
-		NotNullOrEmpty ( orderableField , nameof ( orderableField ) );
+		NotNull ( query );
+		NotNullOrEmpty ( orderableField );
 
 		return query.OrderBy (
 			ordering: CreateOrderableExpression ( orderableField , isDescending ) );
