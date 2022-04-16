@@ -74,7 +74,7 @@ public static class SwaggerConfigurator
 
 	public static void SwaggerUIConfigurator ( SwaggerUIOptions swaggerUIOptions )
 	{
-		swaggerUIOptions.SwaggerEndpoint ( "/swagger/v1/swagger.json" , "UDS-Portal API v1.0" );
+		swaggerUIOptions.SwaggerEndpoint ( "/swagger/v1/swagger.json" , string.Empty );
 
 		swaggerUIOptions.RoutePrefix = "swagger";
 	}
