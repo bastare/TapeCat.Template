@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 public abstract class AuditableEntityTypeConfiguration<TAuditableEntity, TKey> : ModelEntityTypeConfiguration<TAuditableEntity , TKey>
-	where TAuditableEntity : AuditableModel<TAuditableEntity , TKey>
+	where TAuditableEntity : class, IAuditableModel<TKey>
 	where TKey : struct
 {
 	public override void Configure ( EntityTypeBuilder<TAuditableEntity> builder )

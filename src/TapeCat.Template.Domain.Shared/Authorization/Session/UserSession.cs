@@ -1,11 +1,11 @@
 namespace TapeCat.Template.Domain.Shared.Authorization.Session;
 
-using Common.Interfaces;
+using Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Security.Claims;
 
-public sealed class UserSession : ValueObject<UserSession>
+public sealed class UserSession : IUserSession
 {
 	private readonly IHttpContextAccessor _httpContextAccessor;
 
