@@ -9,6 +9,8 @@ public sealed class FallbackController : ControllerBase
 {
 	private const string IndexFileName = "index.html";
 
+	private string PathToIndexFile => Path.Combine ( _webHostingEnvironment.WebRootPath , IndexFileName );
+
 	private readonly IWebHostEnvironment _webHostingEnvironment;
 
 	public FallbackController ( IWebHostEnvironment webHostingEnvironment )
@@ -17,11 +19,7 @@ public sealed class FallbackController : ControllerBase
 	}
 
 	public IActionResult Index ()
-	{
-		var pathToIndexFile = Path.Combine ( _webHostingEnvironment.WebRootPath , IndexFileName );
-
-		return System.IO.File.Exists ( pathToIndexFile )
-			? PhysicalFile ( pathToIndexFile , MediaTypeNames.Text.Html )
+		=> System.IO.File.Exists ( PathToIndexFile )
+			? PhysicalFile ( PathToIndexFile , MediaTypeNames.Text.Html )
 			: NotFound ( new { Message = $"No '{IndexFileName}' file in '{_webHostingEnvironment.WebRootPath}'" } );
-	}
 }

@@ -32,9 +32,5 @@ public abstract class ExtendedController : ControllerBase
 
 	private TService ResolveService<TService> ()
 		where TService : notnull
-	{
-		using var scopeService = HttpContext.RequestServices.CreateScope ();
-
-		return scopeService.ServiceProvider.GetRequiredService<TService> ();
-	}
+			=> HttpContext.RequestServices.GetRequiredService<TService> ();
 }
