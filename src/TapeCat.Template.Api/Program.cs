@@ -7,10 +7,6 @@ using Microsoft.Extensions.Hosting;
 
 public static class Program
 {
-	private const string GeneralAppSettingFilePath = "./appsettings.json";
-
-	private const string EnvironmentsAppSettingFilePath = "./appsettings.{env.EnvironmentName}.json";
-
 	public static void Main ( string[] args )
 	{
 		CreateHostBuilder ( args )
@@ -22,20 +18,20 @@ public static class Program
 		=> Host
 			.CreateDefaultBuilder ( args )
 			.UseServiceProviderFactory ( new AutofacServiceProviderFactory () )
-			.ConfigureAppConfiguration ( ( _ , config ) =>
+			.ConfigureAppConfiguration ( ( hostBuilderContext , config ) =>
 			  {
 				  config
-					  .AddJsonFile (
-							path: GeneralAppSettingFilePath ,
-							optional: false ,
-							reloadOnChange: true )
+					   .AddJsonFile (
+							 path: "./appsettings.json" ,
+							 optional: false ,
+							 reloadOnChange: true )
 
-					  .AddJsonFile (
-							path: EnvironmentsAppSettingFilePath ,
-							optional: true ,
-							reloadOnChange: true )
+					   .AddJsonFile (
+							 path: $"./appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json" ,
+							 optional: true ,
+							 reloadOnChange: true )
 
-					  .AddEnvironmentVariables ();
+					   .AddEnvironmentVariables ();
 			  } )
 			.ConfigureWebHostDefaults ( webBuilder =>
 			  {
