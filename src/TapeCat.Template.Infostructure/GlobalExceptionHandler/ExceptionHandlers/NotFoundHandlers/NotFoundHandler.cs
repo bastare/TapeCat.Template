@@ -4,13 +4,16 @@ using Domain.Shared.Common.Classes.HttpMessages;
 using Domain.Shared.Common.Exceptions;
 using Domain.Shared.Common.Extensions;
 using System.Net;
-using TapeCat.Template.Infostructure.GlobalExceptionHandler.ExceptionHandlers;
 
-public sealed record NotFoundHandler : ExceptionHandler<NotFoundException>
+public sealed class NotFoundHandler : ExceptionHandler
 {
 	public NotFoundHandler ()
-		: base ( HttpStatusCode.NotFound )
+		: base (
+			isAllowedException: ( _ , exception ) =>
+				exception.GetType () == typeof ( NotFoundException ) )
 	{
+		StatusCode = HttpStatusCode.NotFound;
+
 		FormExceptionMessage =
 			httpContext =>
 				new ErrorMessage ()

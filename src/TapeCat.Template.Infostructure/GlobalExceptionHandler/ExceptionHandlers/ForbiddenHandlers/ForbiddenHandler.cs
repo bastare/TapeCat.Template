@@ -5,14 +5,14 @@ using Domain.Shared.Common.Exceptions;
 using Domain.Shared.Common.Extensions;
 using System.Net;
 
-public sealed record InnerForbiddenHandler : ExceptionHandler<MassTransit.RequestException>
+public sealed class ForbiddenHandler : ExceptionHandler
 {
-	public InnerForbiddenHandler ()
-		: base ( HttpStatusCode.NotFound )
+	public ForbiddenHandler ()
+		: base (
+			isAllowedException: ( _ , exception ) =>
+				exception.GetType () == typeof ( ForbiddenException ) )
 	{
-		DoesHoldException =
-			requestException =>
-				requestException?.InnerException is ForbiddenException;
+		StatusCode = HttpStatusCode.Forbidden;
 
 		FormExceptionMessage =
 			httpContext =>

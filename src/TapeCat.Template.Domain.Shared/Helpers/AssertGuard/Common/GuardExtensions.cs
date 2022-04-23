@@ -1,7 +1,7 @@
 namespace TapeCat.Template.Domain.Shared.Helpers.AssertGuard.Common;
 
+using Shared.Common.Extensions;
 using System.Runtime.CompilerServices;
-using TapeCat.Template.Domain.Shared.Common.Extensions;
 
 public static class GuardExtensions
 {

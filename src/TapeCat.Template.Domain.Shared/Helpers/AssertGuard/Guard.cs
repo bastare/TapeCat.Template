@@ -5,8 +5,8 @@ using FluentValidation.Results;
 using Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Common.Extensions;
 using System.Runtime.CompilerServices;
-using TapeCat.Template.Domain.Shared.Common.Extensions;
 
 public sealed class Guard : IGuard
 {

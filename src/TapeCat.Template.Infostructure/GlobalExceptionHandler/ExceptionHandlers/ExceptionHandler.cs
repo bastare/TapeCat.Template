@@ -4,27 +4,35 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
 
-public abstract record ExceptionHandler<TException> : IExceptionHandler
-	where TException : Exception
+public abstract class ExceptionHandler : IExceptionHandler
 {
-	public HttpStatusCode StatusCode { get; }
+	public Action<HttpContext>? OnHold { get; }
 
-	public Func<HttpContext , object>? FormExceptionMessage { get; protected init; }
+	public HttpStatusCode StatusCode { get; protected set; } = HttpStatusCode.InternalServerError;
 
-	protected Predicate<TException>? DoesHoldException { get; init; }
+	public Func<HttpContext , object> FormExceptionMessage { get; protected set; } = DefaultExceptionMessage;
 
-	public Action<HttpContext>? OnHold { get; protected init; }
+	protected Func<HttpContext , Exception , bool> IsAllowedException { get; }
 
-	public ExceptionHandler ()
-		=> StatusCode = HttpStatusCode.InternalServerError;
+	protected ExceptionHandler ( Func<HttpContext , Exception , bool> isAllowedException )
+	{
+		IsAllowedException = isAllowedException;
+	}
 
-	public ExceptionHandler ( HttpStatusCode statusCode )
-		=> StatusCode = statusCode;
+	public bool IsHold ( HttpContext context , Exception exception )
+		=> IsAllowedException.Invoke ( context , exception );
 
-	public bool IsHold ( Exception exception )
-		=> exception is TException expectedException
-			&& IsAllowedException ( expectedException );
+	public virtual void InjectStatusCode ( HttpContext _ )
+	{
+		StatusCode = HttpStatusCode.InternalServerError;
+	}
 
-	private bool IsAllowedException ( TException raisedException )
-		=> DoesHoldException?.Invoke ( raisedException ) ?? true;
+	private static object DefaultExceptionMessage ( HttpContext _ )
+		=> new
+		{
+			Message = "Internal server error" ,
+			Description = "Sorry, something went wrong on our end. We are currently trying to fix the problem" ,
+			StatusCode = HttpStatusCode.InternalServerError ,
+			IsErrorPage = true
+		};
 }

@@ -12,5 +12,7 @@ public interface IExceptionHandler
 
 	Action<HttpContext>? OnHold { get; }
 
-	bool IsHold ( Exception exception );
+	bool IsHold ( HttpContext context , Exception exception );
+
+	void InjectStatusCode ( HttpContext context );
 }

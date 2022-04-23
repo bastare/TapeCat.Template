@@ -1,29 +1,31 @@
-namespace TapeCat.Template.Infostructure.GlobalExceptionHandler.ExceptionHandlers.BadRequestHandlers
-{
-	using System;
-	using System.Net;
-	using TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages;
-	using TapeCat.Template.Domain.Shared.Common.Extensions;
-	using TapeCat.Template.Infostructure.GlobalExceptionHandler.ExceptionHandlers;
+namespace TapeCat.Template.Infostructure.GlobalExceptionHandler.ExceptionHandlers.BadRequestHandlers;
 
-	public sealed record FormatExceptionHandler : ExceptionHandler<FormatException>
+using Domain.Shared.Common.Classes.HttpMessages;
+using Domain.Shared.Common.Extensions;
+using System;
+using System.Net;
+
+public sealed class FormatExceptionHandler : ExceptionHandler
+{
+	public FormatExceptionHandler ()
+		: base (
+			isAllowedException: ( _ , exception ) =>
+				exception.GetType () == typeof ( FormatException ) )
 	{
-		public FormatExceptionHandler ()
-			: base ( HttpStatusCode.BadRequest )
-		{
-			FormExceptionMessage =
-				httpContext =>
-					new ErrorMessage ()
-					{
-						Message = "Unexpected format" ,
-						Description = "Sorry, try use other format." ,
-						StatusCode = ( int ) HttpStatusCode.BadRequest ,
-						IsErrorPage = true ,
-						TechnicalErrorMessage = httpContext.ResolveExceptionMessage () ,
-						ExceptionType = httpContext.ResolveExceptionTypeName () ,
-						InnerMessage = httpContext.ResolveInnerExceptionMessage () ,
-						InnerExceptionType = httpContext.ResolveInnerExceptionTypeName ()
-					};
-		}
+		StatusCode = HttpStatusCode.BadRequest;
+
+		FormExceptionMessage =
+			( httpContext ) =>
+				new ErrorMessage ()
+				{
+					Message = "Unexpected format" ,
+					Description = "Sorry, try use other format." ,
+					StatusCode = ( int ) HttpStatusCode.BadRequest ,
+					IsErrorPage = true ,
+					TechnicalErrorMessage = httpContext.ResolveExceptionMessage () ,
+					ExceptionType = httpContext.ResolveExceptionTypeName () ,
+					InnerMessage = httpContext.ResolveInnerExceptionMessage () ,
+					InnerExceptionType = httpContext.ResolveInnerExceptionTypeName ()
+				};
 	}
 }

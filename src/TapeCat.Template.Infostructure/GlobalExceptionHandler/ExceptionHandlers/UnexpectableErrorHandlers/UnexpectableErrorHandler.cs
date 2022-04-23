@@ -2,13 +2,13 @@ namespace TapeCat.Template.Infostructure.GlobalExceptionHandler.ExceptionHandler
 
 using Domain.Shared.Common.Classes.HttpMessages;
 using Domain.Shared.Common.Extensions;
-using System;
-using System.Net;
 
-public sealed record UnexpectableErrorHandler : ExceptionHandler<Exception>
+public sealed class UnexpectableErrorHandler : ExceptionHandler
 {
 	public UnexpectableErrorHandler ()
-		: base ( HttpStatusCode.InternalServerError )
+		: base (
+			isAllowedException: ( httpContext , _ ) =>
+				httpContext.ResolveException () is not null )
 	{
 		FormExceptionMessage =
 			httpContext =>

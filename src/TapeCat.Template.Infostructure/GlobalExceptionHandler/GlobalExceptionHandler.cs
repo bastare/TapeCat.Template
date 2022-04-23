@@ -45,17 +45,17 @@ public sealed class GlobalExceptionHandler
 
 		bool TryHoldException ( out IExceptionHandler? exceptionHandler )
 		{
-			var raisedException = ResolveRaisedException ();
-
 			exceptionHandler =
 				_exceptionHandlers
-					.FirstOrDefault ( exceptionHandler => DoesErrorHandlerHoldException ( exceptionHandler , raisedException ) );
+					.FirstOrDefault ( exceptionHandler => DoesErrorHandlerHoldException (
+						exceptionHandler ,
+						raisedException: ResolveRaisedException () ) );
 
 			return exceptionHandler is not null;
 
-			static bool DoesErrorHandlerHoldException ( IExceptionHandler exceptionHandler , Exception raisedException ) =>
-				exceptionHandler is not UnexpectableErrorHandler
-					&& exceptionHandler.IsHold ( raisedException );
+			bool DoesErrorHandlerHoldException ( IExceptionHandler exceptionHandler , Exception raisedException )
+				=> exceptionHandler is not UnexpectableErrorHandler
+					&& exceptionHandler.IsHold ( _httpContext , raisedException );
 
 			Exception ResolveRaisedException ()
 				=> _httpContext.ResolveException () ??
@@ -64,9 +64,9 @@ public sealed class GlobalExceptionHandler
 
 		async Task FormUnexpectableHandlerErrorResponseAsync ( CancellationToken cancellationToken = default )
 		{
-			var unexpectableErrorHandler = ResolveUnexpectableErrorHandler ();
-
-			await FormExceptionHandlerErrorResponseAsync ( unexpectableErrorHandler , cancellationToken );
+			await FormExceptionHandlerErrorResponseAsync (
+				exceptionHandler: ResolveUnexpectableErrorHandler () ,
+				cancellationToken );
 
 			IExceptionHandler ResolveUnexpectableErrorHandler ()
 				=> _exceptionHandlers.SingleOrDefault ( exceptionHandler => exceptionHandler is UnexpectableErrorHandler ) ??
@@ -74,7 +74,7 @@ public sealed class GlobalExceptionHandler
 		}
 
 		async Task FormExceptionHandlerErrorResponseAsync ( IExceptionHandler exceptionHandler ,
-																	CancellationToken cancellationToken = default )
+															CancellationToken cancellationToken = default )
 		{
 			_httpContext.Response.StatusCode = ( int ) exceptionHandler.StatusCode!;
 
