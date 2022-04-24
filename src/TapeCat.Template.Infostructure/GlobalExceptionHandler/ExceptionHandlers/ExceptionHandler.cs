@@ -1,38 +1,45 @@
 namespace TapeCat.Template.Infostructure.GlobalExceptionHandler.ExceptionHandlers;
 
+using Domain.Shared.Common.Classes.HttpMessages.Error;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
 
-public abstract class ExceptionHandler : IExceptionHandler
+public sealed record ExceptionHandler : IExceptionHandler
 {
-	public Action<HttpContext>? OnHold { get; }
+	public int Id { get; }
 
-	public HttpStatusCode StatusCode { get; protected set; } = HttpStatusCode.InternalServerError;
+	public Action<HttpContext>? OnHold { get; init; }
 
-	public Func<HttpContext , object> FormExceptionMessage { get; protected set; } = DefaultExceptionMessage;
+	public Func<HttpContext , object> InjectExceptionMessage { get; init; } = DefaultExceptionMessageInjector;
 
-	protected Func<HttpContext , Exception , bool> IsAllowedException { get; }
+	public Func<HttpContext , HttpStatusCode> InjectStatusCode { get; init; } = DefaultStatusCodeInjector;
 
-	protected ExceptionHandler ( Func<HttpContext , Exception , bool> isAllowedException )
+	private Func<HttpContext , Exception , bool> IsAllowedException { get; }
+
+	public ExceptionHandler ( int id , Func<HttpContext , Exception , bool>? isAllowedException )
 	{
-		IsAllowedException = isAllowedException;
+		NotNull ( isAllowedException );
+
+		IsAllowedException = isAllowedException!;
+		Id = id;
 	}
 
 	public bool IsHold ( HttpContext context , Exception exception )
 		=> IsAllowedException.Invoke ( context , exception );
 
-	public virtual void InjectStatusCode ( HttpContext _ )
-	{
-		StatusCode = HttpStatusCode.InternalServerError;
-	}
-
-	private static object DefaultExceptionMessage ( HttpContext _ )
-		=> new
+	private static object DefaultExceptionMessageInjector ( HttpContext httpContext )
+		=> new PageErrorMessage
 		{
 			Message = "Internal server error" ,
 			Description = "Sorry, something went wrong on our end. We are currently trying to fix the problem" ,
-			StatusCode = HttpStatusCode.InternalServerError ,
-			IsErrorPage = true
+			StatusCode = httpContext.Response.StatusCode ,
+			TechnicalErrorMessage = httpContext.ResolveExceptionMessage () ,
+			ExceptionType = httpContext.ResolveExceptionTypeName () ,
+			InnerMessage = httpContext.ResolveInnerExceptionMessage () ,
+			InnerExceptionType = httpContext.ResolveInnerExceptionTypeName ()
 		};
+
+	private static HttpStatusCode DefaultStatusCodeInjector ( HttpContext _ )
+		=> HttpStatusCode.InternalServerError;
 }

@@ -2,6 +2,7 @@ namespace TapeCat.Template.Domain.Shared.Common.Extensions;
 
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 public static class HttpContextExtensions
 {
@@ -21,7 +22,7 @@ public static class HttpContextExtensions
 	public static string? ResolveExceptionTypeName ( this HttpContext httpContext ) =>
 		httpContext.ResolveException ()
 			?.GetType ()
-				.FullName;
+				.ShortDisplayName ();
 
 	public static string? ResolveInnerExceptionMessage ( this HttpContext httpContext ) =>
 		httpContext.ResolveException ()
@@ -30,5 +31,5 @@ public static class HttpContextExtensions
 	public static string? ResolveInnerExceptionTypeName ( this HttpContext httpContext ) =>
 		httpContext.ResolveException ()
 			?.InnerException?.GetType ()
-				.FullName;
+				.ShortDisplayName ();
 }

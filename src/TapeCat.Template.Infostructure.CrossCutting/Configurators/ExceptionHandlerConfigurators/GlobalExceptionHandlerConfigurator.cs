@@ -1,7 +1,9 @@
 namespace TapeCat.Template.Infostructure.CrossCutting.Configurators.ExceptionHandlerConfigurators;
 
-using GlobalExceptionHandler.Factories;
+using GlobalExceptionHandler;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class GlobalExceptionHandlerConfigurator
 {
@@ -9,10 +11,13 @@ public static class GlobalExceptionHandlerConfigurator
 	{
 		applicationBuilder.Run ( async httpContext =>
 		  {
-			  await GlobalExceptionHandlerFactory.Create ( httpContext )
-				  .FormErrorResponseAsync ( httpContext.RequestAborted );
+			  await ResolveGlobalExceptionHandler ( httpContext )
+			  	.FormErrorResponseAsync ( httpContext );
 
 			  await httpContext.Response.CompleteAsync ();
+
+			  static ExceptionHandlerManager ResolveGlobalExceptionHandler ( HttpContext httpContext )
+			  	=> httpContext.RequestServices.GetRequiredService<ExceptionHandlerManager> ();
 		  } );
 	}
 }

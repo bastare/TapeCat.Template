@@ -1,10 +1,12 @@
-namespace TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages;
+namespace TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages.Error;
 
-public sealed record ErrorMessage
+using Interfaces;
+
+public sealed record PageErrorMessage : IErrorMessage
 {
 	public int StatusCode { get; init; }
 
-	public bool IsErrorPage { get; init; }
+	public bool IsErrorPage => true;
 
 	public string? Message { get; init; }
 
