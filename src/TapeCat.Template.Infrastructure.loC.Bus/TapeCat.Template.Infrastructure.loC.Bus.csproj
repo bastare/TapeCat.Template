@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1"/>
-        <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1"/>
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.1"/>
-        <PackageReference Include="MassTransit.SimpleInjector" Version="7.3.1"/>
-        <PackageReference Include="MassTransit" Version="8.0.1"/>
+        <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+        <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.1" />
+        <PackageReference Include="MassTransit.SimpleInjector" Version="7.3.1" />
+        <PackageReference Include="MassTransit" Version="8.0.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
     </ItemGroup>
 </Project>
