@@ -26,8 +26,12 @@ public sealed class ExceptionHandlerManager
 
 		static void ExceptionHandlersAreUniq ( IEnumerable<IExceptionHandler> exceptionHandlers )
 		{
-			if ( exceptionHandlers.DistinctBy ( x => x.Id ).Count () != exceptionHandlers.Count () )
+			if ( !AreUniqua ( exceptionHandlers ) )
 				throw new ArgumentException ( "There are 1 or more error handler(-s), that have duplicated `id`" );
+
+			static bool AreUniqua ( IEnumerable<IExceptionHandler> exceptionHandlers )
+				=> exceptionHandlers.DistinctBy ( exceptionHandler => exceptionHandler.Id ).Count ()
+					== exceptionHandlers.Count ();
 		}
 	}
 
@@ -64,39 +68,46 @@ public sealed class ExceptionHandlerManager
 
 		bool TryHoldException ( out IExceptionHandler? exceptionHandler , HttpContext httpContext )
 		{
-			var exceptionHandlers =
-				_exceptionHandlers
-					.Where ( exceptionHandler =>
-						exceptionHandler.IsHold ( httpContext , exception: ResolveRaisedException ( httpContext ) ) );
-
-			exceptionHandler = ResolveExceptionHandler ( exceptionHandlers , httpContext );
+			exceptionHandler = ResolveExceptionHandlersThatHoldRaisedException ( httpContext );
 
 			return exceptionHandler is not null;
 
-			static IExceptionHandler? ResolveExceptionHandler ( IEnumerable<IExceptionHandler> exceptionHandlers , HttpContext httpContext )
-				=> exceptionHandlers.Count () switch
-				{
-					1 => exceptionHandlers!.First (),
-					0 => default,
-					> 1 => throw new ArgumentException ( message: CreateErrorMessage ( exceptionHandlers , httpContext ) , nameof ( exceptionHandlers ) ),
-					_ => throw new ArgumentException ( message: $"No case for this condition: {exceptionHandlers.Count ()}" , nameof ( exceptionHandlers ) )
-				};
+			IExceptionHandler? ResolveExceptionHandlersThatHoldRaisedException ( HttpContext httpContext )
+			{
+				return ResolveSingleExceptionHandler (
+					exceptionHandlers: ResolveExceptionHandlersThatHoldRaisedException ( httpContext ) ,
+					httpContext );
 
-			static string CreateErrorMessage ( IEnumerable<IExceptionHandler> exceptionHandlers , HttpContext httpContext )
-				=> new StringBuilder ()
-					.Append ( "There are colision between 2 or more exception handlers, on " )
-					.Append ( ResolveRaisedException ( httpContext ).GetType ().ShortDisplayName () )
-					.Append ( ", between: " )
-					.AppendJoin (
-						separator: ", " ,
-						exceptionHandlers.Select ( exceptionHandler => exceptionHandler.Id ) )
-					.Append ( " - error handler" )
+				IEnumerable<IExceptionHandler> ResolveExceptionHandlersThatHoldRaisedException ( HttpContext httpContext )
+					=> _exceptionHandlers
+						.Where ( exceptionHandler =>
+							exceptionHandler.IsHold ( httpContext , exception: ResolveRaisedException ( httpContext ) ) );
 
-					.ToString ();
+				static IExceptionHandler? ResolveSingleExceptionHandler ( IEnumerable<IExceptionHandler> exceptionHandlers , HttpContext httpContext )
+					=> exceptionHandlers.Count () switch
+					{
+						1 => exceptionHandlers.First (),
+						0 => default,
+						> 1 => throw new ArgumentException ( message: CreateErrorMessage ( exceptionHandlers , httpContext ) , nameof ( exceptionHandlers ) ),
+						_ => throw new ArgumentException ( message: $"No case for this condition: {exceptionHandlers.Count ()}" , nameof ( exceptionHandlers ) )
+					};
 
-			static Exception ResolveRaisedException ( HttpContext httpContext )
-				=> httpContext.ResolveException () ??
-					throw new ArgumentException ( "No raised exception" , nameof ( httpContext ) );
+				static string CreateErrorMessage ( IEnumerable<IExceptionHandler> exceptionHandlers , HttpContext httpContext )
+					=> new StringBuilder ()
+						.Append ( "There are colision between 2 or more exception handlers, on " )
+						.Append ( ResolveRaisedException ( httpContext ).GetType ().ShortDisplayName () )
+						.Append ( ", between: " )
+						.AppendJoin (
+							separator: ", " ,
+							exceptionHandlers.Select ( exceptionHandler => exceptionHandler.Id ) )
+						.Append ( " - error handler" )
+
+						.ToString ();
+
+				static Exception ResolveRaisedException ( HttpContext httpContext )
+					=> httpContext.ResolveException () ??
+						throw new ArgumentException ( "No raised exception" , nameof ( httpContext ) );
+			}
 		}
 
 		async Task FormUnexpectableHandlerErrorResponseAsync ( CancellationToken cancellationToken = default )
@@ -134,8 +145,8 @@ public sealed class ExceptionHandlerManager
 		}
 
 		static async Task FormInnerErrorResponseAsync ( Exception innerException ,
-												 		HttpContext httpContext ,
-												 		CancellationToken cancellationToken = default )
+														 HttpContext httpContext ,
+														 CancellationToken cancellationToken = default )
 		{
 			httpContext!.Response.StatusCode = ( int ) HttpStatusCode.InternalServerError;
 
