@@ -1,7 +1,7 @@
 namespace TapeCat.Template.Api.Configurations.StartupConfiguration;
 
 using Common.Extensions;
-using Infostructure.CrossCutting.Configurators.SwaggerConfigurators;
+using Infrastructure.CrossCutting.Configurators.SwaggerConfigurators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;

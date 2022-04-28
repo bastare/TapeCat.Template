@@ -9,11 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Api", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Domain.Shared", "src\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj", "{8A3A0B9D-4730-4479-9A02-FB63CB4D4640}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infostructure", "src\TapeCat.Template.Infostructure\TapeCat.Template.Infostructure.csproj", "{9BEEE605-954F-45F2-9EEA-8A64BBE41004}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastructure", "src\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj", "{9BEEE605-954F-45F2-9EEA-8A64BBE41004}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infostructure.CrossCutting", "src\TapeCat.Template.Infostructure.CrossCutting\TapeCat.Template.Infostructure.CrossCutting.csproj", "{910C4452-F303-4CF7-9F03-D07FA3B48741}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastructure.CrossCutting", "src\TapeCat.Template.Infrastructure.CrossCutting\TapeCat.Template.Infrastructure.CrossCutting.csproj", "{910C4452-F303-4CF7-9F03-D07FA3B48741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infostructure.loC", "src\TapeCat.Template.Infostructure.loC\TapeCat.Template.Infostructure.loC.csproj", "{C0130B7C-F201-4064-9D9C-942BD6ECC339}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastructure.loC", "src\TapeCat.Template.Infrastructure.loC\TapeCat.Template.Infrastructure.loC.csproj", "{C0130B7C-F201-4064-9D9C-942BD6ECC339}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Persistence", "src\TapeCat.Template.Persistence\TapeCat.Template.Persistence.csproj", "{F7597341-3C25-4B89-9853-D5B1B56B12D1}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{48155294-AE42-4015-B176-FFD44010402B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Domain", "src\TapeCat.Template.Domain\TapeCat.Template.Domain.csproj", "{0B6935C2-B706-461A-B3C3-6A157BDCFB84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastructure.loC.Bus", "src/TapeCat.Template.Infrastructure.loC.Bus\TapeCat.Template.Infrastructure.loC.Bus.csproj", "{0BEB90A4-1611-4318-AAC5-9C480899A962}"
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
@@ -150,8 +152,21 @@ Global
 		{0B6935C2-B706-461A-B3C3-6A157BDCFB84}.Release|x64.Build.0 = Release|Any CPU
 		{0B6935C2-B706-461A-B3C3-6A157BDCFB84}.Release|x86.ActiveCfg = Release|Any CPU
 		{0B6935C2-B706-461A-B3C3-6A157BDCFB84}.Release|x86.Build.0 = Release|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Debug|x64.Build.0 = Debug|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Debug|x86.Build.0 = Debug|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|x64.ActiveCfg = Release|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|x64.Build.0 = Release|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|x86.ActiveCfg = Release|Any CPU
+		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{0BEB90A4-1611-4318-AAC5-9C480899A962} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
 		{4CD96CA1-B942-4F66-9D11-FFFAE758217A} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
 		{8A3A0B9D-4730-4479-9A02-FB63CB4D4640} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
 		{9BEEE605-954F-45F2-9EEA-8A64BBE41004} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
