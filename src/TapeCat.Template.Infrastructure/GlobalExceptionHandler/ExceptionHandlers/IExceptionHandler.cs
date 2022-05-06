@@ -1,7 +1,6 @@
 namespace TapeCat.Template.Infrastructure.GlobalExceptionHandler.ExceptionHandlers;
 
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Net;
 
 public interface IExceptionHandler<out IErrorMessage> : IExceptionHandler

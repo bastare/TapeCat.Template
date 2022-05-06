@@ -31,14 +31,14 @@
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.18"/>
 		<PackageReference Include="System.Net.Http.Json" Version="6.0.0"/>
 		<PackageReference Include="System.Text.Json" Version="6.0.3"/>
-		<PackageReference Include="Thinktecture.EntityFrameworkCore.Relational" Version="4.2.0"/>
+		<PackageReference Include="Thinktecture.EntityFrameworkCore.Relational" Version="4.2.3"/>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.4"/>
 		<PackageReference Include="EFCore.BulkExtensions" Version="6.4.4"/>
 		<PackageReference Include="Dapper" Version="2.0.123"/>
 		<PackageReference Include="Dapper.Transaction" Version="2.0.35.2"/>
-		<PackageReference Include="MongoDB.Bson" Version="2.15.0"/>
-		<PackageReference Include="MongoDB.Driver.Core" Version="2.15.0"/>
-		<PackageReference Include="MongoDB.Driver" Version="2.15.0"/>
+		<PackageReference Include="MongoDB.Bson" Version="2.15.1"/>
+		<PackageReference Include="MongoDB.Driver.Core" Version="2.15.1"/>
+		<PackageReference Include="MongoDB.Driver" Version="2.15.1"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj"/>

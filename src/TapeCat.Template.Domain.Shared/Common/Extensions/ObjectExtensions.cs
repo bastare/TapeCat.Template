@@ -40,7 +40,7 @@ public static class ObjectExtensions
 		where TSelf : struct
 			=> ref tap ( ref self );
 
-	public static async Task<TReturn?> TapAsync<TSelf, TReturn> ( this TSelf self , Func<TSelf , Task<TReturn>> tapAsync )
+	public static async Task<TReturn> TapAsync<TSelf, TReturn> ( this TSelf self , Func<TSelf , Task<TReturn>> tapAsync )
 		where TSelf : notnull
 			=> await tapAsync ( self );
 }

@@ -21,8 +21,8 @@ public sealed record ExceptionHandler : IExceptionHandler
 	{
 		NotNull ( isAllowedException );
 
-		IsAllowedException = isAllowedException!;
 		Id = id;
+		IsAllowedException = isAllowedException!;
 	}
 
 	public bool IsHold ( HttpContext context , Exception exception )
