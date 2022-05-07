@@ -145,18 +145,21 @@ public sealed class ExceptionHandlerManager
 		}
 
 		static async Task FormInnerErrorResponseAsync ( Exception innerException ,
-														 HttpContext httpContext ,
-														 CancellationToken cancellationToken = default )
+														HttpContext httpContext ,
+														CancellationToken cancellationToken = default )
 		{
 			httpContext!.Response.StatusCode = ( int ) HttpStatusCode.InternalServerError;
 
 			await httpContext.Response.WriteAsync (
 				text: JsonConvert.SerializeObject (
-					value: new PageErrorMessage ()
-					{
-						StatusCode = ( int ) HttpStatusCode.InternalServerError ,
-						Message = innerException.Message
-					} ) ,
+					value: new PageErrorMessage (
+						StatusCode: ( int ) HttpStatusCode.InternalServerError ,
+						Message: default ,
+						Description: default ,
+						TechnicalErrorMessage: innerException.Message ,
+						ExceptionType: innerException.GetType ().ShortDisplayName () ,
+						InnerMessage: default ,
+						InnerExceptionType: default ) ) ,
 				cancellationToken );
 		}
 	}

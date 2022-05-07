@@ -9,7 +9,7 @@ public static class FluentValidationConfigurator
 		fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblies (
 			new[]
 			{
-				Assembly.GetEntryAssembly()
+				Assembly.GetEntryAssembly ()
 			} );
 	}
 }

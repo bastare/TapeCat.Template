@@ -29,16 +29,14 @@ public sealed record ExceptionHandler : IExceptionHandler
 		=> IsAllowedException.Invoke ( context , exception );
 
 	private static object DefaultExceptionMessageInjector ( HttpContext httpContext )
-		=> new PageErrorMessage
-		{
-			Message = "Internal server error" ,
-			Description = "Sorry, something went wrong on our end. We are currently trying to fix the problem" ,
-			StatusCode = httpContext.Response.StatusCode ,
-			TechnicalErrorMessage = httpContext.ResolveExceptionMessage () ,
-			ExceptionType = httpContext.ResolveExceptionTypeName () ,
-			InnerMessage = httpContext.ResolveInnerExceptionMessage () ,
-			InnerExceptionType = httpContext.ResolveInnerExceptionTypeName ()
-		};
+		=> new PageErrorMessage (
+			StatusCode: httpContext.Response.StatusCode ,
+			Message: "Internal server error" ,
+			Description: "Sorry, something went wrong on our end. We are currently trying to fix the problem" ,
+			TechnicalErrorMessage: httpContext.ResolveExceptionMessage () ,
+			ExceptionType: httpContext.ResolveExceptionTypeName () ,
+			InnerMessage: httpContext.ResolveInnerExceptionMessage () ,
+			InnerExceptionType: httpContext.ResolveInnerExceptionTypeName () );
 
 	private static HttpStatusCode DefaultStatusCodeInjector ( HttpContext _ )
 		=> HttpStatusCode.InternalServerError;

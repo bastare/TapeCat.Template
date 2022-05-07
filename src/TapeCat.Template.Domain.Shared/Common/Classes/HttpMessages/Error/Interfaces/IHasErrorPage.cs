@@ -1,12 +1,6 @@
 namespace TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages.Error.Interfaces;
 
-public interface IErrorMessage
+public interface IHasErrorPage
 {
-	int StatusCode { get; }
-
 	bool IsErrorPage { get; }
-
-	string? Message { get; }
-
-	string? Description { get; }
 }

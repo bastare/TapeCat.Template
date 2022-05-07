@@ -22,16 +22,14 @@ public sealed class ExceptionHandlerManagerBuilder : IBuilder<ExceptionHandlerMa
 				InjectStatusCode = ( _ ) => HttpStatusCode.InternalServerError ,
 				InjectExceptionMessage =
 					( httpContext ) =>
-						new PageErrorMessage
-						{
-							Message = "Internal server error" ,
-							Description = "Sorry, something went wrong on our end. We are currently trying to fix the problem" ,
-							StatusCode = ( int ) HttpStatusCode.InternalServerError ,
-							TechnicalErrorMessage = httpContext.ResolveExceptionMessage () ,
-							ExceptionType = httpContext.ResolveExceptionTypeName () ,
-							InnerMessage = httpContext.ResolveInnerExceptionMessage () ,
-							InnerExceptionType = httpContext.ResolveInnerExceptionTypeName ()
-						}
+						new PageErrorMessage (
+							StatusCode: ( int ) HttpStatusCode.InternalServerError ,
+							Message: "Internal server error" ,
+							Description: "Sorry, something went wrong on our end. We are currently trying to fix the problem" ,
+							TechnicalErrorMessage: httpContext.ResolveExceptionMessage () ,
+							ExceptionType: httpContext.ResolveExceptionTypeName () ,
+							InnerMessage: httpContext.ResolveInnerExceptionMessage () ,
+							InnerExceptionType: httpContext.ResolveInnerExceptionTypeName () )
 			};
 	}
 

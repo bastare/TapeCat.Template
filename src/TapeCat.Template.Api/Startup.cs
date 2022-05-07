@@ -5,6 +5,7 @@ using Common.Extensions;
 using Configurations.RouteEndpointConfiguration;
 using Configurations.StartupConfiguration;
 using Controllers;
+using Filters.Actions.Global;
 using FluentValidation.AspNetCore;
 using HeyRed.Mime;
 using Infrastructure.CrossCutting.Configurators.ExceptionHandlerConfigurators;
@@ -39,6 +40,8 @@ public sealed class Startup
 			  {
 				  configure.Conventions.Add ( new PluralFormResourceNameConvention () );
 				  configure.Conventions.Add ( new KebabEndpointConvention () );
+
+				  configure.Filters.Add<ValidationFilter> ( order: 1 );
 			  } )
 
 			.AddFluentValidation ( FluentValidationConfigurator.FluentValidationMvcConfigurator );
