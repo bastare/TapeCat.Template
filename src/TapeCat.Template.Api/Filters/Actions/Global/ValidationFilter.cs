@@ -21,29 +21,37 @@ public sealed class ValidationFilter : IAsyncActionFilter
 			return;
 		}
 
-		actionExecutingContext.Result = new ContentResult
+		FormErrorResponse ( ref actionExecutingContext );
+
+		static void FormErrorResponse ( ref ActionExecutingContext actionExecutingContext )
 		{
-			ContentType = JsonErrorMediaType ,
-			StatusCode = StatusCodes.Status400BadRequest ,
-			Content = JsonConvert.SerializeObject (
-				new PageErrorMessageWrap (
-					ErrorMessages: CreateInnerErrorMessages (
-						errorMessages: ResolveErrorMessages ( actionExecutingContext.ModelState )! ) ) )
-		};
+			actionExecutingContext.Result = new ContentResult
+			{
+				ContentType = JsonErrorMediaType ,
+				StatusCode = StatusCodes.Status400BadRequest ,
+				Content = CreateErrorContent ( actionExecutingContext )
+			};
 
-		static IEnumerable<IEnumerable<string>?>? ResolveErrorMessages ( ModelStateDictionary modelStateDictionary )
-			=> modelStateDictionary
-				.Where ( keyValuePair => keyValuePair.Value?.Errors.Count > 0 )
-				.Select ( keyValuePair =>
-					keyValuePair.Value?.Errors
-						.Select ( error => error.ErrorMessage ) );
+			static string CreateErrorContent ( ActionExecutingContext actionExecutingContext )
+				=> JsonConvert.SerializeObject (
+					value: new PageErrorMessageWrap (
+						ErrorMessages: CreateInnerErrorMessages ( actionExecutingContext.ModelState ) ) );
 
-		static ImmutableList<InnerErrorMessage> CreateInnerErrorMessages ( IEnumerable<IEnumerable<string>> errorMessages )
-			=> errorMessages
-				.Select ( errorMessage =>
-					new InnerErrorMessage (
-						Message: string.Concat ( errorMessage! ) ) )
+			static ImmutableList<InnerErrorMessage> CreateInnerErrorMessages ( ModelStateDictionary modelStateDictionary )
+				=> modelStateDictionary
+					.Where ( HasErrors )
+					.Select ( ResolveNestedErrorMessage )
+					.Select ( ResolveErrorMessage )
+					.ToImmutableList ();
 
-				.ToImmutableList ();
+			static bool HasErrors ( KeyValuePair<string , ModelStateEntry?> keyValuePair )
+				=> keyValuePair.Value?.Errors.Count > 0;
+
+			static IEnumerable<string> ResolveNestedErrorMessage ( KeyValuePair<string , ModelStateEntry?> keyValuePair )
+				=> keyValuePair.Value!.Errors.Select ( error => error.ErrorMessage );
+
+			static InnerErrorMessage ResolveErrorMessage ( IEnumerable<string> errorMessages )
+				=> new ( Message: string.Concat ( errorMessages ) );
+		}
 	}
 }
