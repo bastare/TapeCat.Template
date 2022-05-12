@@ -1,44 +1,42 @@
 namespace TapeCat.Template.Api.Configurations.StartupConfiguration;
 
-using Common.Extensions;
-using Infrastructure.CrossCutting.Configurators.SwaggerConfigurators;
+using Fluentx;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Pipes;
-using Pipes.SecurityPipes;
 
 public static class ApplicationBuilderExtensions
 {
-	public static void UseServicesOn ( this IApplicationBuilder applicationBuilder , IWebHostEnvironment webHostEnvironment )
+	public static IApplicationBuilder UseServices (
+		this IApplicationBuilder applicationBuilder ,
+		IWebHostEnvironment webHostEnvironment ,
+		IConfiguration configuration ,
+		Dictionary<string , Action<IWebHostEnvironment , IConfiguration , IApplicationBuilder>> environmentConfigurations ,
+		Action<IWebHostEnvironment , IConfiguration , IApplicationBuilder> generalConfiguration )
 	{
-		if ( webHostEnvironment.IsProduction () || webHostEnvironment.IsStage () )
-			UseServicesOnProduction ( applicationBuilder , webHostEnvironment );
-		else if ( webHostEnvironment.IsDevelopment () )
-			UseServicesOnDevelopment ( applicationBuilder , webHostEnvironment );
-	}
+		CurrentEnvironmentConfigurationIsSupported ( webHostEnvironment , environmentConfigurations );
 
-	private static void UseServicesOnProduction ( IApplicationBuilder applicationBuilder , IWebHostEnvironment webHostEnvironment )
-	{
-		applicationBuilder.UseSecurityHeaders ( webHostEnvironment );
-	}
+		environmentConfigurations
+			.Single ( environmentConfiguration => webHostEnvironment.IsEnvironment ( environmentConfiguration.Key ) )
+			.Tap ( environmentConfiguration =>
+			  {
+				  var (_, injectService) = environmentConfiguration;
 
-	private static void UseServicesOnDevelopment ( IApplicationBuilder applicationBuilder , IWebHostEnvironment _ )
-	{
-		applicationBuilder.UseCors ( builder =>
-		  {
-			  builder
-				  .AllowAnyOrigin ()
-				  .AllowAnyHeader ()
-				  .AllowAnyMethod ();
-		  } );
+				  injectService.Invoke ( webHostEnvironment , configuration , applicationBuilder );
+			  } );
 
-		applicationBuilder.UseAccessControlExposeHeaders ();
+		generalConfiguration.Invoke ( webHostEnvironment , configuration , applicationBuilder );
 
-		applicationBuilder.UseDeveloperExceptionPage ();
+		return applicationBuilder;
 
-		applicationBuilder.UseSwagger ();
-
-		applicationBuilder.UseSwaggerUI ( SwaggerConfigurator.SwaggerUIConfigurator );
+		static void CurrentEnvironmentConfigurationIsSupported (
+			IWebHostEnvironment webHostEnvironment ,
+			Dictionary<string , Action<IWebHostEnvironment , IConfiguration , IApplicationBuilder>> environmentConfigurations )
+		{
+			environmentConfigurations
+				.Any ( environmentConfiguration => environmentConfiguration.Key == webHostEnvironment.EnvironmentName )
+				.IfFalse ( () => throw new ArgumentException ( $"Unsupported environment: {webHostEnvironment.EnvironmentName}" ) );
+		}
 	}
 }

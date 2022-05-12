@@ -1,7 +1,6 @@
 namespace TapeCat.Template.Api.Configurations.StartupConfiguration;
 
-using Common.Extensions;
-using Infrastructure.CrossCutting.Configurators.SwaggerConfigurators;
+using Fluentx;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,31 +8,32 @@ using Microsoft.Extensions.Hosting;
 
 public static class ServicesExtensions
 {
-	public static IServiceCollection InjectDependency ( this IServiceCollection serviceCollection ,
-														IWebHostEnvironment webHostEnvironment ,
-														IConfiguration configuration )
+	public static IServiceCollection AddDependency (
+		this IServiceCollection serviceCollection ,
+		IWebHostEnvironment webHostEnvironment ,
+		IConfiguration configuration ,
+		Dictionary<string , Action<IWebHostEnvironment , IConfiguration , IServiceCollection>> environmentConfigurations )
 	{
-		InjectDependencyOn ( serviceCollection , webHostEnvironment , configuration );
+		CurrentEnvironmentConfigurationIsSupported ( webHostEnvironment , environmentConfigurations );
+
+		environmentConfigurations
+			.Single ( environmentConfiguration => webHostEnvironment.IsEnvironment ( environmentConfiguration.Key ) )
+			.Tap ( environmentConfiguration =>
+			  {
+				  var (_, injectService) = environmentConfiguration;
+
+				  injectService.Invoke ( webHostEnvironment , configuration , serviceCollection );
+			  } );
 
 		return serviceCollection;
-	}
 
-	private static void InjectDependencyOn ( IServiceCollection serviceCollection ,
-											 IWebHostEnvironment webHostEnvironment ,
-											 IConfiguration configuration )
-	{
-		if ( webHostEnvironment.IsProduction () || webHostEnvironment.IsStage () )
-			AddServicesOnProduction ( serviceCollection , webHostEnvironment , configuration );
-		else if ( webHostEnvironment.IsDevelopment () )
-			AddServicesOnDevelopment ( serviceCollection , webHostEnvironment , configuration );
-	}
-
-	private static void AddServicesOnProduction ( IServiceCollection _ , IWebHostEnvironment __ , IConfiguration ___ ) { }
-
-	private static void AddServicesOnDevelopment ( IServiceCollection serviceCollection , IWebHostEnvironment _ , IConfiguration __ )
-	{
-		serviceCollection.AddSwaggerGen ( SwaggerConfigurator.SwaggerDIConfigurator );
-
-		serviceCollection.AddSwaggerGenNewtonsoftSupport ();
+		static void CurrentEnvironmentConfigurationIsSupported (
+			IWebHostEnvironment webHostEnvironment ,
+			IDictionary<string , Action<IWebHostEnvironment , IConfiguration , IServiceCollection>> environmentConfigurations )
+		{
+			environmentConfigurations
+				.Any ( environmentConfiguration => environmentConfiguration.Key == webHostEnvironment.EnvironmentName )
+				.IfFalse ( () => throw new ArgumentException ( $"Unsupported environment: {webHostEnvironment.EnvironmentName}" ) );
+		}
 	}
 }

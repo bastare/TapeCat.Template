@@ -9,6 +9,14 @@
     }
   },
   "profiles": {
+    "prod": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "launchUrl": "",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    },
     "dev": {
       "commandName": "Project",
       "launchBrowser": false,
@@ -22,7 +30,7 @@
       "launchBrowser": false,
       "launchUrl": "",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Stage"
+        "ASPNETCORE_ENVIRONMENT": "Staging"
       }
     }
   }

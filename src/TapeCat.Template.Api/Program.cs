@@ -21,17 +21,17 @@ public static class Program
 			.ConfigureAppConfiguration ( ( hostBuilderContext , config ) =>
 			  {
 				  config
-					   .AddJsonFile (
-							 path: "./appsettings.json" ,
-							 optional: false ,
-							 reloadOnChange: true )
+					  .AddJsonFile (
+						  path: "./appsettings.json" ,
+						  optional: false ,
+						  reloadOnChange: true )
 
-					   .AddJsonFile (
-							 path: $"./appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json" ,
-							 optional: true ,
-							 reloadOnChange: true )
+					  .AddJsonFile (
+						  path: $"./appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json" ,
+						  optional: true ,
+						  reloadOnChange: true )
 
-					   .AddEnvironmentVariables ();
+					  .AddEnvironmentVariables ();
 			  } )
 			.ConfigureWebHostDefaults ( webBuilder =>
 			  {

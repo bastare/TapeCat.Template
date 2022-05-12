@@ -10,6 +10,7 @@ using FluentValidation.AspNetCore;
 using HeyRed.Mime;
 using Infrastructure.CrossCutting.Configurators.ExceptionHandlerConfigurators;
 using Infrastructure.CrossCutting.Configurators.FluentValidationConfigurators;
+using Infrastructure.CrossCutting.Configurators.SwaggerConfigurators;
 using Infrastructure.CrossCutting.Projections.DependencyInjectionBootstrapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +19,8 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pipes;
+using Pipes.SecurityPipes;
 using System.IO.Compression;
 using System.Linq;
 
@@ -97,7 +100,19 @@ public sealed class Startup
 
 		services.InjectLayersDependency ( _configuration );
 
-		services.InjectDependency ( _webHostEnvironment , _configuration );
+		services.AddDependency (
+			_webHostEnvironment ,
+			_configuration ,
+			environmentConfigurations: new ()
+			{
+				[ "Production" ] = ( _ , _ , _ ) => { } ,
+
+				[ "Development" ] = ( _ , _ , services ) =>
+					services.AddSwaggerGen ( SwaggerConfigurator.SwaggerDIConfigurator )
+						.AddSwaggerGenNewtonsoftSupport () ,
+
+				[ "Staging" ] = ( _ , _ , _ ) => { }
+			} );
 	}
 
 	public void ConfigureContainer ( ContainerBuilder containerBuilder )
@@ -107,31 +122,50 @@ public sealed class Startup
 
 	public void Configure ( IApplicationBuilder applicationBuilder )
 	{
-		applicationBuilder.UseServicesOn ( _webHostEnvironment );
+		applicationBuilder.UseServices (
+			_webHostEnvironment ,
+			_configuration ,
 
-		applicationBuilder.UseResponseCompression ();
+			environmentConfigurations: new ()
+			{
+				[ "Production" ] = ( webHostEnvironment , _ , applicationBuilder ) =>
+					applicationBuilder.UseSecurityHeaders ( webHostEnvironment ) ,
 
-		applicationBuilder.UseDefaultFiles ();
+				[ "Development" ] = ( _ , _ , applicationBuilder ) =>
+					  applicationBuilder
+						  .UseCors ( builder =>
+							{
+								builder
+									.AllowAnyOrigin ()
+									.AllowAnyHeader ()
+									.AllowAnyMethod ();
+							} )
+						  .UseAccessControlExposeHeaders ()
+						  .UseDeveloperExceptionPage ()
+						  .UseSwagger ()
+						  .UseSwaggerUI ( SwaggerConfigurator.SwaggerUIConfigurator ) ,
 
-		applicationBuilder.UseStaticFiles ();
+				[ "Staging" ] = ( _ , _ , _ ) => { }
+			} ,
 
-		applicationBuilder.UseRedirectValidation ();
+			generalConfiguration: ( _ , _ , applicationBuilder ) =>
+				applicationBuilder
+					.UseResponseCompression ()
+					.UseDefaultFiles ()
+					.UseStaticFiles ()
+					.UseRedirectValidation ()
+					.UseRouting ()
+					.UseAuthentication ()
+					.UseAuthorization ()
+					.UseExceptionHandler ( GlobalExceptionHandlerConfigurator.ExceptionFiltersConfigurator )
+					.UseEndpoints ( endpoints =>
+					  {
+						  endpoints.MapControllers ();
 
-		applicationBuilder.UseRouting ();
-
-		applicationBuilder.UseAuthentication ();
-
-		applicationBuilder.UseAuthorization ();
-
-		applicationBuilder.UseExceptionHandler ( GlobalExceptionHandlerConfigurator.ExceptionFiltersConfigurator );
-
-		applicationBuilder.UseEndpoints ( endpoints =>
-		  {
-			  endpoints.MapControllers ();
-
-			  endpoints.MapFallbackToController (
-				 action: nameof ( FallbackController.Index ) ,
-				 controller: nameof ( FallbackController ).Replace ( "Controller" , string.Empty ) );
-		  } );
+						  endpoints.MapFallbackToController (
+							 action: nameof ( FallbackController.Index ) ,
+							 controller: nameof ( FallbackController ).Replace ( "Controller" , string.Empty ) );
+					  } )
+			);
 	}
 }
