@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Persistence.Specifications;
+namespace TapeCat.Template.Persistence.Specifications.Evaluator;
 
 using Domain.Core.Models;
 

@@ -48,9 +48,9 @@ public sealed class MongoDbRepository<TModel, TKey> : IRepository<TModel , TKey>
 	}
 
 	public async Task<TModel> AddAsync ( TModel model , CancellationToken cancellationToken = default )
-		=> await model.TapAsync ( async model =>
+		=> await model.TapAsync ( async self =>
 			await ModelCollection.InsertOneAsync (
-				model ,
+				self ,
 				options: new () { BypassDocumentValidation = true } ,
 				cancellationToken ) )!;
 
@@ -112,11 +112,11 @@ public sealed class MongoDbRepository<TModel, TKey> : IRepository<TModel , TKey>
 		=> await ModelQuery.AnyAsync ( predicate , cancellationToken );
 
 	public async Task<TModel?> RemoveAsync ( TModel model , CancellationToken cancellationToken = default )
-		=> await model.TapAsync ( async model =>
+		=> await model.TapAsync ( async self =>
 		  {
 			  var result =
 				  await ModelCollection.DeleteOneAsync (
-					  filter: ( collectionModel ) => collectionModel.Id!.Equals ( model.Id ) ,
+					  filter: ( collectionModel ) => collectionModel.Id!.Equals ( self.Id ) ,
 					  cancellationToken );
 
 			  if ( result is { DeletedCount: <= 0 } )
@@ -135,11 +135,11 @@ public sealed class MongoDbRepository<TModel, TKey> : IRepository<TModel , TKey>
 			} );
 
 	public async Task<TModel> UpdateAsync ( TModel model , CancellationToken cancellationToken = default )
-		=> await model.TapAsync ( async model =>
+		=> await model.TapAsync ( async self =>
 		  {
 			  await ModelCollection.ReplaceOneAsync (
 				  filter: collectionModel => collectionModel.Id!.Equals ( model.Id ) ,
-				  replacement: model ,
+				  replacement: self ,
 				  options: new ReplaceOptions { IsUpsert = true } ,
 				  cancellationToken );
 		  } );

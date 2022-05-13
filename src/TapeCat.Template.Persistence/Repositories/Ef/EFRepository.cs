@@ -10,6 +10,7 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Pagination;
 using Specifications;
+using Specifications.Evaluator;
 
 public sealed class EfRepository<TModel, TKey, TContext> :
 	IRepository<TModel , TKey>,
