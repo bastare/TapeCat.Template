@@ -18,20 +18,12 @@ public sealed class ModelMetadataCacheManager
 				.ToImmutableList ();
 
 		IEnumerable<Type> ResolveModelsTypeForCaching ( IEnumerable<Assembly> assemblies )
-			=> GetAllAssemblyTypes ( assemblies )
+			=> assemblies
+				.SelectMany ( GetAllAssemblyTypes )
 				.Where ( IsModelType );
 
-		static HashSet<Type> GetAllAssemblyTypes ( IEnumerable<Assembly> assemblies )
-			=> assemblies
-				.Aggregate (
-					new HashSet<Type> () ,
-					( types , assembly ) =>
-					  {
-						  types.UnionWith (
-							  other: assembly.GetTypes () );
-
-						  return types;
-					  } );
+		static IEnumerable<Type> GetAllAssemblyTypes ( Assembly assembly )
+			=> assembly.GetTypes ();
 
 		bool IsModelType ( Type modelTypeForCaching )
 			=> _domainModelFilter.Invoke ( modelTypeForCaching );

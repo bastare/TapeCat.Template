@@ -27,24 +27,13 @@ public static class InjectorBuilder
 			configuration );
 
 		static IEnumerable<Type> ResolveInjectorTypes ( IEnumerable<Assembly> assemblies )
-			=> GetAllAssemblyTypes ( assemblies )
+			=> assemblies
+				.SelectMany ( GetAllAssemblyTypes )
 				.Where ( IsInjectorType )
 				.OrderBy ( InjectionOrder );
 
-		static IEnumerable<Type> GetAllAssemblyTypes ( IEnumerable<Assembly> assemblies )
-			=> assemblies
-				.Aggregate (
-					new HashSet<Type> () ,
-					( typeSet , assembly ) =>
-			 		  {
-						   typeSet.UnionWith (
-							   other: ResolveAssemblyTypes ( assembly ) );
-
-						   return typeSet;
-
-						   static IEnumerable<Type> ResolveAssemblyTypes ( Assembly assembly )
-							   => assembly.GetTypes ();
-					   } );
+		static IEnumerable<Type> GetAllAssemblyTypes ( Assembly assembly )
+			=> assembly.GetTypes ();
 
 		static bool IsInjectorType ( Type type )
 			=> type.GetInterfaces ()

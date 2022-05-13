@@ -5,7 +5,7 @@ using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-public class MassTransitInMemoryInjector : IInjectable
+public sealed class MassTransitInMemoryInjector : IInjectable
 {
 	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
 	{
