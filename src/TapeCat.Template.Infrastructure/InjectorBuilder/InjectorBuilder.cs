@@ -11,6 +11,8 @@ public static class InjectorBuilder
 {
 	private const string InjectorMethodName = nameof ( IInjectable.Inject );
 
+	private const string IsInjectableMethodName = nameof ( IInjectable.IsInjectable );
+
 	public static IServiceCollection CreateDependency ( IServiceCollection serviceCollection ,
 														IConfiguration configuration ,
 														IEnumerable<Assembly> assemblies )
@@ -20,7 +22,7 @@ public static class InjectorBuilder
 		NotNullOrEmpty ( assemblies );
 
 		return ExecuteInjections (
-			ref serviceCollection ,
+			serviceCollection ,
 			injectorTypes: ResolveInjectorTypes ( assemblies ) ,
 			configuration );
 
@@ -52,19 +54,36 @@ public static class InjectorBuilder
 			=> injectorType.GetCustomAttribute<InjectionOrderAttribute> ()?.Order ??
 				uint.MinValue;
 
-		static IServiceCollection ExecuteInjections ( ref IServiceCollection serviceCollection ,
+		static IServiceCollection ExecuteInjections ( IServiceCollection serviceCollection ,
 													  IEnumerable<Type> injectorTypes ,
 													  IConfiguration configuration )
 		{
-			foreach ( var injectorType in injectorTypes )
-				ResolveInjectionMethod ( injectorType )
-					.Invoke ( injectorType , serviceCollection , configuration );
+			injectorTypes
+				.Where ( injectorType => IsInjectable ( injectorType , serviceCollection , configuration ) )
+				.ForEach ( injectorType =>
+				  {
+					  Inject ( injectorType , serviceCollection , configuration );
+				  } );
 
 			return serviceCollection;
 
+			static bool IsInjectable ( Type injectorType , IServiceCollection serviceCollection , IConfiguration configuration )
+				=> ( bool ) ResolveIsInjectableMethod ()
+					.Invoke ( injectorType , serviceCollection , configuration )!;
+
+			static void Inject ( Type injectorType , IServiceCollection serviceCollection , IConfiguration configuration )
+			{
+				ResolveInjectionMethod ( injectorType )
+					.Invoke ( injectorType , serviceCollection , configuration );
+			}
+
+			static MethodInfo ResolveIsInjectableMethod ()
+				=> typeof ( IInjectable ).GetMethod ( IsInjectableMethodName ) ??
+					throw new ArgumentException ( $"No method with this name: {IsInjectableMethodName}" );
+
 			static MethodInfo ResolveInjectionMethod ( Type injectorType )
 				=> injectorType.GetMethod ( InjectorMethodName ) ??
-					throw new ArgumentNullException ( nameof ( injectorType ) , $"No method with this name: {InjectorMethodName}" );
+					throw new ArgumentException ( $"No method with this name: {InjectorMethodName}" );
 		}
 	}
 }

@@ -19,13 +19,13 @@ public sealed class AuditionInterceptor : ISaveChangesInterceptor
 
 	public void SaveChangesFailed ( DbContextErrorEventData _ ) { }
 
-	public Task SaveChangesFailedAsync ( DbContextErrorEventData _ , CancellationToken __ = default )
+	public Task SaveChangesFailedAsync ( DbContextErrorEventData _ , CancellationToken _1 = default )
 		=> Task.CompletedTask;
 
 	public int SavedChanges ( SaveChangesCompletedEventData _ , int result )
 		=> result;
 
-	public ValueTask<int> SavedChangesAsync ( SaveChangesCompletedEventData _ , int result , CancellationToken __ = default )
+	public ValueTask<int> SavedChangesAsync ( SaveChangesCompletedEventData _ , int result , CancellationToken _1 = default )
 		=> ValueTask.FromResult ( result );
 
 	public InterceptionResult<int> SavingChanges ( DbContextEventData _ , InterceptionResult<int> result )

@@ -14,9 +14,9 @@ public sealed class ErrorHandlerInjector : IInjectable
 {
 	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
 	{
-		serviceCollection.AddSingleton ( implementationInstance: CreateGlobalExceptionHandlerBuilder () );
+		serviceCollection.AddSingleton ( implementationInstance: CreateGlobalExceptionHandlerManager () );
 
-		static ExceptionHandlerManager CreateGlobalExceptionHandlerBuilder ()
+		static ExceptionHandlerManager CreateGlobalExceptionHandlerManager ()
 			=> ExceptionHandlerManagerBuilder.Create ()
 				.WithErrorHandler (
 					exceptionHandler: new ExceptionHandler (

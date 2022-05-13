@@ -2,27 +2,19 @@ namespace TapeCat.Template.Domain.Shared.Common.Extensions;
 
 public static class MethodInfoExtensions
 {
-	public static void Invoke ( this MethodInfo methodInfo , Type typeOfInstance , params object[] parameters )
-	{
-		SafeInvoke ( methodInfo , typeOfInstance , parameters.AsEnumerable () );
-	}
+	public static object? Invoke ( this MethodInfo methodInfo , Type typeOfInstance , params object[] parameters )
+		=> SafeInvoke ( methodInfo , typeOfInstance , parameters.AsEnumerable () );
 
-	public static void Invoke<T> ( this MethodInfo methodInfo , params object[] parameters )
-	{
-		SafeInvoke ( methodInfo , typeof ( T ) , parameters.AsEnumerable () );
-	}
+	public static object? Invoke<T> ( this MethodInfo methodInfo , params object[] parameters )
+		=> SafeInvoke ( methodInfo , typeof ( T ) , parameters.AsEnumerable () );
 
-	public static void Invoke ( this MethodInfo methodInfo , Type typeOfInstance , IEnumerable parameters )
-	{
-		SafeInvoke ( methodInfo , typeOfInstance , parameters );
-	}
+	public static object? Invoke ( this MethodInfo methodInfo , Type typeOfInstance , IEnumerable parameters )
+		=> SafeInvoke ( methodInfo , typeOfInstance , parameters );
 
-	public static void Invoke<T> ( this MethodInfo methodInfo , IEnumerable parameters )
-	{
-		SafeInvoke ( methodInfo , typeof ( T ) , parameters );
-	}
+	public static object? Invoke<T> ( this MethodInfo methodInfo , IEnumerable parameters )
+		=> SafeInvoke ( methodInfo , typeof ( T ) , parameters );
 
-	private static void SafeInvoke ( MethodInfo methodInfo , Type typeOfInstance , IEnumerable parameters )
+	private static object? SafeInvoke ( MethodInfo methodInfo , Type typeOfInstance , IEnumerable parameters )
 	{
 		NotNull ( methodInfo );
 		NotNull ( typeOfInstance );
@@ -33,7 +25,7 @@ public static class MethodInfoExtensions
 				paramName: methodInfo.Name ,
 				message: CreateExceptionMessage ( in parameters ) );
 
-		methodInfo.Invoke (
+		return methodInfo.Invoke (
 			obj: Activator.CreateInstance ( typeOfInstance ) ,
 			parameters: parameters.Cast<object> ().ToArray () );
 
@@ -53,9 +45,6 @@ public static class MethodInfoExtensions
 
 				.ToString ();
 	}
-
-	public static bool HasParameters ( this MethodInfo methodInfo , params Type[] passingParametersTypes )
-		=> HasParameters ( methodInfo , passingParametersTypes.AsEnumerable () );
 
 	public static bool HasParameters ( this MethodInfo methodInfo , IEnumerable<Type> passingParametersTypes )
 	{

@@ -2,6 +2,7 @@
 
 using Autofac;
 using InjectorBuilder;
+using loC.Bus.Injectors;
 using loC.Injectors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,8 @@ public static class InjectionBootstrapper
 	private static Assembly[] AssembliesForScanning { get; } =
 		new[]
 		{
-			typeof ( ErrorHandlerInjector ).Assembly
+			typeof ( ErrorHandlerInjector ).Assembly,
+			typeof ( MassTransitConfigurationInjector ).Assembly
 		};
 
 	public static IServiceCollection InjectLayersDependency ( this IServiceCollection serviceCollection , IConfiguration configuration )

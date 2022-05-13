@@ -41,7 +41,7 @@ public sealed class ExceptionHandlerManager
 		{
 			NotNull ( httpContext );
 
-			InvokeJsonErrorMediaType ( ref httpContext! );
+			InjectJsonErrorMediaType ( ref httpContext! );
 
 			if ( TryHoldException ( out IExceptionHandler? exceptionHandler , httpContext ) )
 			{
@@ -60,11 +60,10 @@ public sealed class ExceptionHandlerManager
 			await FormInnerErrorResponseAsync ( exception , httpContext! , cancellationToken: httpContext!.RequestAborted );
 		}
 
-		static HttpContext InvokeJsonErrorMediaType ( ref HttpContext httpContext )
-			=> httpContext.Tap ( self =>
-			  {
-				  self.Response.ContentType = JsonErrorMediaType;
-			  } );
+		static void InjectJsonErrorMediaType ( ref HttpContext httpContext )
+		{
+			httpContext.Response.ContentType = JsonErrorMediaType;
+		}
 
 		bool TryHoldException ( out IExceptionHandler? exceptionHandler , HttpContext httpContext )
 		{
@@ -124,14 +123,9 @@ public sealed class ExceptionHandlerManager
 		{
 			InvokeStatusCode ( exceptionHandler , httpContext );
 
-			var errorResponse =
-				exceptionHandler.InjectExceptionMessage.Invoke ( httpContext );
-
 			ExecuteExceptionHandlerCallback ( exceptionHandler , httpContext );
 
-			await httpContext.Response.WriteAsync (
-				text: JsonConvert.SerializeObject ( errorResponse ) ,
-				cancellationToken );
+			await FormErrorMessageAsync ( exceptionHandler , httpContext , cancellationToken );
 
 			static void InvokeStatusCode ( IExceptionHandler exceptionHandler , HttpContext httpContext )
 			{
@@ -142,6 +136,18 @@ public sealed class ExceptionHandlerManager
 			{
 				exceptionHandler.OnHold?.Invoke ( httpContext );
 			}
+
+			static async Task FormErrorMessageAsync ( IExceptionHandler exceptionHandler ,
+													  HttpContext httpContext ,
+													  CancellationToken cancellationToken = default )
+			{
+				await httpContext.Response.WriteAsync (
+					text: JsonConvert.SerializeObject ( value: ResolveExceptionMessage ( exceptionHandler , httpContext ) ) ,
+					cancellationToken );
+			}
+
+			static object ResolveExceptionMessage ( IExceptionHandler exceptionHandler , HttpContext httpContext )
+				=> exceptionHandler.InjectExceptionMessage.Invoke ( httpContext );
 		}
 
 		static async Task FormInnerErrorResponseAsync ( Exception innerException ,
@@ -154,12 +160,8 @@ public sealed class ExceptionHandlerManager
 				text: JsonConvert.SerializeObject (
 					value: new PageErrorMessage (
 						StatusCode: ( int ) HttpStatusCode.InternalServerError ,
-						Message: default ,
-						Description: default ,
 						TechnicalErrorMessage: innerException.Message ,
-						ExceptionType: innerException.GetType ().ShortDisplayName () ,
-						InnerMessage: default ,
-						InnerExceptionType: default ) ) ,
+						ExceptionType: innerException.GetType ().ShortDisplayName () ) ) ,
 				cancellationToken );
 		}
 	}
