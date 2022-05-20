@@ -31,7 +31,7 @@ public sealed class ModelCreatingConfigurator
 	{
 		_modelMetadataCacheManager.CachedModelTypes
 			.AsParallel ()
-			.ForEach ( cachedModelTypes =>
+			.ForAll ( cachedModelTypes =>
 			  {
 				  ConfigureJsonSerelizableFields ( modelBuilder , cachedModelTypes );
 			  } );

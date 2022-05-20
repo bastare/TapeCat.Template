@@ -11,9 +11,12 @@ public sealed class ModelMetadataCacheManagerInjector : IInjectable
 {
 	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
 	{
+		var modelMetadataCacheManager = CreateModelMetadataCacheManager ();
+		var ModelCreatingConfigurator = CreateModelCreatingConfigurator ( modelMetadataCacheManager );
+
 		serviceCollection
-			.AddSingleton ( implementationInstance: CreateModelMetadataCacheManager () )
-			.AddSingleton ( CreateModelCreatingConfigurator );
+			.AddSingleton ( modelMetadataCacheManager )
+			.AddSingleton ( ModelCreatingConfigurator );
 
 		static ModelMetadataCacheManager CreateModelMetadataCacheManager ()
 			=> ModelMetadataCacheManager.Create (
@@ -21,11 +24,11 @@ public sealed class ModelMetadataCacheManagerInjector : IInjectable
 				{
 					typeof ( IModel<> ).Assembly
 				} ,
-				domainModelFilter: ( modelTypeForCaching ) =>
+				isEntityForCaching: ( modelTypeForCaching ) =>
 					modelTypeForCaching.GetInterfaces ()
 						.Contains ( typeof ( IModel<Guid> ) ) );
 
-		static ModelCreatingConfigurator CreateModelCreatingConfigurator ( IServiceProvider serviceCollection )
-			=> new ( modelMetadataCacheManager: serviceCollection.GetRequiredService<ModelMetadataCacheManager> () );
+		static ModelCreatingConfigurator CreateModelCreatingConfigurator ( ModelMetadataCacheManager modelMetadataCacheManager )
+			=> new ( modelMetadataCacheManager );
 	}
 }

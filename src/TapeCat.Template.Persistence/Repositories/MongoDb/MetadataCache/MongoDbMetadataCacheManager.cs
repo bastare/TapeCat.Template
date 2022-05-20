@@ -49,15 +49,8 @@ public sealed class MongoDbMetadataCacheManager
 
 		static HashSet<Type> GetAllAssemblyTypes ( IEnumerable<Assembly> assemblies )
 			=> assemblies
-				.Aggregate (
-					new HashSet<Type> () ,
-					( types , assembly ) =>
-					  {
-						  types.UnionWith (
-							  other: assembly.GetTypes () );
-
-						  return types;
-					  } );
+				.SelectMany ( assably => assably.GetTypes () )
+				.ToHashSet ();
 
 		static bool HasMongoDbAttribute ( Type modelTypeForCaching )
 			=> ResolveMongoDbAttribute ( modelTypeForCaching ) is not null;

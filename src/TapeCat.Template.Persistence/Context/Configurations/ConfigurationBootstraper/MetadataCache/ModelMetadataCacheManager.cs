@@ -2,16 +2,16 @@ namespace TapeCat.Template.Persistence.Context.Configurations.ConfigurationBoots
 
 public sealed class ModelMetadataCacheManager
 {
-	private readonly Func<Type , bool> _domainModelFilter;
+	private readonly Func<Type , bool> _isEntityForCaching;
 
 	public ImmutableList<Type> CachedModelTypes { get; } = ImmutableList<Type>.Empty;
 
-	private ModelMetadataCacheManager ( IEnumerable<Assembly>? assemblies , Func<Type , bool>? domainModelFilter )
+	private ModelMetadataCacheManager ( IEnumerable<Assembly>? assemblies , Func<Type , bool>? isEntityForCaching )
 	{
 		NotNullOrEmpty ( assemblies );
-		NotNull ( domainModelFilter );
+		NotNull ( isEntityForCaching );
 
-		_domainModelFilter = domainModelFilter!;
+		_isEntityForCaching = isEntityForCaching!;
 
 		CachedModelTypes =
 			ResolveModelsTypeForCaching ( assemblies! )
@@ -20,15 +20,15 @@ public sealed class ModelMetadataCacheManager
 		IEnumerable<Type> ResolveModelsTypeForCaching ( IEnumerable<Assembly> assemblies )
 			=> assemblies
 				.SelectMany ( GetAllAssemblyTypes )
-				.Where ( IsModelType );
+				.Where ( IsEntityForCaching );
 
 		static IEnumerable<Type> GetAllAssemblyTypes ( Assembly assembly )
 			=> assembly.GetTypes ();
 
-		bool IsModelType ( Type modelTypeForCaching )
-			=> _domainModelFilter.Invoke ( modelTypeForCaching );
+		bool IsEntityForCaching ( Type modelTypeForCaching )
+			=> _isEntityForCaching.Invoke ( modelTypeForCaching );
 	}
 
-	public static ModelMetadataCacheManager Create ( IEnumerable<Assembly>? assemblies , Func<Type , bool>? domainModelFilter )
-		=> new ( assemblies , domainModelFilter );
+	public static ModelMetadataCacheManager Create ( IEnumerable<Assembly>? assemblies , Func<Type , bool>? isEntityForCaching )
+		=> new ( assemblies , isEntityForCaching );
 }
