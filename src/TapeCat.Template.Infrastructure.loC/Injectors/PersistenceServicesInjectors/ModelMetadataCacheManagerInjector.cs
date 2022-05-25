@@ -4,8 +4,8 @@ using Domain.Core.Models;
 using InjectorBuilder.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence.Context.Configurations.ConfigurationBootstraper;
-using Persistence.Context.Configurations.ConfigurationBootstraper.MetadataCache;
+using Persistence.Context.Configurations.ConfigurationBootstrapper;
+using Persistence.Context.Configurations.ConfigurationBootstrapper.MetadataCache;
 
 public sealed class ModelMetadataCacheManagerInjector : IInjectable
 {

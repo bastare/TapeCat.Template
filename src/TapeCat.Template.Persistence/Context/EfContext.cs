@@ -1,7 +1,7 @@
 namespace TapeCat.Template.Persistence.Context;
 
 using AgileObjects.NetStandardPolyfills;
-using Configurations.ConfigurationBootstraper;
+using Configurations.ConfigurationBootstrapper;
 using Configurations.ModelConfigurations;
 using Microsoft.EntityFrameworkCore;
 

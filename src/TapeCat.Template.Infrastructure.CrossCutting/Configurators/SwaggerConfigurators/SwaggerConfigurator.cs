@@ -3,11 +3,9 @@ namespace TapeCat.Template.Infrastructure.CrossCutting.Configurators.SwaggerConf
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using SignalRSwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Collections.Generic;
-using System.Reflection;
 
 public static class SwaggerConfigurator
 {

@@ -9,7 +9,7 @@ public static class StringExtensions
 		=> @string?.Pluralize ( inputIsKnownToBeSingular: false ) ??
 			throw new ArgumentNullException ( nameof ( @string ) , "String is null" );
 
-	public static string ToSingalForm ( this string @string )
+	public static string ToSingularForm ( this string @string )
 		=> @string?.Singularize ( inputIsKnownToBePlural: false ) ??
 			throw new ArgumentNullException ( nameof ( @string ) , "String is null" );
 

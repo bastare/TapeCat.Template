@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Persistence.Context.Configurations.ConfigurationBootstraper.MetadataCache;
+namespace TapeCat.Template.Persistence.Context.Configurations.ConfigurationBootstrapper.MetadataCache;
 
 public sealed class ModelMetadataCacheManager
 {

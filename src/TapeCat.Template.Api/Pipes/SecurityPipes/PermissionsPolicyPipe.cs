@@ -21,21 +21,20 @@ public static class PermissionsPolicyPipe
 		{
 			var siteUrl = new Uri ( $"{httpContext.Request.Scheme}://{httpContext.Request.Host}" );
 
-			var stringBuilder =
-				new StringBuilder ()
-					.AppendJoin (
-						separator: ", " ,
-						values: new[]
-						{
-							$"fullscreen=(self {siteUrl} https://script.hotjar.com https://static.hotjar.com)" ,
-							$"geolocation=(self {siteUrl})" ,
-							$"payment=(self {siteUrl})" ,
-							"camera=()" ,
-							"microphone=()" ,
-							"usb=()"
-						} );
+			return new StringBuilder ()
+				.AppendJoin (
+					separator: ", " ,
+					values: new[]
+					{
+						$"fullscreen=(self {siteUrl} https://script.hotjar.com https://static.hotjar.com)" ,
+						$"geolocation=(self {siteUrl})" ,
+						$"payment=(self {siteUrl})" ,
+						"camera=()" ,
+						"microphone=()" ,
+						"usb=()"
+					} )
 
-			return stringBuilder.ToString ();
+				.ToString ();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Persistence.Context.Configurations.ConfigurationBootstraper;
+namespace TapeCat.Template.Persistence.Context.Configurations.ConfigurationBootstrapper;
 
 public sealed class ModelCreatingConfigurationOption
 {

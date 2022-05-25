@@ -3,7 +3,6 @@ namespace TapeCat.Template.Api;
 using Autofac;
 using Common.Extensions;
 using Configurations.RouteEndpointConfiguration;
-using Configurations.StartupConfiguration;
 using Controllers;
 using Filters.Actions.Global;
 using FluentValidation.AspNetCore;
@@ -19,10 +18,12 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Pipes;
 using Pipes.SecurityPipes;
 using System.IO.Compression;
 using System.Linq;
+using Environments = Common.Constants.Environments;
 
 public sealed class Startup
 {
@@ -76,8 +77,9 @@ public sealed class Startup
 
 				  options.Providers.Add<BrotliCompressionProvider> ();
 
-				  options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat (
-					new[]
+				  options.MimeTypes = Enumerable.Concat (
+					first: ResponseCompressionDefaults.MimeTypes ,
+					second: new[]
 					{
 						MimeTypesMap.GetMimeType ( "svg" ) ,
 						MimeTypesMap.GetMimeType ( "gif" ) ,
@@ -100,19 +102,12 @@ public sealed class Startup
 
 		services.InjectLayersDependency ( _configuration );
 
-		services.AddDependency (
-			_webHostEnvironment ,
-			_configuration ,
-			environmentConfigurations: new ()
-			{
-				[ "Production" ] = ( _ , _ , _ ) => { } ,
-
-				[ "Development" ] = ( _ , _ , services ) =>
-					services.AddSwaggerGen ( SwaggerConfigurator.SwaggerDIConfigurator )
-						.AddSwaggerGenNewtonsoftSupport () ,
-
-				[ "Staging" ] = ( _ , _ , _ ) => { }
-			} );
+		if ( _webHostEnvironment.IsEnvironment ( Environments.Development ) )
+		{
+			services
+				.AddSwaggerGen ( SwaggerConfigurator.SwaggerDIConfigurator )
+				.AddSwaggerGenNewtonsoftSupport ();
+		}
 	}
 
 	public void ConfigureContainer ( ContainerBuilder containerBuilder )
@@ -122,50 +117,41 @@ public sealed class Startup
 
 	public void Configure ( IApplicationBuilder applicationBuilder )
 	{
-		applicationBuilder.UseServices (
-			_webHostEnvironment ,
-			_configuration ,
+		if ( _webHostEnvironment.IsEnvironment ( Environments.Production ) )
+			applicationBuilder.UseSecurityHeaders ( _webHostEnvironment );
 
-			environmentConfigurations: new ()
-			{
-				[ "Production" ] = ( webHostEnvironment , _ , applicationBuilder ) =>
-					applicationBuilder.UseSecurityHeaders ( webHostEnvironment ) ,
+		if ( _webHostEnvironment.IsEnvironment ( Environments.Development ) )
+		{
+			applicationBuilder
+				.UseCors ( builder =>
+				  {
+					  builder
+						  .AllowAnyOrigin ()
+						  .AllowAnyHeader ()
+						  .AllowAnyMethod ();
+				  } )
+				.UseAccessControlExposeHeaders ()
+				.UseDeveloperExceptionPage ()
+				.UseSwagger ()
+				.UseSwaggerUI ( SwaggerConfigurator.SwaggerUIConfigurator );
+		}
 
-				[ "Development" ] = ( _ , _ , applicationBuilder ) =>
-					  applicationBuilder
-						  .UseCors ( builder =>
-							{
-								builder
-									.AllowAnyOrigin ()
-									.AllowAnyHeader ()
-									.AllowAnyMethod ();
-							} )
-						  .UseAccessControlExposeHeaders ()
-						  .UseDeveloperExceptionPage ()
-						  .UseSwagger ()
-						  .UseSwaggerUI ( SwaggerConfigurator.SwaggerUIConfigurator ) ,
+		applicationBuilder
+			.UseResponseCompression ()
+			.UseDefaultFiles ()
+			.UseStaticFiles ()
+			.UseRedirectValidation ()
+			.UseRouting ()
+			.UseAuthentication ()
+			.UseAuthorization ()
+			.UseExceptionHandler ( GlobalExceptionHandlerConfigurator.ExceptionFiltersConfigurator )
+			.UseEndpoints ( endpoints =>
+			  {
+				  endpoints.MapControllers ();
 
-				[ "Staging" ] = ( _ , _ , _ ) => { }
-			} ,
-
-			generalConfiguration: ( _ , _ , applicationBuilder ) =>
-				applicationBuilder
-					.UseResponseCompression ()
-					.UseDefaultFiles ()
-					.UseStaticFiles ()
-					.UseRedirectValidation ()
-					.UseRouting ()
-					.UseAuthentication ()
-					.UseAuthorization ()
-					.UseExceptionHandler ( GlobalExceptionHandlerConfigurator.ExceptionFiltersConfigurator )
-					.UseEndpoints ( endpoints =>
-					  {
-						  endpoints.MapControllers ();
-
-						  endpoints.MapFallbackToController (
-							 action: nameof ( FallbackController.Index ) ,
-							 controller: nameof ( FallbackController ).Replace ( "Controller" , string.Empty ) );
-					  } )
-			);
+				  endpoints.MapFallbackToController (
+					 action: nameof ( FallbackController.Index ) ,
+					 controller: nameof ( FallbackController ).Replace ( "Controller" , string.Empty ) );
+			  } );
 	}
 }

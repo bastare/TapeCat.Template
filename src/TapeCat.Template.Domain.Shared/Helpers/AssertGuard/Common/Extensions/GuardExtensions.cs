@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Domain.Shared.Helpers.AssertGuard.Common;
+namespace TapeCat.Template.Domain.Shared.Helpers.AssertGuard.Common.Extensions;
 
 using Shared.Common.Extensions;
 using System.Runtime.CompilerServices;

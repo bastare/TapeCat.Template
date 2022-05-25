@@ -11,13 +11,13 @@ public sealed class PluralFormResourceNameConvention : IControllerModelConventio
 	{
 		if ( HasPluralFormResourceNameAttribute ( controller ) )
 			PluralizeControllerName ( ref controller );
-	}
 
-	private static bool HasPluralFormResourceNameAttribute ( ControllerModel controller )
-		=> controller.Attributes.OfType<PluralFormResourceNameAttribute> ().Any ();
+		static bool HasPluralFormResourceNameAttribute ( ControllerModel controller )
+			=> controller.Attributes.OfType<PluralFormResourceNameAttribute> ().Any ();
 
-	private static void PluralizeControllerName ( ref ControllerModel controller )
-	{
-		controller.ControllerName = controller.ControllerName.ToPluralForm ();
+		static void PluralizeControllerName ( ref ControllerModel controller )
+		{
+			controller.ControllerName = controller.ControllerName.ToPluralForm ();
+		}
 	}
 }

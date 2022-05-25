@@ -1,5 +1,6 @@
 namespace TapeCat.Template.Domain.Shared.Helpers.AssertGuard;
 
+using Common.Exceptions;
 using FluentValidation;
 using FluentValidation.Results;
 using Interfaces;
@@ -49,8 +50,8 @@ public sealed class Guard : IGuard
 		static void RaiseValidatorException ( string variableName , ValidationResult validationResult )
 		{
 			RaiseException<TException> (
-				variableName ,
-				message: ResolveErrorMessage ( validationResult ) );
+				message: ResolveErrorMessage ( validationResult ) ,
+				variableName );
 
 			static string ResolveErrorMessage ( ValidationResult validationResult )
 				=> new StringBuilder ()
@@ -82,7 +83,7 @@ public sealed class Guard : IGuard
 		message ??= $"`{variableName}` is null";
 
 		if ( value is null )
-			RaiseException<TException> ( variableName! , message );
+			RaiseException<TException> ( message , variableName! );
 
 		return value!;
 	}
@@ -107,7 +108,7 @@ public sealed class Guard : IGuard
 		message ??= $"`{variableName}` is null or empty";
 
 		if ( collection.IsNullOrEmpty () )
-			RaiseException<TException> ( variableName! , message );
+			RaiseException<TException> ( message , variableName! );
 
 		return collection!;
 	}
@@ -124,12 +125,21 @@ public sealed class Guard : IGuard
 		return collection!;
 	}
 
-	private static void RaiseException<TException> ( string variableName , string message )
+	private static void RaiseException<TException> ( string message , string variableName )
 		where TException : ArgumentException
 	{
-		throw CreateException ( variableName , message );
+		throw CreateException ( message , variableName );
 
-		static TException CreateException ( string? variableName , string? message )
-			=> ( TException ) Activator.CreateInstance ( typeof ( TException ) , variableName , message )!;
+		static TException CreateException ( string? message , string? variableName )
+		{
+			try
+			{
+				return ( TException ) Activator.CreateInstance ( typeof ( TException ) , message , variableName )!;
+			}
+			catch ( Exception exception )
+			{
+				throw new AssertGuardException ( exception.Message , exception );
+			}
+		}
 	}
 }

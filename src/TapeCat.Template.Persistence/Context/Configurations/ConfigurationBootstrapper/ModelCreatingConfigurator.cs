@@ -1,9 +1,8 @@
-namespace TapeCat.Template.Persistence.Context.Configurations.ConfigurationBootstraper;
+namespace TapeCat.Template.Persistence.Context.Configurations.ConfigurationBootstrapper;
 
 using Common.Extensions;
 using MetadataCache;
 using Microsoft.EntityFrameworkCore;
-using MoreLinq.Extensions;
 
 public sealed class ModelCreatingConfigurator
 {
@@ -33,12 +32,12 @@ public sealed class ModelCreatingConfigurator
 			.AsParallel ()
 			.ForAll ( cachedModelTypes =>
 			  {
-				  ConfigureJsonSerelizableFields ( modelBuilder , cachedModelTypes );
+				  ConfigureJsonSerializableFields ( modelBuilder , cachedModelTypes );
 			  } );
 
-		void ConfigureJsonSerelizableFields ( ModelBuilder modelBuilder , Type cachedModelTypes )
+		void ConfigureJsonSerializableFields ( ModelBuilder modelBuilder , Type cachedModelTypes )
 		{
-			modelBuilder.ConfigureJsonSerelizableFields ( cachedModelTypes , ModelCreatingConfigurationOption.JsonFieldTypeName );
+			modelBuilder.ConfigureJsonSerializableFields ( cachedModelTypes , ModelCreatingConfigurationOption.JsonFieldTypeName );
 		}
 	}
 }
