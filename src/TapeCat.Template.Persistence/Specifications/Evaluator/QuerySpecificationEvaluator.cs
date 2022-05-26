@@ -21,26 +21,23 @@ public static class QuerySpecificationEvaluator
 			InvokeOrderBy ( ref inputQuery , in specification );
 
 		return inputQuery;
-	}
 
-	private static void InvokeIncludes<TModel, TKey> ( ref IQueryable<TModel> inputQuery , in QuerySpecification<TModel , TKey> specification )
-		where TModel : class, IModel<TKey>
-	{
-		inputQuery = specification.Includes
-			!.Invoke ( inputQuery );
-	}
+		static void InvokeIncludes ( ref IQueryable<TModel> inputQuery , in QuerySpecification<TModel , TKey> specification )
+		{
+			inputQuery = specification.Includes
+				!.Invoke ( inputQuery );
+		}
 
-	private static void InvokeConditions<TModel, TKey> ( ref IQueryable<TModel> inputQuery , in QuerySpecification<TModel , TKey> specification )
-		where TModel : class, IModel<TKey>
-	{
-		inputQuery = specification.Conditions
-			!.Invoke ( inputQuery );
-	}
+		static void InvokeConditions ( ref IQueryable<TModel> inputQuery , in QuerySpecification<TModel , TKey> specification )
+		{
+			inputQuery = specification.Conditions
+				!.Invoke ( inputQuery );
+		}
 
-	private static void InvokeOrderBy<TModel, TKey> ( ref IQueryable<TModel> inputQuery , in QuerySpecification<TModel , TKey> specification )
-		where TModel : class, IModel<TKey>
-	{
-		inputQuery = specification.OrderBy
-			!.Invoke ( inputQuery );
+		static void InvokeOrderBy ( ref IQueryable<TModel> inputQuery , in QuerySpecification<TModel , TKey> specification )
+		{
+			inputQuery = specification.OrderBy
+				!.Invoke ( inputQuery );
+		}
 	}
 }

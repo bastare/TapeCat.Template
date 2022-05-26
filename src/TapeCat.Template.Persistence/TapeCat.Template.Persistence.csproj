@@ -2,7 +2,7 @@
 	<ItemGroup>
 		<PackageReference Include="AgileObjects.ReadableExpressions" Version="3.3.0"/>
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2"/>
-		<PackageReference Include="Fluentx" Version="5.6.2"/>
+		<PackageReference Include="Fluentx" Version="5.6.5"/>
 		<PackageReference Include="MailKit" Version="3.2.0"/>
 		<PackageReference Include="Mapster" Version="7.3.0"/>
 		<PackageReference Include="Mapster.Async" Version="2.0.0"/>
@@ -10,17 +10,17 @@
 		<PackageReference Include="Mapster.DependencyInjection" Version="1.0.0"/>
 		<PackageReference Include="Mapster.EFCore" Version="5.1.0"/>
 		<PackageReference Include="Mapster.JsonNet" Version="1.1.0"/>
-		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.4"/>
+		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.5"/>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0"/>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4"/>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.4"/>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.5"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.4"/>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4"/>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
@@ -30,10 +30,10 @@
 		<PackageReference Include="System.Collections.Immutable" Version="6.0.0"/>
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.18"/>
 		<PackageReference Include="System.Net.Http.Json" Version="6.0.0"/>
-		<PackageReference Include="System.Text.Json" Version="6.0.3"/>
+		<PackageReference Include="System.Text.Json" Version="6.0.4"/>
 		<PackageReference Include="Thinktecture.EntityFrameworkCore.Relational" Version="4.2.3"/>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.4"/>
-		<PackageReference Include="EFCore.BulkExtensions" Version="6.4.4"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.5"/>
+		<PackageReference Include="EFCore.BulkExtensions" Version="6.5.0"/>
 		<PackageReference Include="Dapper" Version="2.0.123"/>
 		<PackageReference Include="Dapper.Transaction" Version="2.0.35.2"/>
 		<PackageReference Include="MongoDB.Bson" Version="2.15.1"/>

@@ -49,7 +49,7 @@ public sealed class MongoDbMetadataCacheManager
 
 		static HashSet<Type> GetAllAssemblyTypes ( IEnumerable<Assembly> assemblies )
 			=> assemblies
-				.SelectMany ( assably => assably.GetTypes () )
+				.SelectMany ( assembly => assembly.GetTypes () )
 				.ToHashSet ();
 
 		static bool HasMongoDbAttribute ( Type modelTypeForCaching )

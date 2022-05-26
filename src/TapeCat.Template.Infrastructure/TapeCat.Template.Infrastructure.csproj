@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <PackageReference Include="morelinq" Version="3.3.2" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Domain.Core\TapeCat.Template.Domain.Core.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Application\TapeCat.Template.Application.csproj" />
