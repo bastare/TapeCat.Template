@@ -26,10 +26,10 @@ public sealed class ExceptionHandlerManager
 
 		static void ExceptionHandlersAreUniq ( IEnumerable<IExceptionHandler> exceptionHandlers )
 		{
-			if ( !AreUniqua ( exceptionHandlers ) )
+			if ( !AreUnique ( exceptionHandlers ) )
 				throw new ArgumentException ( "There are 1 or more error handler(-s), that have duplicated `id`" );
 
-			static bool AreUniqua ( IEnumerable<IExceptionHandler> exceptionHandlers )
+			static bool AreUnique ( IEnumerable<IExceptionHandler> exceptionHandlers )
 				=> exceptionHandlers.DistinctBy ( exceptionHandler => exceptionHandler.Id ).Count ()
 					== exceptionHandlers.Count ();
 		}
@@ -93,7 +93,7 @@ public sealed class ExceptionHandlerManager
 
 				static string CreateErrorMessage ( IEnumerable<IExceptionHandler> exceptionHandlers , HttpContext httpContext )
 					=> new StringBuilder ()
-						.Append ( "There are colision between 2 or more exception handlers, on " )
+						.Append ( "There are collision between 2 or more exception handlers, on " )
 						.Append ( ResolveRaisedException ( httpContext ).GetType ().ShortDisplayName () )
 						.Append ( ", between: " )
 						.AppendJoin (

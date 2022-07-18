@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Domain", "src\TapeCat.Template.Domain\TapeCat.Template.Domain.csproj", "{0B6935C2-B706-461A-B3C3-6A157BDCFB84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastructure.loC.Bus", "src/TapeCat.Template.Infrastructure.loC.Bus\TapeCat.Template.Infrastructure.loC.Bus.csproj", "{0BEB90A4-1611-4318-AAC5-9C480899A962}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastructure.loC.Bus", "src\TapeCat.Template.Infrastructure.loC.Bus\TapeCat.Template.Infrastructure.loC.Bus.csproj", "{0BEB90A4-1611-4318-AAC5-9C480899A962}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Contracts", "src\TapeCat.Template.Contracts\TapeCat.Template.Contracts.csproj", "{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}"
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
@@ -164,6 +166,18 @@ Global
 		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|x64.Build.0 = Release|Any CPU
 		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|x86.ActiveCfg = Release|Any CPU
 		{0BEB90A4-1611-4318-AAC5-9C480899A962}.Release|x86.Build.0 = Release|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Debug|x64.Build.0 = Debug|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Debug|x86.Build.0 = Debug|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Release|x64.Build.0 = Release|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0BEB90A4-1611-4318-AAC5-9C480899A962} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
@@ -176,5 +190,6 @@ Global
 		{A666CBF1-948E-44B1-B4D7-ABAF1B072923} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
 		{AD729A08-6895-4F1A-AA99-D3979937DC00} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
 		{0B6935C2-B706-461A-B3C3-6A157BDCFB84} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
+		{ED29C694-05E3-4ED7-BEAC-1267B26F7DBD} = {FBED1FBF-FC10-49DD-A980-AEB5E829E117}
 	EndGlobalSection
 EndGlobal

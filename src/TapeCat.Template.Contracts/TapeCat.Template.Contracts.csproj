@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="MassTransit" Version="8.0.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Remove="TapeCat.Template.Domain.Shared.Common.Extensions"/>
+        <Using Remove="TapeCat.Template.Domain.Shared.Helpers.AssertGuard.Guard"/>
+    </ItemGroup>
+
+</Project>
