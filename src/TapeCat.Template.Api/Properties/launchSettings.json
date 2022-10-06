@@ -1,37 +1,37 @@
 ﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:5000",
-      "sslPort": 44350
-    }
-  },
-  "profiles": {
-    "prod": {
-      "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
-      }
+    "$schema": "http://json.schemastore.org/launchsettings.json",
+    "iisSettings": {
+        "windowsAuthentication": false,
+        "anonymousAuthentication": true,
+        "iisExpress": {
+            "applicationUrl": "http://localhost:5000",
+            "sslPort": 44350
+        }
     },
-    "dev": {
-      "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "stage": {
-      "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Staging"
-      }
+    "profiles": {
+        "dev": {
+            "commandName": "Project",
+            "launchBrowser": false,
+            "launchUrl": "",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "prod": {
+            "commandName": "Project",
+            "launchBrowser": false,
+            "launchUrl": "",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Production"
+            }
+        },
+        "stage": {
+            "commandName": "Project",
+            "launchBrowser": false,
+            "launchUrl": "",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Staging"
+            }
+        }
     }
-  }
 }

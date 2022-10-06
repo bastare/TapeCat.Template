@@ -1,20 +1,24 @@
 namespace TapeCat.Template.Api.Common.Extensions;
 
+using Api.Caching.Interfaces;
 using Caching;
-using Caching.Intrefaces;
 using Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-	public static void AddCaching ( this IServiceCollection serviceCollection )
+	public static IServiceCollection AddCaching ( this IServiceCollection serviceCollection )
 	{
 		serviceCollection.AddMemoryCache ();
 
 		serviceCollection.AddInMemoryCacheService ();
+
+		return serviceCollection;
 	}
 
-	private static void AddInMemoryCacheService ( this IServiceCollection serviceCollection )
+	private static IServiceCollection AddInMemoryCacheService ( this IServiceCollection serviceCollection )
 	{
 		serviceCollection.AddSingleton<ICacheService , InMemoryCacheService> ();
+
+		return serviceCollection;
 	}
 }

@@ -1,6 +1,6 @@
 namespace TapeCat.Template.Api.Filters.Actions.CacheFilters.InMemoryCacheFilters;
 
-using Caching.Intrefaces;
+using Api.Caching.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -37,7 +37,7 @@ public sealed class InMemoryCacheFilter : Attribute, IAsyncActionFilter
 			if ( TimeSpan.TryParseExact ( cacheLiveTime , TimeSpanFormat , CultureInfo.CurrentCulture , out TimeSpan timeSpan ) )
 				return timeSpan;
 
-			throw new ArgumentException ( $"Unvalid form of timespam: {cacheLiveTime} (format `{TimeSpanFormat}`)" , nameof ( cacheLiveTime ) );
+			throw new ArgumentException ( $"Unvalid form of timestamp: {cacheLiveTime} (format `{TimeSpanFormat}`)" , nameof ( cacheLiveTime ) );
 		}
 	}
 

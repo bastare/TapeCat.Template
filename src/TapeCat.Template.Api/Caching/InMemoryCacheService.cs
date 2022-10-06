@@ -1,6 +1,6 @@
 namespace TapeCat.Template.Api.Caching;
 
-using Intrefaces;
+using Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 
 public sealed class InMemoryCacheService : ICacheService
@@ -16,9 +16,9 @@ public sealed class InMemoryCacheService : ICacheService
 		=> Task.FromResult (
 			result: _memoryCache.Get<TCachedValue> ( key ) );
 
-	public Task SetAsync<TCachedValue> ( string key , TCachedValue value , TimeSpan expiriSpan , CancellationToken cancellationToken = default )
+	public Task SetAsync<TCachedValue> ( string key , TCachedValue value , TimeSpan expireSpan , CancellationToken cancellationToken = default )
 	{
-		_memoryCache.Set ( key , value , expiriSpan );
+		_memoryCache.Set ( key , value , expireSpan );
 
 		return Task.CompletedTask;
 	}
@@ -29,7 +29,7 @@ public sealed class InMemoryCacheService : ICacheService
 	public async Task<TCachedValue> GetOrCreateCacheValueAsync<TCachedValue> (
 		string key ,
 		TCachedValue value ,
-		TimeSpan expiriSpan ,
+		TimeSpan expireSpan ,
 		CancellationToken cancellationToken = default )
 	{
 		NotNullOrEmpty ( key );
@@ -39,7 +39,7 @@ public sealed class InMemoryCacheService : ICacheService
 			factory: ( cacheEntry ) =>
 			  {
 				  cacheEntry
-					.SetSlidingExpiration ( expiriSpan )
+					.SetSlidingExpiration ( expireSpan )
 					.SetValue ( value );
 
 				  return Task.FromResult ( value );

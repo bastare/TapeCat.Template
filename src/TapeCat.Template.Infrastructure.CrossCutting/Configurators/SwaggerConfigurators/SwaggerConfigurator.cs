@@ -3,6 +3,7 @@ namespace TapeCat.Template.Infrastructure.CrossCutting.Configurators.SwaggerConf
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using OperationFilters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ public static class SwaggerConfigurator
 		swaggerGenOptions
 			.AddSecurityRequirements ()
 			.AddSecurityDefinitions ()
-			.AddSwaggerDocs ();
+			.AddSwaggerDocs ()
+
+			.OperationFilter<ApiVersionOperationFilter> ();
 	}
 
 	private static SwaggerGenOptions AddSecurityRequirements ( this SwaggerGenOptions swaggerGenOptions )

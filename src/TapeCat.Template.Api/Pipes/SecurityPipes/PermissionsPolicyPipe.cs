@@ -4,37 +4,21 @@ using Common.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Text;
 
 public static class PermissionsPolicyPipe
 {
-	public static IApplicationBuilder UsePermissionsPolicy ( this IApplicationBuilder applicationBuilder )
+	public static IApplicationBuilder UsePermissionsPolicy ( this IApplicationBuilder applicationBuilder , Func<Uri , IEnumerable<string>> configuration )
 	{
 		return applicationBuilder.Use ( async ( httpContext , next ) =>
 		  {
-			  httpContext.Response.Headers[ Headers.PermissionsPolicyHeaderName ] = BuildPermissionsPolicyBody ( in httpContext );
+			  httpContext.Response.Headers[ Headers.PermissionsPolicyHeaderName ] = BuildPermissionsPolicyBody ( in httpContext , configuration );
 
 			  await next.Invoke ();
 		  } );
 
-		static string BuildPermissionsPolicyBody ( in HttpContext httpContext )
-		{
-			var siteUrl = new Uri ( $"{httpContext.Request.Scheme}://{httpContext.Request.Host}" );
-
-			return new StringBuilder ()
-				.AppendJoin (
-					separator: ", " ,
-					values: new[]
-					{
-						$"fullscreen=(self {siteUrl} https://script.hotjar.com https://static.hotjar.com)" ,
-						$"geolocation=(self {siteUrl})" ,
-						$"payment=(self {siteUrl})" ,
-						"camera=()" ,
-						"microphone=()" ,
-						"usb=()"
-					} )
-
-				.ToString ();
-		}
+		static string BuildPermissionsPolicyBody ( in HttpContext httpContext , Func<Uri , IEnumerable<string>> configuration )
+			=> string.Join (
+				separator: ", " ,
+				configuration ( new ( $"{httpContext.Request.Scheme}://{httpContext.Request.Host}" ) ) );
 	}
 }
