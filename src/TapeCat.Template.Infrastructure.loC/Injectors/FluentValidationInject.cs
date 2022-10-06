@@ -1,5 +1,6 @@
 namespace TapeCat.Template.Infrastructure.loC.Injectors;
 
+using Contracts.Dtos.QueryDtos;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using InjectorBuilder.Common.Interfaces;
@@ -12,6 +13,11 @@ public sealed class FluentValidationInjector : IInjectable
 	{
 		serviceCollection
 			.AddFluentValidationAutoValidation ()
-			.AddValidatorsFromAssemblyContaining ( type: Assembly.GetEntryAssembly ()!.GetTypes ().First () );
+			.AddValidatorsFromAssemblies (
+				new[]
+				{
+					Assembly.GetEntryAssembly ()!,
+					typeof(ExpressionQueryDto).Assembly
+				} );
 	}
 }

@@ -8,6 +8,7 @@ using System.Linq.Dynamic.Core;
 public static class QueryableExtensions
 {
 	public async static Task<PagedList<T>> ToPagedListAsync<T> ( this IQueryable<T> queryable , int offset , int limit , CancellationToken cancellationToken = default )
+		where T : class
 	{
 		var count = await GetCountOfTableRecordsAsync ( queryable , cancellationToken );
 
@@ -21,25 +22,45 @@ public static class QueryableExtensions
 			=> await queryable.CountAsync ( cancellationToken );
 
 		static IQueryable<T> GetPagedRecords ( IQueryable<T> queryable , int offset , int limit )
-			 => offset switch
-			 {
-				 >= 1 =>
-					 queryable
-						 .Skip ( ( offset - 1 ) * limit )
-						 .Take ( limit ),
+			=> offset switch
+			{
+				>= 1 =>
+					queryable
+						.Skip ( ( offset - 1 ) * limit )
+						.Take ( limit ),
 
-				 <= 0 =>
-					 throw new ArgumentException ( "Offset can`t be a negative number" , nameof ( offset ) )
-			 };
+				<= 0 =>
+					throw new ArgumentException ( "Offset can`t be a negative number" , nameof ( offset ) )
+			};
 	}
 
-	public static IQueryable<TModel> OptionalWhere<TModel> ( this IQueryable<TModel> query , string? expression = default )
+	public async static Task<PagedList<object>> ToPagedListAsync (
+		this IQueryable queryable ,
+		int offset ,
+		int limit )
 	{
-		NotNull ( query );
+		var count = GetCountOfTableRecords ( queryable );
 
-		return expression is null
-			? query
-			: query.Where ( expression );
+		var pagedData =
+			await GetPagedRecords ( queryable , offset , limit )
+				.ToDynamicListAsync ();
+
+		return PagedList<object>.Create ( pagedData , count , offset , limit );
+
+		static int GetCountOfTableRecords ( IQueryable queryable )
+			=> queryable.Count ();
+
+		static IQueryable GetPagedRecords ( IQueryable queryable , int offset , int limit )
+			=> offset switch
+			{
+				>= 1 =>
+					queryable
+						.Skip ( ( offset - 1 ) * limit )
+						.Take ( limit ),
+
+				<= 0 =>
+					throw new ArgumentException ( "Offset can`t be a negative number" , nameof ( offset ) )
+			};
 	}
 
 	public static IOrderedQueryable<TModel> OrderBy<TModel> ( this IQueryable<TModel> query , string orderableField , bool isDescending )

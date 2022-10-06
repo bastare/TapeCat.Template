@@ -11,5 +11,5 @@ public interface IBulkOperationRepository<TModel, TKey>
 
 	Task BulkRemoveAsync ( IEnumerable<TModel> models , CancellationToken cancellationToken = default );
 
-	void BulkUpdate ( IEnumerable<TModel> models );
+	Task BulkUpdateAsync ( IEnumerable<TModel> models , CancellationToken cancellationToken = default );
 }
