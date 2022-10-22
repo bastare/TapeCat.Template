@@ -1,45 +1,45 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<ItemGroup>
-		<PackageReference Include="AgileObjects.ReadableExpressions" Version="3.3.0" />
-		<PackageReference Include="CaseExtensions" Version="1.1.0" />
-		<PackageReference Include="Fluentx" Version="5.6.7" />
-		<PackageReference Include="Flurl.Http" Version="3.2.4" />
-		<PackageReference Include="Flurl" Version="3.0.6" />
-		<PackageReference Include="Mapster" Version="7.3.0" />
-		<PackageReference Include="Mapster.Async" Version="2.0.0" />
-		<PackageReference Include="Mapster.Core" Version="1.2.0" />
-		<PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
-		<PackageReference Include="Mapster.EFCore" Version="5.1.0" />
-		<PackageReference Include="Mapster.JsonNet" Version="1.1.0" />
-		<PackageReference Include="MassTransit" Version="8.0.6" />
-		<PackageReference Include="MassTransit.RabbitMQ" Version="8.0.6" />
-		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
-		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.25.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="RestSharp" Version="108.0.2" />
-		<PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
-		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.20" />
-		<PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
-		<PackageReference Include="System.Text.Json" Version="6.0.6" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.9" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
-		<ProjectReference Include="..\TapeCat.Template.Persistence\TapeCat.Template.Persistence.csproj" />
-		<ProjectReference Include="..\TapeCat.Template.Domain.Core\TapeCat.Template.Domain.Core.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AgileObjects.ReadableExpressions" Version="3.3.0" />
+        <PackageReference Include="CaseExtensions" Version="1.1.0" />
+        <PackageReference Include="Flurl.Http" Version="3.2.4" />
+        <PackageReference Include="Flurl" Version="3.0.6" />
+        <PackageReference Include="Mapster" Version="7.3.0" />
+        <PackageReference Include="Mapster.Async" Version="2.0.0" />
+        <PackageReference Include="Mapster.Core" Version="1.2.0" />
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
+        <PackageReference Include="Mapster.EFCore" Version="5.1.0" />
+        <PackageReference Include="Mapster.JsonNet" Version="1.1.0" />
+        <PackageReference Include="MassTransit" Version="8.0.6" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.6" />
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
+        <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.25.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="RestSharp" Version="108.0.2" />
+        <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
+        <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.20" />
+        <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+        <PackageReference Include="System.Text.Json" Version="6.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.9" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Persistence\TapeCat.Template.Persistence.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Domain.Core\TapeCat.Template.Domain.Core.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Contracts\TapeCat.Template.Contracts.csproj" />
+    </ItemGroup>
 </Project>

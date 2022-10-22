@@ -2,10 +2,10 @@ namespace TapeCat.Template.Infrastructure.loC.Configurations.EntityFrameworkInte
 
 using Domain.Core.Models;
 using Domain.Shared.Authorization.Session;
-using Fluentx;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using MoreLinq;
 using Persistence.Context;
 
 public sealed class AuditionInterceptor : ISaveChangesInterceptor

@@ -38,7 +38,7 @@ public sealed class Startup
 		serviceCollection
 			.AddApiVersioning ( setupAction =>
 			  {
-				  setupAction.DefaultApiVersion = new ApiVersion ( 1 , 0 );
+				  setupAction.DefaultApiVersion = new ( 1 , 0 );
 				  setupAction.ReportApiVersions = true;
 				  setupAction.AssumeDefaultVersionWhenUnspecified = true;
 				  setupAction.ApiVersionReader = new QueryStringApiVersionReader ( "v" );

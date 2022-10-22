@@ -2,10 +2,10 @@ namespace TapeCat.Template.Infrastructure.loC.Injectors;
 
 using Domain.Shared.Configurations.Options;
 using Domain.Shared.Configurations.Options.Attributes;
-using Fluentx;
 using InjectorBuilder.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MoreLinq;
 
 public sealed class OptionsInjector : IInjectable
 {
