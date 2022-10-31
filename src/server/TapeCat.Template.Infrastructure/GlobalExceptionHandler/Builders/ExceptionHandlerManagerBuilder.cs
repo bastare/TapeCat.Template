@@ -19,17 +19,14 @@ public sealed class ExceptionHandlerManagerBuilder : IBuilder<ExceptionHandlerMa
 				id: 0 ,
 				isAllowedException: ( _ , _ ) => true )
 			{
-				InjectStatusCode = ( _ ) => HttpStatusCode.InternalServerError ,
+				OnHold = ( _ , _ ) => { } ,
+				InjectStatusCode = ( _ , _ ) => HttpStatusCode.InternalServerError ,
 				InjectExceptionMessage =
-					( httpContext ) =>
+					( _ ) =>
 						new PageErrorMessage (
 							StatusCode: ( int ) HttpStatusCode.InternalServerError ,
 							Message: "Internal server error" ,
-							Description: "Sorry, something went wrong on our end. We are currently trying to fix the problem" ,
-							TechnicalErrorMessage: httpContext.ResolveExceptionMessage () ,
-							ExceptionType: httpContext.ResolveExceptionTypeName () ,
-							InnerMessage: httpContext.ResolveInnerExceptionMessage () ,
-							InnerExceptionType: httpContext.ResolveInnerExceptionTypeName () )
+							Description: "Sorry, something went wrong on our end. We are currently trying to fix the problem" )
 			};
 	}
 

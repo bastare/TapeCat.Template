@@ -9,11 +9,11 @@ public sealed record ExceptionHandler : IExceptionHandler
 {
 	public int Id { get; }
 
-	public Action<HttpContext>? OnHold { get; init; }
+	public Action<HttpContext , Exception>? OnHold { get; init; }
 
-	public Func<HttpContext , object> InjectExceptionMessage { get; init; } = DefaultExceptionMessageInjector;
+	public Func<Exception , object> InjectExceptionMessage { get; init; } = DefaultExceptionMessageInjector;
 
-	public Func<HttpContext , HttpStatusCode> InjectStatusCode { get; init; } = DefaultStatusCodeInjector;
+	public Func<HttpContext , Exception , HttpStatusCode> InjectStatusCode { get; init; } = DefaultStatusCodeInjector;
 
 	private Func<HttpContext , Exception , bool> IsAllowedException { get; }
 
@@ -25,19 +25,14 @@ public sealed record ExceptionHandler : IExceptionHandler
 		IsAllowedException = isAllowedException!;
 	}
 
-	public bool IsHold ( HttpContext context , Exception exception )
-		=> IsAllowedException.Invoke ( context , exception );
+	public bool IsHold ( HttpContext httpContext , Exception exception )
+		=> IsAllowedException.Invoke ( httpContext , exception );
 
-	private static object DefaultExceptionMessageInjector ( HttpContext httpContext )
+	private static object DefaultExceptionMessageInjector ( Exception exception )
 		=> new PageErrorMessage (
-			StatusCode: httpContext.Response.StatusCode ,
 			Message: "Internal server error" ,
-			Description: "Sorry, something went wrong on our end. We are currently trying to fix the problem" ,
-			TechnicalErrorMessage: httpContext.ResolveExceptionMessage () ,
-			ExceptionType: httpContext.ResolveExceptionTypeName () ,
-			InnerMessage: httpContext.ResolveInnerExceptionMessage () ,
-			InnerExceptionType: httpContext.ResolveInnerExceptionTypeName () );
+			Description: "Sorry, something went wrong on our end. We are currently trying to fix the problem" );
 
-	private static HttpStatusCode DefaultStatusCodeInjector ( HttpContext _ )
+	private static HttpStatusCode DefaultStatusCodeInjector ( HttpContext _ , Exception _1 )
 		=> HttpStatusCode.InternalServerError;
 }

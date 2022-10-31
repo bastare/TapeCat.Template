@@ -75,9 +75,10 @@ public sealed class Guard : IGuard
 		return @string!;
 	}
 
-	public static object NotNull<TException> ( object? value ,
-											   [CallerArgumentExpression ( "value" )] string? variableName = default ,
-											   string? message = default )
+	public static TValue NotNull<TValue, TException> ( TValue? value ,
+													   [CallerArgumentExpression ( "value" )] string? variableName = default ,
+													   string? message = default )
+		where TValue : class
 		where TException : ArgumentNullException
 	{
 		message ??= $"`{variableName}` is null";
@@ -88,9 +89,10 @@ public sealed class Guard : IGuard
 		return value!;
 	}
 
-	public static object NotNull ( object? value ,
-								   [CallerArgumentExpression ( "value" )] string? variableName = default ,
-								   string? message = default )
+	public static TValue NotNull<TValue> ( TValue? value ,
+										   [CallerArgumentExpression ( "value" )] string? variableName = default ,
+										   string? message = default )
+		where TValue : class
 	{
 		message ??= $"`{variableName}` is null";
 

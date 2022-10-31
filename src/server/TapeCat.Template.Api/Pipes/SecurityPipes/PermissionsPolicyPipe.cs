@@ -11,12 +11,12 @@ public static class PermissionsPolicyPipe
 	{
 		return applicationBuilder.Use ( async ( httpContext , next ) =>
 		  {
-			  httpContext.Response.Headers[ Headers.PermissionsPolicyHeaderName ] = BuildPermissionsPolicyBody ( in httpContext , configuration );
+			  httpContext.Response.Headers[ Headers.PermissionsPolicyHeaderName ] = BuildPermissionsPolicyBody ( httpContext , configuration );
 
 			  await next.Invoke ();
 		  } );
 
-		static string BuildPermissionsPolicyBody ( in HttpContext httpContext , Func<Uri , IEnumerable<string>> configuration )
+		static string BuildPermissionsPolicyBody ( HttpContext httpContext , Func<Uri , IEnumerable<string>> configuration )
 			=> string.Join (
 				separator: ", " ,
 				configuration ( new ( $"{httpContext.Request.Scheme}://{httpContext.Request.Host}" ) ) );

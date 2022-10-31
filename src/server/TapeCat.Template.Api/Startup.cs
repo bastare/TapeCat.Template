@@ -9,6 +9,7 @@ using Infrastructure.CrossCutting.Configurators.SwaggerConfigurators;
 using Infrastructure.CrossCutting.Projections.DependencyInjectionBootstrapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
@@ -81,6 +82,8 @@ public sealed class Startup
 			  } )
 
 			.AddCaching ()
+
+			.AddResponseCaching ()
 
 			.InjectLayersDependency ( _configuration );
 
@@ -172,7 +175,20 @@ public sealed class Startup
 		applicationBuilder
 			.UseResponseCompression ()
 			.UseDefaultFiles ()
-			.UseStaticFiles ()
+			.UseStaticFiles (
+				options: new ()
+				{
+					OnPrepareResponse = ( context ) =>
+					{
+						var headers = context.Context.Response.GetTypedHeaders ();
+
+						headers.CacheControl = new ()
+						{
+							Public = true ,
+							MaxAge = TimeSpan.FromDays ( 30 )
+						};
+					}
+				} )
 			.UseRedirectValidation ()
 			.UseRouting ()
 			.UseExceptionHandler ( GlobalExceptionHandlerConfigurator.ExceptionFiltersConfigurator )

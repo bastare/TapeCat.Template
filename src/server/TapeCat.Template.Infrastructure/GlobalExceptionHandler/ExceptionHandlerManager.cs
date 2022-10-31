@@ -1,7 +1,6 @@
 namespace TapeCat.Template.Infrastructure.GlobalExceptionHandler;
 
 using Domain.Shared.Common.Classes.HttpMessages.Error;
-using Domain.Shared.Common.Extensions;
 using ExceptionHandlers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -35,29 +34,36 @@ public sealed class ExceptionHandlerManager
 		}
 	}
 
-	public async Task FormErrorResponseAsync ( HttpContext? httpContext )
+	public async Task FormErrorResponseAsync ( HttpContext? httpContext , Exception? exception )
 	{
 		try
 		{
 			NotNull ( httpContext );
+			NotNull ( exception );
 
 			InjectJsonErrorMediaType ( ref httpContext! );
 
-			if ( TryHoldException ( out IExceptionHandler? exceptionHandler , httpContext ) )
+			if ( TryHoldException ( out IExceptionHandler? exceptionHandler , httpContext , exception! ) )
 			{
 				await FormExceptionHandlerErrorResponseAsync (
 					exceptionHandler! ,
 					httpContext ,
+					exception! ,
 					cancellationToken: httpContext.RequestAborted );
 
 				return;
 			}
 
-			await FormUnexpectableHandlerErrorResponseAsync ( cancellationToken: httpContext.RequestAborted );
+			await FormUnexpectableHandlerErrorResponseAsync (
+				httpContext ,
+				exception! ,
+				cancellationToken: httpContext.RequestAborted );
 		}
-		catch ( Exception exception )
+		catch ( Exception )
 		{
-			await FormInnerErrorResponseAsync ( exception , httpContext! , cancellationToken: httpContext!.RequestAborted );
+			await FormInnerErrorResponseAsync (
+				httpContext! ,
+				cancellationToken: httpContext!.RequestAborted );
 		}
 
 		static void InjectJsonErrorMediaType ( ref HttpContext httpContext )
@@ -65,36 +71,36 @@ public sealed class ExceptionHandlerManager
 			httpContext.Response.ContentType = JsonErrorMediaType;
 		}
 
-		bool TryHoldException ( out IExceptionHandler? exceptionHandler , HttpContext httpContext )
+		bool TryHoldException ( out IExceptionHandler? exceptionHandler , HttpContext httpContext , Exception exception )
 		{
-			exceptionHandler = ResolveExceptionHandlersThatHoldRaisedException ( httpContext );
+			exceptionHandler = ResolveExceptionHandlersThatHoldRaisedException ( httpContext , exception );
 
 			return exceptionHandler is not null;
 
-			IExceptionHandler? ResolveExceptionHandlersThatHoldRaisedException ( HttpContext httpContext )
+			IExceptionHandler? ResolveExceptionHandlersThatHoldRaisedException ( HttpContext httpContext , Exception exception )
 			{
 				return ResolveSingleExceptionHandler (
-					exceptionHandlers: ResolveExceptionHandlersThatHoldRaisedException ( httpContext ) ,
-					httpContext );
+					exceptionHandlers: ResolveExceptionHandlersThatHoldRaisedException ( httpContext , exception ) ,
+					exception );
 
-				IEnumerable<IExceptionHandler> ResolveExceptionHandlersThatHoldRaisedException ( HttpContext httpContext )
+				IEnumerable<IExceptionHandler> ResolveExceptionHandlersThatHoldRaisedException ( HttpContext httpContext , Exception exception )
 					=> _exceptionHandlers
 						.Where ( exceptionHandler =>
-							exceptionHandler.IsHold ( httpContext , exception: ResolveRaisedException ( httpContext ) ) );
+							exceptionHandler.IsHold ( httpContext , exception ) );
 
-				static IExceptionHandler? ResolveSingleExceptionHandler ( IEnumerable<IExceptionHandler> exceptionHandlers , HttpContext httpContext )
+				static IExceptionHandler? ResolveSingleExceptionHandler ( IEnumerable<IExceptionHandler> exceptionHandlers , Exception exception )
 					=> exceptionHandlers.Count () switch
 					{
 						1 => exceptionHandlers.First (),
 						0 => default,
-						> 1 => throw new ArgumentException ( message: CreateErrorMessage ( exceptionHandlers , httpContext ) , nameof ( exceptionHandlers ) ),
+						> 1 => throw new ArgumentException ( message: CreateErrorMessage ( exceptionHandlers , exception ) , nameof ( exceptionHandlers ) ),
 						_ => throw new ArgumentException ( message: $"No case for this condition: {exceptionHandlers.Count ()}" , nameof ( exceptionHandlers ) )
 					};
 
-				static string CreateErrorMessage ( IEnumerable<IExceptionHandler> exceptionHandlers , HttpContext httpContext )
+				static string CreateErrorMessage ( IEnumerable<IExceptionHandler> exceptionHandlers , Exception exception )
 					=> new StringBuilder ()
 						.Append ( "There are collision between 2 or more exception handlers, on " )
-						.Append ( ResolveRaisedException ( httpContext ).GetType ().ShortDisplayName () )
+						.Append ( exception.GetType ().ShortDisplayName () )
 						.Append ( ", between: " )
 						.AppendJoin (
 							separator: ", " ,
@@ -102,66 +108,63 @@ public sealed class ExceptionHandlerManager
 						.Append ( " - error handler" )
 
 						.ToString ();
-
-				static Exception ResolveRaisedException ( HttpContext httpContext )
-					=> httpContext.ResolveException () ??
-						throw new ArgumentException ( "No raised exception" , nameof ( httpContext ) );
 			}
 		}
 
-		async Task FormUnexpectableHandlerErrorResponseAsync ( CancellationToken cancellationToken = default )
+		async Task FormUnexpectableHandlerErrorResponseAsync ( HttpContext httpContext , Exception exception , CancellationToken cancellationToken = default )
 		{
 			await FormExceptionHandlerErrorResponseAsync (
 				exceptionHandler: _defaultExceptionHandler ,
 				httpContext ,
+				exception ,
 				cancellationToken );
 		}
 
 		static async Task FormExceptionHandlerErrorResponseAsync ( IExceptionHandler exceptionHandler ,
 																   HttpContext httpContext ,
+																   Exception exception ,
 																   CancellationToken cancellationToken = default )
 		{
-			InvokeStatusCode ( exceptionHandler , httpContext );
+			InvokeStatusCode ( exceptionHandler , ref httpContext , exception );
 
-			ExecuteExceptionHandlerCallback ( exceptionHandler , httpContext );
+			ExecuteExceptionHandlerCallback ( exceptionHandler , httpContext , exception );
 
-			await FormErrorMessageAsync ( exceptionHandler , httpContext , cancellationToken );
+			await FormErrorMessageAsync ( exceptionHandler , httpContext , exception , cancellationToken );
 
-			static void InvokeStatusCode ( IExceptionHandler exceptionHandler , HttpContext httpContext )
+			static void InvokeStatusCode ( IExceptionHandler exceptionHandler , ref HttpContext httpContext , Exception exception )
 			{
-				httpContext!.Response.StatusCode = ( int ) exceptionHandler.InjectStatusCode.Invoke ( httpContext );
+				httpContext!.Response.StatusCode = ( int ) exceptionHandler.InjectStatusCode.Invoke ( httpContext , exception );
 			}
 
-			static void ExecuteExceptionHandlerCallback ( IExceptionHandler exceptionHandler , HttpContext httpContext )
+			static void ExecuteExceptionHandlerCallback ( IExceptionHandler exceptionHandler , HttpContext httpContext , Exception exception )
 			{
-				exceptionHandler.OnHold?.Invoke ( httpContext );
+				exceptionHandler.OnHold?.Invoke ( httpContext , exception );
 			}
 
 			static async Task FormErrorMessageAsync ( IExceptionHandler exceptionHandler ,
 													  HttpContext httpContext ,
+													  Exception exception ,
 													  CancellationToken cancellationToken = default )
 			{
 				await httpContext.Response.WriteAsync (
-					text: JsonConvert.SerializeObject ( value: ResolveExceptionMessage ( exceptionHandler , httpContext ) ) ,
+					text: JsonConvert.SerializeObject ( value: ResolveExceptionMessage ( exceptionHandler , exception ) ) ,
 					cancellationToken );
-			}
 
-			static object ResolveExceptionMessage ( IExceptionHandler exceptionHandler , HttpContext httpContext )
-				=> exceptionHandler.InjectExceptionMessage.Invoke ( httpContext );
+				static object ResolveExceptionMessage ( IExceptionHandler exceptionHandler , Exception exception )
+					=> exceptionHandler.InjectExceptionMessage.Invoke ( exception );
+			}
 		}
 
-		static async Task FormInnerErrorResponseAsync ( Exception innerException ,
-														HttpContext httpContext ,
+		static async Task FormInnerErrorResponseAsync ( HttpContext httpContext ,
 														CancellationToken cancellationToken = default )
 		{
 			httpContext!.Response.StatusCode = ( int ) HttpStatusCode.InternalServerError;
 
 			await httpContext.Response.WriteAsync (
 				text: JsonConvert.SerializeObject (
-					value: new PageErrorMessage (
-						StatusCode: ( int ) HttpStatusCode.InternalServerError ,
-						TechnicalErrorMessage: innerException.Message ,
-						ExceptionType: innerException.GetType ().ShortDisplayName () ) ) ,
+					value: new ErrorMessage (
+						Message: "Internal server error" ,
+						StatusCode: ( int ) HttpStatusCode.InternalServerError ) ) ,
 				cancellationToken );
 		}
 	}

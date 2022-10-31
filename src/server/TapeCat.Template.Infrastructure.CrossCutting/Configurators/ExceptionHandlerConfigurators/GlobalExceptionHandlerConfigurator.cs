@@ -11,13 +11,20 @@ public static class GlobalExceptionHandlerConfigurator
 	{
 		applicationBuilder.Run ( async httpContext =>
 		  {
-			  await ResolveGlobalExceptionHandler ( httpContext )
-			  	.FormErrorResponseAsync ( httpContext );
-
-			  await httpContext.Response.CompleteAsync ();
-
-			  static ExceptionHandlerManager ResolveGlobalExceptionHandler ( HttpContext httpContext )
-			  	=> httpContext.RequestServices.GetRequiredService<ExceptionHandlerManager> ();
+			  await ExceptionFiltersConfigurator (
+				  httpContext ,
+				  exception: httpContext.ResolveException () );
 		  } );
+	}
+
+	public static async Task ExceptionFiltersConfigurator ( HttpContext? httpContext , Exception? exception )
+	{
+		await ResolveGlobalExceptionHandler ( httpContext! )
+			.FormErrorResponseAsync ( httpContext , exception );
+
+		await httpContext!.Response.CompleteAsync ();
+
+		static ExceptionHandlerManager ResolveGlobalExceptionHandler ( HttpContext httpContext )
+			=> httpContext.RequestServices.GetRequiredService<ExceptionHandlerManager> ();
 	}
 }

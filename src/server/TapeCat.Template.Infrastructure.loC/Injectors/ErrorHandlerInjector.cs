@@ -24,16 +24,12 @@ public sealed class ErrorHandlerInjector : IInjectable
 						isAllowedException: ( _ , exception ) =>
 							exception.GetType () == typeof ( FormatException ) )
 					{
-						InjectStatusCode = ( _ ) => HttpStatusCode.BadRequest ,
-						InjectExceptionMessage = ( httpContext ) =>
+						InjectStatusCode = ( _ , _ ) => HttpStatusCode.BadRequest ,
+						InjectExceptionMessage = ( _ ) =>
 							new PageErrorMessage (
 								StatusCode: ( int ) HttpStatusCode.BadRequest ,
 								Message: "Unexpected format" ,
-								Description: "Sorry, try use other format." ,
-								TechnicalErrorMessage: httpContext.ResolveExceptionMessage () ,
-								ExceptionType: httpContext.ResolveExceptionTypeName () ,
-								InnerMessage: httpContext.ResolveInnerExceptionMessage () ,
-								InnerExceptionType: httpContext.ResolveInnerExceptionTypeName () )
+								Description: "Sorry, try use other format." )
 					} )
 
 				.WithErrorHandler (
@@ -42,16 +38,12 @@ public sealed class ErrorHandlerInjector : IInjectable
 						isAllowedException: ( _ , exception ) =>
 							exception.GetType () == typeof ( ForbiddenException ) )
 					{
-						InjectStatusCode = ( _ ) => HttpStatusCode.Forbidden ,
-						InjectExceptionMessage = ( httpContext ) =>
+						InjectStatusCode = ( _ , _ ) => HttpStatusCode.Forbidden ,
+						InjectExceptionMessage = ( _ ) =>
 							new PageErrorMessage (
 								StatusCode: ( int ) HttpStatusCode.Forbidden ,
 								Message: "Forbidden" ,
-								Description: "User have no permission to this resource" ,
-								TechnicalErrorMessage: httpContext.ResolveExceptionMessage () ,
-								ExceptionType: httpContext.ResolveExceptionTypeName () ,
-								InnerMessage: httpContext.ResolveInnerExceptionMessage () ,
-								InnerExceptionType: httpContext.ResolveInnerExceptionTypeName () )
+								Description: "User have no permission to this resource" )
 					} )
 
 					.WithErrorHandler (
@@ -60,16 +52,12 @@ public sealed class ErrorHandlerInjector : IInjectable
 							isAllowedException: ( _ , exception ) =>
 								exception.GetType () == typeof ( NotFoundException ) )
 						{
-							InjectStatusCode = ( _ ) => HttpStatusCode.NotFound ,
-							InjectExceptionMessage = ( httpContext ) =>
+							InjectStatusCode = ( _ , _ ) => HttpStatusCode.NotFound ,
+							InjectExceptionMessage = ( _ ) =>
 								new PageErrorMessage (
 									StatusCode: ( int ) HttpStatusCode.NotFound ,
 									Message: "The requested url is not found" ,
-									Description: "Sorry, the page you are looking for does not exist." ,
-									TechnicalErrorMessage: httpContext.ResolveExceptionMessage () ,
-									ExceptionType: httpContext.ResolveExceptionTypeName () ,
-									InnerMessage: httpContext.ResolveInnerExceptionMessage () ,
-									InnerExceptionType: httpContext.ResolveInnerExceptionTypeName () )
+									Description: "Sorry, the page you are looking for does not exist." )
 						} )
 
 					.WithErrorHandler (
@@ -78,11 +66,11 @@ public sealed class ErrorHandlerInjector : IInjectable
 							isAllowedException: ( _ , exception ) =>
 								exception.GetType () == typeof ( HttpRequestException ) )
 						{
-							InjectStatusCode = ( httpContext ) => httpContext.ResolveException<HttpRequestException> ()!.StatusCode!.Value ,
-							InjectExceptionMessage = ( httpContext ) =>
+							InjectStatusCode = ( httpContext , _ ) => httpContext.ResolveException<HttpRequestException> ()!.StatusCode!.Value ,
+							InjectExceptionMessage = ( exception ) =>
 								new PageErrorMessage (
-									StatusCode: ( int ) httpContext.ResolveException<HttpRequestException> ()!.StatusCode!.Value ,
-									Message: httpContext.ResolveExceptionMessage () )
+									StatusCode: ( int ) ( ( HttpRequestException ) exception ).StatusCode!.Value ,
+									Message: exception.Message )
 						} )
 
 					.Build ();

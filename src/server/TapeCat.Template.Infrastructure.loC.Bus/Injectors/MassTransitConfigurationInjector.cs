@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 public sealed class MassTransitConfigurationInjector : IInjectable
 {
-	public void Inject ( IServiceCollection serviceCollection , IConfiguration configuration )
+	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
 	{
 		serviceCollection.TryAddSingleton ( KebabCaseEndpointNameFormatter.Instance );
 	}

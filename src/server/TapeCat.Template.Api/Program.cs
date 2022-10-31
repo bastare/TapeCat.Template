@@ -4,7 +4,6 @@ using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.Annotations;
 using TapeCat.Template.Api;
@@ -56,13 +55,13 @@ webApplication.MapGet (
 	async ( IRequestClient<GetHomeContract> getHomeRequestClient , CancellationToken cancellationToken ) =>
 	  {
 		  var (response, fault) =
-			await getHomeRequestClient.GetResponse<SubmitHomeContract , FaultContract> (
+			  await getHomeRequestClient.GetResponse<SubmitHomeContract , FaultContract> (
 				new ( "Hello" ) ,
 				cancellationToken );
 
 		  return response.IsCompletedSuccessfully
-			? Results.Ok ( response.Result.Message.Message )
-			: throw fault.Result.Message.Exception;
+			? Results.Ok ( ( await response ).Message )
+			: Results.Extensions.ErrorResponse ( ( await fault ).Message.Exception );
 	  } )
 	.WithName ( "Get message" )
 	.WithTags ( "Base" )

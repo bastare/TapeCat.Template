@@ -331,3 +331,4 @@ ASALocalRun/
 
 server-*.log
 mono*.json
+inspectcode*.xml

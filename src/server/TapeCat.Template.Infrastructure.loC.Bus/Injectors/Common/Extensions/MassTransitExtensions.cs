@@ -20,7 +20,7 @@ public static class MassTransitExtensions
 				  {
 					  mediatorRegistrationConfigurator.AddRequestClient (
 						requestClientType ,
-						requestTimeout.Value );
+						timeout: requestTimeout.Value );
 
 					  return;
 				  }

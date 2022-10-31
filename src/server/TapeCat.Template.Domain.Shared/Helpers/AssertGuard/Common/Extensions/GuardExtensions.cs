@@ -12,7 +12,7 @@ public static class GuardExtensions
 	public static TSelf NotNull<TSelf, TException> ( this TSelf? self , [CallerArgumentExpression ( "self" )] string? variableName = default , string? message = default )
 		where TSelf : class
 		where TException : ArgumentNullException
-			=> self!.Tap ( self => { Guard.NotNull<TException> ( self , variableName , message ); } )!;
+			=> self!.Tap ( self => { Guard.NotNull<TSelf , TException> ( self , variableName , message ); } )!;
 
 	public static TSelf NotNullOrEmpty<TSelf> ( this TSelf? self , [CallerArgumentExpression ( "self" )] string? variableName = default , string? message = default )
 		where TSelf : class, IEnumerable
