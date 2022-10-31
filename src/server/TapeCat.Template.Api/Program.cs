@@ -69,4 +69,4 @@ webApplication.MapGet (
 	.WithMetadata ( new SwaggerOperationAttribute ( "Summary" , "Description" ) )
 	.WithApiVersionSet ( v1ApiSet );
 
-webApplication.Run ();
+await webApplication.RunAsync ();
