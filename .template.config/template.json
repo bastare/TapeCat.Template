@@ -1,15 +1,37 @@
 {
-  "$schema": "http://json.schemastore.org/template",
-  "author": "bastare",
-  "classifications": ["Web"],
-  "name": "tape-cat.webapi",
-  "identity": "WebApi.MassTransit",
-  "groupIdentity": "WebApi.MassTransit",
-  "shortName": "tape-cat.webapi",
-  "tags": {
-    "language": "C#",
-    "type": "project"
-  },
-  "sourceName": "TapeCat.Template",
-  "preferNameDirectory": true
+    "$schema": "http://json.schemastore.org/template",
+    "author": "bastare",
+    "classifications": [
+        "Web"
+    ],
+    "name": "tape-cat.webapi",
+    "identity": "WebApi.MassTransit",
+    "groupIdentity": "WebApi.MassTransit",
+    "shortName": "tape-cat.webapi",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourceName": "TapeCat.Template",
+    "preferNameDirectory": true,
+    "sources": [
+        {
+            "modifiers": [
+                {
+                    "exclude": [
+                        "**/[Bb]in/**",
+                        "**/[Oo]bj/**",
+                        ".template.config/**/*",
+                        "**/*.filelist",
+                        "**/*.user",
+                        "**/*.lock.json",
+                        ".vscode",
+                        ".git**",
+                        "node_module",
+                        "inspectcode.xml"
+                    ]
+                }
+            ]
+        }
+    ]
 }
