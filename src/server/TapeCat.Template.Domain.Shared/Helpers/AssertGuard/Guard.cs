@@ -9,14 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Shared.Common.Extensions;
 using System.Runtime.CompilerServices;
 
-public sealed class Guard : IGuard
+public sealed class Guard ( IHttpContextAccessor httpContextAccessor ) : IGuard
 {
-	private readonly IHttpContextAccessor _httpContextAccessor;
-
-	public Guard ( IHttpContextAccessor httpContextAccessor )
-	{
-		_httpContextAccessor = httpContextAccessor;
-	}
+	private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
 	public static string NotNullOrEmpty<TException> ( string? @string ,
 													  [CallerArgumentExpression ( "string" )] string? variableName = default ,

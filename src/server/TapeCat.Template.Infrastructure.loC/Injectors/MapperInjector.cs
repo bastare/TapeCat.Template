@@ -25,10 +25,10 @@ public sealed class MapperInjector : IInjectable
 			TypeAdapterConfig.GlobalSettings.Default.AvoidInlineMapping ( value: true );
 
 			TypeAdapterConfig.GlobalSettings.Scan (
-				assemblies: new[]
-				{
+				assemblies:
+				[
 					Assembly.GetEntryAssembly ()!
-				} );
+				] );
 
 			injectTypeAdapterConfig ( TypeAdapterConfig.GlobalSettings );
 		}

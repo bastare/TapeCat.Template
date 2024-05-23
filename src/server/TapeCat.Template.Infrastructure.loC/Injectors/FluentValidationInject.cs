@@ -14,10 +14,9 @@ public sealed class FluentValidationInjector : IInjectable
 		serviceCollection
 			.AddFluentValidationAutoValidation ()
 			.AddValidatorsFromAssemblies (
-				new[]
-				{
+				[
 					Assembly.GetEntryAssembly ()!,
 					typeof(ExpressionQueryDto).Assembly
-				} );
+				] );
 	}
 }

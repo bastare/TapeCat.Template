@@ -7,8 +7,7 @@ public static class MapsterExtensions
 {
 	public static IMongoQueryable<TMappable> ProjectToType<TModel, TMappable> ( this IMongoQueryable<TModel> collection , TypeAdapterConfig? config = null )
 	{
-		if ( config is null )
-			config = TypeAdapterConfig.GlobalSettings;
+		config ??= TypeAdapterConfig.GlobalSettings;
 
 		return collection
 			.Select ( @object => @object!.Adapt<TMappable> () );

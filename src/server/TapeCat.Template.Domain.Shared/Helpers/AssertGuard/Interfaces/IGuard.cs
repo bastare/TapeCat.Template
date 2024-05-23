@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 public interface IGuard
 {
-	TValue Validate<TValidator, TValue, TException> ( TValue value , [CallerArgumentExpression ( "value" )] string? variableName = default )
+	TValue Validate<TValidator, TValue, TException> ( TValue value , [CallerArgumentExpression ( nameof ( value ) )] string? variableName = default )
 		where TValidator : IValidator<TValue>
 		where TException : ArgumentException;
 }

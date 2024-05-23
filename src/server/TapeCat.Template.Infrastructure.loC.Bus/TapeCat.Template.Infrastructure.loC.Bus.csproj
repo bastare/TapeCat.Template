@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
-		<PackageReference Include="MassTransit.RabbitMQ" Version="8.0.6" />
-		<PackageReference Include="MassTransit" Version="8.0.6" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.2.2" />
+		<PackageReference Include="MassTransit" Version="8.2.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj" />

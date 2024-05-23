@@ -6,9 +6,9 @@
     </ItemDefinitionGroup>
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <LangVersion>10</LangVersion>
+        <LangVersion>12</LangVersion>
         <EnablePreviewFeatures>true</EnablePreviewFeatures>
     </PropertyGroup>
 

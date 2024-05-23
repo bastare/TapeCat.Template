@@ -4,16 +4,11 @@ using MassTransit;
 using Persistence.Uow.Interfaces;
 using System.Threading.Tasks;
 
-public abstract class PersistenceConsumer<TMessage, TTransaction> : IConsumer<TMessage>
+public abstract class PersistenceConsumer<TMessage, TTransaction> ( TTransaction transaction ) : IConsumer<TMessage>
 	where TMessage : class
 	where TTransaction : ITransaction
 {
-	protected TTransaction Transaction { get; }
-
-	protected PersistenceConsumer ( TTransaction transaction )
-	{
-		Transaction = transaction;
-	}
+	protected TTransaction Transaction { get; } = transaction;
 
 	public abstract Task Consume ( ConsumeContext<TMessage> context );
 }

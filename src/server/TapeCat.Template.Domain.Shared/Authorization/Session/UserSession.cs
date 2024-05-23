@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Security.Claims;
 
-public sealed class UserSession : IUserSession
+public sealed class UserSession ( IHttpContextAccessor httpContextAccessor ) : IUserSession
 {
-	private readonly IHttpContextAccessor _httpContextAccessor;
+	private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
 	private HttpContext HttpContext => _httpContextAccessor.HttpContext!;
 
@@ -16,11 +16,6 @@ public sealed class UserSession : IUserSession
 			.FindFirst ( ClaimTypes.NameIdentifier )?.Value is string guid
 				? Guid.Parse ( guid )
 				: default;
-
-	public UserSession ( IHttpContextAccessor httpContextAccessor )
-	{
-		_httpContextAccessor = httpContextAccessor;
-	}
 
 	public bool IsAuthorizedUser ()
 		=> Guid.TryParse (

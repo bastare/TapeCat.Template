@@ -7,15 +7,10 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-public sealed class ValidationFilter<TMessage> : IFilter<ConsumeContext<TMessage>>
+public sealed class ValidationFilter<TMessage> ( IServiceProvider serviceProvider ) : IFilter<ConsumeContext<TMessage>>
 	where TMessage : class
 {
-	private readonly IServiceProvider _serviceProvider;
-
-	public ValidationFilter ( IServiceProvider serviceProvider )
-	{
-		_serviceProvider = serviceProvider;
-	}
+	private readonly IServiceProvider _serviceProvider = serviceProvider;
 
 	public async Task Send ( ConsumeContext<TMessage> context , IPipe<ConsumeContext<TMessage>> next )
 	{

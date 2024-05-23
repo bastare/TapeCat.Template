@@ -14,7 +14,7 @@ using Specifications.Evaluator;
 using Specifications.Inline;
 using System.Linq;
 
-public sealed class EfRepository<TModel, TKey, TContext> :
+public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , TypeAdapterConfig typeAdapterConfig ) :
 	IRepository<TModel , TKey>,
 	IBulkOperationRepository<TModel , TKey>,
 	ISpecificationOperationRepository<TModel , TKey>,
@@ -22,17 +22,11 @@ public sealed class EfRepository<TModel, TKey, TContext> :
 		where TModel : class, IModel<TKey>
 		where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly TContext _context = context;
 
-	private readonly TypeAdapterConfig _typeAdapterConfig;
+	private readonly TypeAdapterConfig _typeAdapterConfig = typeAdapterConfig;
 
 	public IQueryable<TModel> Query => _context.Set<TModel> ();
-
-	public EfRepository ( TContext context , TypeAdapterConfig typeAdapterConfig )
-	{
-		_context = context;
-		_typeAdapterConfig = typeAdapterConfig;
-	}
 
 	public async Task<TModel> AddAsync ( TModel model , CancellationToken cancellationToken = default )
 	{

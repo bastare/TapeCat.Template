@@ -16,16 +16,16 @@ public sealed class MassTransitInMemoryInjector : IInjectable
 		serviceCollection.AddMediator ( mediatorRegistrationConfigurator =>
 		  {
 			  mediatorRegistrationConfigurator.AddConsumers (
-				  assemblies: new[]
-				  {
+				  assemblies:
+				  [
 					  typeof ( GetHomeConsumer ).Assembly
-				  } );
+				  ] );
 
 			  mediatorRegistrationConfigurator.AddRequestClient (
-				  assembliesWithRequestClients: new[]
-				  {
+				  assembliesWithRequestClients:
+				  [
 					  typeof ( GetHomeContract ).Assembly
-				  } );
+				  ] );
 
 			  mediatorRegistrationConfigurator.ConfigureMediator ( ( mediatorRegistrationContext , mediatorConfigurator ) =>
 				{

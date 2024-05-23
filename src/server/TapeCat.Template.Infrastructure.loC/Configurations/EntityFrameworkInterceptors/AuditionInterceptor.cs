@@ -8,14 +8,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using MoreLinq;
 using Persistence.Context;
 
-public sealed class AuditionInterceptor : ISaveChangesInterceptor
+public sealed class AuditionInterceptor ( UserSession userSession ) : ISaveChangesInterceptor
 {
-	private readonly UserSession _userSession;
-
-	public AuditionInterceptor ( UserSession userSession )
-	{
-		_userSession = userSession;
-	}
+	private readonly UserSession _userSession = userSession;
 
 	public void SaveChangesFailed ( DbContextErrorEventData _ ) { }
 

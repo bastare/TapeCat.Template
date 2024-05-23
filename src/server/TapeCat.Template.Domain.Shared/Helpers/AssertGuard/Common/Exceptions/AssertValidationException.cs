@@ -2,7 +2,7 @@ namespace TapeCat.Template.Domain.Shared.Helpers.AssertGuard.Common.Exceptions;
 
 public sealed class AssertValidationException : ArgumentException
 {
-	public IEnumerable<string> ErrorMessages { get; } = Enumerable.Empty<string> ();
+	public IEnumerable<string> ErrorMessages { get; } = [];
 
 	public AssertValidationException ()
 	{ }

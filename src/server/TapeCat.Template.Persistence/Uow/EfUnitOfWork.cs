@@ -8,18 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;
 using Persistence.Repositories.Ef;
 
-public sealed class EfUnitOfWork<TContext, TKey> : IEfUnitOfWork<TContext , TKey>
+public sealed class EfUnitOfWork<TContext, TKey> ( TContext context , TypeAdapterConfig typeAdapterConfig ) : IEfUnitOfWork<TContext , TKey>
 	where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly TContext _context = context;
 
-	private readonly TypeAdapterConfig _typeAdapterConfig;
-
-	public EfUnitOfWork ( TContext context , TypeAdapterConfig typeAdapterConfig )
-	{
-		_context = context;
-		_typeAdapterConfig = typeAdapterConfig;
-	}
+	private readonly TypeAdapterConfig _typeAdapterConfig = typeAdapterConfig;
 
 	public EfRepository<TModel , TKey , TContext> Repository<TModel> ()
 		where TModel : class, IModel<TKey>

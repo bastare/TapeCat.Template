@@ -7,31 +7,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-internal class JsonValueConfigurator
+internal class JsonValueConfigurator (
+	ModelBuilder builder ,
+	Type modelType ,
+	string? jsonFieldTypeName = JsonValueConfigurator.JsonMSSQLFieldTypeName )
 {
 	protected const string JsonMSSQLFieldTypeName = "nvarchar(max)";
 
-	private readonly ModelBuilder _builder;
+	private readonly ModelBuilder _builder = builder;
 
-	private readonly Type _modelType;
+	private readonly Type _modelType = modelType;
 
-	private readonly string? _jsonFieldTypeName;
-
-	public JsonValueConfigurator (
-		ModelBuilder builder ,
-		Type modelType ,
-		string? jsonFieldTypeName = JsonMSSQLFieldTypeName )
-	{
-		_builder = builder;
-		_jsonFieldTypeName = jsonFieldTypeName;
-		_modelType = modelType;
-	}
+	private readonly string? _jsonFieldTypeName = jsonFieldTypeName;
 
 	public ModelBuilder Configure ()
 	{
 		return _builder.Tap ( builder =>
 		  {
-			  if ( TryResolvePropertiesWithJsonSerelizableAttribute ( out var propertiesForJsonConfiguration ) )
+			  if ( TryResolvePropertiesWithJsonSerializableAttribute ( out var propertiesForJsonConfiguration ) )
 			  {
 				  foreach ( var propertyForJsonConfiguration in propertiesForJsonConfiguration )
 					  ConfigureProperty ( propertyForJsonConfiguration );
@@ -42,16 +35,16 @@ internal class JsonValueConfigurator
 			  return builder;
 		  } )!;
 
-		bool TryResolvePropertiesWithJsonSerelizableAttribute ( out IEnumerable<PropertyInfo> propertiesForJsonConfiguration )
+		bool TryResolvePropertiesWithJsonSerializableAttribute ( out IEnumerable<PropertyInfo> propertiesForJsonConfiguration )
 		{
 			propertiesForJsonConfiguration =
 				_modelType.GetProperties ()
-					.Where ( HasJsonSerelizableAttribute );
+					.Where ( HasJsonSerializableAttribute );
 
 			return !propertiesForJsonConfiguration.IsNullOrEmpty ();
 
-			static bool HasJsonSerelizableAttribute ( PropertyInfo property )
-				=> ResolveJsonSerelizableAttribute ( property ) is not null;
+			static bool HasJsonSerializableAttribute ( PropertyInfo property )
+				=> ResolveJsonSerializableAttribute ( property ) is not null;
 		}
 
 		void ConfigureProperty ( PropertyInfo propertyForSerialization )
@@ -62,21 +55,21 @@ internal class JsonValueConfigurator
 			var jsonConverter = CreateJsonConverter ( propertyType );
 
 			var isRequiredField =
-				ResolveJsonSerelizableAttribute ( propertyForSerialization )
+				ResolveJsonSerializableAttribute ( propertyForSerialization )
 					!.IsRequired;
 
 			CreateJsonField ( propertyType , propertyName , jsonConverter , isRequiredField );
 
-			static ValueConverter CreateJsonConverter ( Type serelizablePropertyType )
-				=> CreateJsonValueConverterBuilder ( serelizablePropertyType )
+			static ValueConverter CreateJsonConverter ( Type serializablePropertyType )
+				=> CreateJsonValueConverterBuilder ( serializablePropertyType )
 					.Build ();
 
-			static IBuilder<ValueConverter> CreateJsonValueConverterBuilder ( Type serelizablePropertyType )
+			static IBuilder<ValueConverter> CreateJsonValueConverterBuilder ( Type serializablePropertyType )
 				=> ( Activator.CreateInstance (
 					type: typeof ( JsonValueConverterBuilder<> )
-						.MakeGenericType ( serelizablePropertyType ) )
+						.MakeGenericType ( serializablePropertyType ) )
 							as IBuilder<ValueConverter> ) ??
-								throw new ArgumentException ( $"Can`t create converter by using this generic: {serelizablePropertyType}" );
+								throw new ArgumentException ( $"Can`t create converter by using this generic: {serializablePropertyType}" );
 
 			void CreateJsonField ( Type propertyType , string propertyName , ValueConverter jsonConverter , bool isRequiredField )
 			{
@@ -104,15 +97,15 @@ internal class JsonValueConfigurator
 					.HasConversion ( jsonConverter );
 		}
 
-		static JsonTypeColumnTypeAttribute? ResolveJsonSerelizableAttribute ( PropertyInfo property )
+		static JsonTypeColumnTypeAttribute? ResolveJsonSerializableAttribute ( PropertyInfo property )
 			=> property.GetCustomAttribute<JsonTypeColumnTypeAttribute> ();
 	}
 }
 
-internal sealed class JsonValueConfigurator<TModelEntity> : JsonValueConfigurator
-	where TModelEntity : class
+internal sealed class JsonValueConfigurator<TModelEntity> (
+	ModelBuilder builder ,
+	string? jsonFieldTypeName = JsonValueConfigurator.JsonMSSQLFieldTypeName )
+		: JsonValueConfigurator( builder , typeof ( TModelEntity ) , jsonFieldTypeName )
+			where TModelEntity : class
 {
-	public JsonValueConfigurator ( ModelBuilder builder , string? jsonFieldTypeName = JsonMSSQLFieldTypeName )
-		: base ( builder , typeof ( TModelEntity ) , jsonFieldTypeName )
-	{ }
 }

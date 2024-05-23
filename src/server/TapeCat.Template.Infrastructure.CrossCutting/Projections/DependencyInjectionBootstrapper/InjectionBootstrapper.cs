@@ -9,12 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class InjectionBootstrapper
 {
-	private static Assembly[] AssembliesForScanning { get; } =
-		new[]
-		{
+	private static Assembly[] AssembliesForScanning { get; } = [
 			typeof ( ErrorHandlerInjector ).Assembly,
 			typeof ( MassTransitConfigurationInjector ).Assembly
-		};
+		];
 
 	public static IServiceCollection InjectLayersDependency ( this IServiceCollection serviceCollection , IConfiguration configuration )
 	{

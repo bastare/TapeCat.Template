@@ -1,7 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="LazyCache" Version="2.4.0" />
+        <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
-  </ItemGroup>
-
+    <ItemGroup>
+        <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
+    </ItemGroup>
 </Project>

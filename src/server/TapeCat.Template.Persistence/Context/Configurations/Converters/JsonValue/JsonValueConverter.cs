@@ -2,15 +2,13 @@ namespace TapeCat.Template.Persistence.Context.Configurations.Converters.JsonVal
 
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-internal sealed class JsonValueConverter<TModel> : ValueConverter<TModel? , string>
+internal sealed class JsonValueConverter<TModel> (
+	Expression<Func<TModel? , string>> convertToProviderExpression ,
+	Expression<Func<string , TModel?>> convertFromProviderExpression ,
+	ConverterMappingHints? mappingHints = null ) :
+		ValueConverter<TModel? , string>(
+			convertToProviderExpression ,
+			convertFromProviderExpression ,
+			mappingHints )
 {
-	public JsonValueConverter (
-		Expression<Func<TModel? , string>> convertToProviderExpression ,
-		Expression<Func<string , TModel?>> convertFromProviderExpression ,
-		ConverterMappingHints? mappingHints = null )
-			: base (
-				convertToProviderExpression ,
-				convertFromProviderExpression ,
-				mappingHints )
-	{ }
 }

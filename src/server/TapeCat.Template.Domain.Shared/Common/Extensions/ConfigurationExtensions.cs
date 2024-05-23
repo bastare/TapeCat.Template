@@ -8,7 +8,7 @@ public static class ConfigurationExtensions
 	{
 		NotNullOrEmpty ( key );
 
-		return configuration.GetSection ( key )?.Value ??
+		return configuration.GetSection ( key! )?.Value ??
 			throw new ArgumentNullException ( nameof ( key ) , $"No section with dis `{key}`, in `appSettings` file" );
 	}
 
@@ -16,7 +16,7 @@ public static class ConfigurationExtensions
 	{
 		NotNullOrEmpty ( key );
 
-		return configuration.GetSection ( key ) ??
+		return configuration.GetSection ( key! ) ??
 			throw new ArgumentNullException ( nameof ( key ) , $"No section with dis `{key}`, in `appSettings` file" );
 	}
 }
