@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Application.Brokers.Home.Consumers.Query;
+namespace TapeCat.Template.Infrastructure.Bus.Brokers.Home.Consumers.Query;
 
 using Contracts;
 using Contracts.HomeContracts.Query;

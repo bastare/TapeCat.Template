@@ -40,7 +40,6 @@
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Infrastructure.CrossCutting\TapeCat.Template.Infrastructure.CrossCutting.csproj" />
-        <ProjectReference Include="..\TapeCat.Template.Application\TapeCat.Template.Application.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Contracts\TapeCat.Template.Contracts.csproj" />
     </ItemGroup>
 </Project>

@@ -46,8 +46,8 @@ public sealed class MassTransitRebbitMqBusInjector : IInjectable
 					rabbitMqOption.VirtualHost ,
 					configure: ( rabbitMqHostConfigurator ) =>
 					  {
-						  rabbitMqHostConfigurator.Username ( rabbitMqOption.Username );
-						  rabbitMqHostConfigurator.Password ( rabbitMqOption.Password );
+						  rabbitMqHostConfigurator.Username ( rabbitMqOption.Username! );
+						  rabbitMqHostConfigurator.Password ( rabbitMqOption.Password! );
 
 						  rabbitMqHostConfigurator.UseSsl ( configureSsl =>
 							{

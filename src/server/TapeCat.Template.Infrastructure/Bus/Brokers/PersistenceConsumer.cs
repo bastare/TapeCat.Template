@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Application.Brokers;
+namespace TapeCat.Template.Infrastructure.Bus.Brokers;
 
 using MassTransit;
 using Persistence.Uow.Interfaces;

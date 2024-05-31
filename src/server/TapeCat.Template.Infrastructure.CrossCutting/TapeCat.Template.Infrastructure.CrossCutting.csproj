@@ -55,7 +55,6 @@
         <ProjectReference Include="..\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Domain.Core\TapeCat.Template.Domain.Core.csproj" />
-        <ProjectReference Include="..\TapeCat.Template.Application\TapeCat.Template.Application.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Persistence\TapeCat.Template.Persistence.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Infrastructure.loC\TapeCat.Template.Infrastructure.loC.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Domain\TapeCat.Template.Domain.csproj" />
