@@ -7,6 +7,7 @@ using InjectorBuilder.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Persistence.Context;
 using Persistence.Uow;
@@ -39,9 +40,9 @@ public sealed class EfInjector : IInjectable
 					  .AddRelationalTypeMappingSourcePlugin<VersionTypeMappingPlugin> ();
 			  } );
 
-		serviceCollection.AddScoped<IUnitOfWork<Guid> , EfUnitOfWork<EfContext , Guid>> ();
-		serviceCollection.AddScoped<IEfUnitOfWork<EfContext , Guid> , EfUnitOfWork<EfContext , Guid>> ();
-		serviceCollection.AddScoped<ITransaction , EfUnitOfWork<EfContext , Guid>> ();
+		serviceCollection.TryAddScoped<IUnitOfWork<Guid> , EfUnitOfWork<EfContext , Guid>> ();
+		serviceCollection.TryAddScoped<IEfUnitOfWork<EfContext , Guid> , EfUnitOfWork<EfContext , Guid>> ();
+		serviceCollection.TryAddScoped<ITransaction , EfUnitOfWork<EfContext , Guid>> ();
 
 		static ILoggerFactory ResolveLoggerFactory ( IServiceCollection serviceCollection )
 			=> serviceCollection.BuildServiceProvider ()

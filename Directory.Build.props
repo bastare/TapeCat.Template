@@ -10,6 +10,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>12</LangVersion>
         <EnablePreviewFeatures>true</EnablePreviewFeatures>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

@@ -9,12 +9,11 @@ public static class GlobalExceptionHandlerConfigurator
 {
 	public static void ExceptionFiltersConfigurator ( IApplicationBuilder applicationBuilder )
 	{
-		applicationBuilder.Run ( async httpContext =>
-		  {
-			  await ExceptionFiltersConfigurator (
-				  httpContext ,
-				  exception: httpContext.ResolveException () );
-		  } );
+		applicationBuilder.Run (
+			httpContext =>
+				ExceptionFiltersConfigurator (
+					httpContext ,
+				  	exception: httpContext.ResolveException () ));
 	}
 
 	public static async Task ExceptionFiltersConfigurator ( HttpContext? httpContext , Exception? exception )

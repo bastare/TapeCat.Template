@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Domain.Caching;
 using Domain.Caching.Interfaces;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 public sealed class CachingServiceInjector : IInjectable
 {
@@ -13,6 +14,6 @@ public sealed class CachingServiceInjector : IInjectable
 		serviceCollection.AddResponseCaching ();
         serviceCollection.AddMemoryCache ();
         serviceCollection.AddLazyCache ();
-        serviceCollection.AddScoped<ICacheService , LazyMemoryCacheService> ();
+        serviceCollection.TryAddScoped<ICacheService , LazyMemoryCacheService> ();
     }
 }

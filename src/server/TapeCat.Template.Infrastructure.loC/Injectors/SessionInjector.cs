@@ -6,12 +6,13 @@ using InjectorBuilder.Common.Attributes;
 using InjectorBuilder.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 [InjectionOrder ( order: 1 )]
 public sealed class SessionInjector : IInjectable
 {
 	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
 	{
-		serviceCollection.AddTransient<IUserSession , UserSession> ();
+		serviceCollection.TryAddTransient<IUserSession , UserSession> ();
 	}
 }

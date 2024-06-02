@@ -16,9 +16,9 @@ public sealed class MassTransitRebbitMqBusInjector : IInjectable
 	{
 		serviceCollection.AddMassTransit ( massTransitConfigure =>
 		{
-			AddRequestClients ( ref massTransitConfigure );
+			AddRequestClients ( massTransitConfigure );
 
-			AddConsumers ( ref massTransitConfigure );
+			AddConsumers ( massTransitConfigure );
 
 			massTransitConfigure.UsingRabbitMq ( ( contextAgentExtensions , rabbitMqBusFactoryConfigurator ) =>
 			  {
@@ -27,11 +27,11 @@ public sealed class MassTransitRebbitMqBusInjector : IInjectable
 				  rabbitMqBusFactoryConfigurator.ConfigureEndpoints ( contextAgentExtensions , KebabCaseEndpointNameFormatter.Instance );
 			  } );
 
-			static void AddConsumers ( ref IBusRegistrationConfigurator _ )
+			static void AddConsumers ( IBusRegistrationConfigurator _ )
 			{
 			}
 
-			static void AddRequestClients ( ref IBusRegistrationConfigurator _ )
+			static void AddRequestClients ( IBusRegistrationConfigurator _ )
 			{
 			}
 

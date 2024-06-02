@@ -5,6 +5,7 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 public sealed class MapperInjector : IInjectable
 {
@@ -12,9 +13,9 @@ public sealed class MapperInjector : IInjectable
 	{
 		BootstrapTypeAdapterConfig ( typeAdapterConfig =>
 		  {
-			  serviceCollection.AddSingleton ( typeAdapterConfig );
+			  serviceCollection.TryAddSingleton ( typeAdapterConfig );
 
-			  serviceCollection.AddScoped<IMapper , ServiceMapper> ();
+			  serviceCollection.TryAddScoped<IMapper , ServiceMapper> ();
 		  } );
 
 		static void BootstrapTypeAdapterConfig ( Action<TypeAdapterConfig> injectTypeAdapterConfig )

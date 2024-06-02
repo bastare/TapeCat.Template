@@ -5,6 +5,7 @@ using Domain.Shared.Common.Extensions;
 using InjectorBuilder.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 
 public sealed class JsonSerializerSettingsInjector : IInjectable
@@ -17,7 +18,7 @@ public sealed class JsonSerializerSettingsInjector : IInjectable
 				  JsonConvert.DefaultSettings =
 					() => jsonSerializerSettings;
 
-				  serviceCollection.AddSingleton ( jsonSerializerSettings );
+				  serviceCollection.TryAddSingleton ( jsonSerializerSettings );
 			  } );
 	}
 }

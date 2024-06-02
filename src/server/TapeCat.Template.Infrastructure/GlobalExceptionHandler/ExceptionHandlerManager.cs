@@ -41,23 +41,23 @@ public sealed class ExceptionHandlerManager
 			NotNull ( httpContext );
 			NotNull ( exception );
 
-			InjectJsonErrorMediaType ( ref httpContext! );
+			InjectJsonErrorMediaType ( httpContext! );
 
-			if ( TryHoldException ( out IExceptionHandler? exceptionHandler , httpContext , exception! ) )
+			if ( TryHoldException ( out IExceptionHandler? exceptionHandler , httpContext! , exception! ) )
 			{
 				await FormExceptionHandlerErrorResponseAsync (
 					exceptionHandler! ,
-					httpContext ,
+					httpContext! ,
 					exception! ,
-					cancellationToken: httpContext.RequestAborted );
+					cancellationToken: httpContext!.RequestAborted );
 
 				return;
 			}
 
 			await FormUnexpectableHandlerErrorResponseAsync (
-				httpContext ,
+				httpContext! ,
 				exception! ,
-				cancellationToken: httpContext.RequestAborted );
+				cancellationToken: httpContext!.RequestAborted );
 		}
 		catch ( Exception )
 		{
@@ -66,7 +66,7 @@ public sealed class ExceptionHandlerManager
 				cancellationToken: httpContext!.RequestAborted );
 		}
 
-		static void InjectJsonErrorMediaType ( ref HttpContext httpContext )
+		static void InjectJsonErrorMediaType ( HttpContext httpContext )
 		{
 			httpContext.Response.ContentType = JsonErrorMediaType;
 		}
@@ -125,13 +125,13 @@ public sealed class ExceptionHandlerManager
 																   Exception exception ,
 																   CancellationToken cancellationToken = default )
 		{
-			InvokeStatusCode ( exceptionHandler , ref httpContext , exception );
+			InvokeStatusCode ( exceptionHandler , httpContext , exception );
 
 			ExecuteExceptionHandlerCallback ( exceptionHandler , httpContext , exception );
 
 			await FormErrorMessageAsync ( exceptionHandler , httpContext , exception , cancellationToken );
 
-			static void InvokeStatusCode ( IExceptionHandler exceptionHandler , ref HttpContext httpContext , Exception exception )
+			static void InvokeStatusCode ( IExceptionHandler exceptionHandler , HttpContext httpContext , Exception exception )
 			{
 				httpContext!.Response.StatusCode = ( int ) exceptionHandler.InjectStatusCode.Invoke ( httpContext , exception );
 			}

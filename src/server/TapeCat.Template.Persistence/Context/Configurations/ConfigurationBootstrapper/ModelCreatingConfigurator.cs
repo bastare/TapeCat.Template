@@ -8,7 +8,8 @@ public sealed class ModelCreatingConfigurator
 {
 	private readonly ModelMetadataCacheManager _modelMetadataCacheManager;
 
-	private ModelCreatingConfigurationOption ModelCreatingConfigurationOption { get; } = new () { JsonFieldTypeName = "nvarchar(max)" };
+	private readonly ModelCreatingConfigurationOption ModelCreatingConfigurationOption =
+		new () { JsonFieldTypeName = "nvarchar(max)" };
 
 	public ModelCreatingConfigurator (
 		ModelMetadataCacheManager modelMetadataCacheManager ,
