@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastructure.loC.Bus", "src\server\TapeCat.Template.Infrastructure.loC.Bus\TapeCat.Template.Infrastructure.loC.Bus.csproj", "{6657B5E8-7776-41ED-A344-A4F533289E01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Persistence", "src\server\TapeCat.Template.Persistence\TapeCat.Template.Persistence.csproj", "{1835995B-DA50-4193-BDC3-35E4B1D493D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Infrastructure.Persistence", "src\server\TapeCat.Template.Infrastructure.Persistence\TapeCat.Template.Infrastructure.Persistence.csproj", "{1835995B-DA50-4193-BDC3-35E4B1D493D8}"
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution

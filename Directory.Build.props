@@ -14,8 +14,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="morelinq" Version="3.3.2" />
-        <PackageReference Include="LanguageExt.Core" Version="4.2.9" />
+        <PackageReference Include="morelinq" Version="4.2.0" />
+        <PackageReference Include="LanguageExt.Core" Version="4.4.8" />
     </ItemGroup>
 
     <ItemGroup>
@@ -34,5 +34,4 @@
         <Using Include="TapeCat.Template.Domain.Shared.Common.Extensions"/>
         <Using Include="TapeCat.Template.Domain.Shared.Helpers.AssertGuard.Guard" Static="True"/>
     </ItemGroup>
-
 </Project>

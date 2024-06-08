@@ -17,13 +17,11 @@ public static class DbContextOptionsBuilderExtensions
 		static IEnumerable<IInterceptor> InjectInterceptors ( IServiceCollection serviceCollection )
 		{
 			serviceCollection.Scan ( scan =>
-			 {
-				 scan.FromAssemblyOf<AuditionInterceptor> ()
-					 .AddClasses ( classes => { classes.AssignableTo<IInterceptor> (); } )
-						 .AsImplementedInterfaces ()
+				scan.FromAssemblyOf<AuditionInterceptor> ()
+					.AddClasses ( classes => classes.AssignableTo<IInterceptor> () )
+						.AsImplementedInterfaces ()
 
-						 .WithScopedLifetime ();
-			 } );
+						.WithScopedLifetime () );
 
 			return ResolveInterceptors ( serviceCollection );
 

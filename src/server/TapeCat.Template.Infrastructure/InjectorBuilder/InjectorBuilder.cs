@@ -27,21 +27,23 @@ public static class InjectorBuilder
 			configuration );
 
 		static IEnumerable<Type> ResolveInjectorTypes ( IEnumerable<Assembly> assemblies )
-			=> assemblies
+		{
+			return assemblies
 				.SelectMany ( GetAllAssemblyTypes )
 				.Where ( IsInjectorType )
 				.OrderBy ( InjectionOrder );
 
-		static IEnumerable<Type> GetAllAssemblyTypes ( Assembly assembly )
-			=> assembly.GetTypes ();
+			static IEnumerable<Type> GetAllAssemblyTypes ( Assembly assembly )
+				=> assembly.GetTypes ();
 
-		static bool IsInjectorType ( Type type )
-			=> type.GetInterfaces ()
-				.Contains ( typeof ( IInjectable ) );
+			static bool IsInjectorType ( Type type )
+				=> type.GetInterfaces ()
+					.Contains ( typeof ( IInjectable ) );
 
-		static uint InjectionOrder ( Type injectorType )
-			=> injectorType.GetCustomAttribute<InjectionOrderAttribute> ()?.Order ??
-				uint.MinValue;
+			static uint InjectionOrder ( Type injectorType )
+				=> injectorType.GetCustomAttribute<InjectionOrderAttribute> ()?.Order ??
+					uint.MinValue;
+		}
 
 		static IServiceCollection ExecuteInjections ( IServiceCollection serviceCollection ,
 													  IEnumerable<Type> injectorTypes ,
@@ -57,22 +59,24 @@ public static class InjectorBuilder
 			return serviceCollection;
 
 			static bool IsInjectable ( Type injectorType , IServiceCollection serviceCollection , IConfiguration configuration )
-				=> ( bool ) ResolveIsInjectableMethod ()
+			{
+				return ( bool ) ResolveIsInjectableMethod ()
 					.Invoke ( injectorType , serviceCollection , configuration )!;
+
+				static MethodInfo ResolveIsInjectableMethod ()
+					=> typeof ( IInjectable ).GetMethod ( IsInjectableMethodName ) ??
+						throw new ArgumentException ( $"No method with this name: {IsInjectableMethodName}" );
+			}
 
 			static void Inject ( Type injectorType , IServiceCollection serviceCollection , IConfiguration configuration )
 			{
 				ResolveInjectionMethod ( injectorType )
 					.Invoke ( injectorType , serviceCollection , configuration );
+
+				static MethodInfo ResolveInjectionMethod ( Type injectorType )
+					=> injectorType.GetMethod ( InjectorMethodName ) ??
+						throw new ArgumentException ( $"No method with this name: {InjectorMethodName}" );
 			}
-
-			static MethodInfo ResolveIsInjectableMethod ()
-				=> typeof ( IInjectable ).GetMethod ( IsInjectableMethodName ) ??
-					throw new ArgumentException ( $"No method with this name: {IsInjectableMethodName}" );
-
-			static MethodInfo ResolveInjectionMethod ( Type injectorType )
-				=> injectorType.GetMethod ( InjectorMethodName ) ??
-					throw new ArgumentException ( $"No method with this name: {InjectorMethodName}" );
 		}
 	}
 }

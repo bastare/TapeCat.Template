@@ -9,38 +9,38 @@
         <PackageReference Include="Mapster.JsonNet" Version="1.1.1" />
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.2" />
         <PackageReference Include="MassTransit" Version="8.2.2" />
-        <PackageReference Include="MediatR" Version="12.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
+        <PackageReference Include="MediatR" Version="12.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="2.18.1" />
-        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.18.1" />
-        <PackageReference Include="Microsoft.Identity.Web" Version="2.18.1" />
+        <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="2.19.0" />
+        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.19.0" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="2.19.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="RestSharp" Version="110.2.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+        <PackageReference Include="RestSharp" Version="111.2.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2" />
         <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
         <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
         <PackageReference Include="System.Text.Json" Version="8.0.3" />
         <PackageReference Include="Thinktecture.EntityFrameworkCore.Relational" Version="8.1.1" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.6" />
         <PackageReference Include="Autofac" Version="8.0.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Autofac.Configuration" Version="6.0.0" />
@@ -49,13 +49,13 @@
         <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
         <PackageReference Include="Serilog.Sinks.AzureBlobStorage" Version="3.3.1" />
-        <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+        <PackageReference Include="Serilog.Sinks.Async" Version="2.0.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Domain\TapeCat.Template.Domain.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Domain.Core\TapeCat.Template.Domain.Core.csproj" />
-        <ProjectReference Include="..\TapeCat.Template.Persistence\TapeCat.Template.Persistence.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Infrastructure.Persistence\TapeCat.Template.Infrastructure.Persistence.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Contracts\TapeCat.Template.Contracts.csproj" />
     </ItemGroup>

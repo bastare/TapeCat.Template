@@ -2,8 +2,8 @@ namespace TapeCat.Template.Api.Endpoints.v1.Home;
 
 using FastEndpoints;
 using MassTransit;
-using TapeCat.Template.Contracts;
-using TapeCat.Template.Contracts.HomeContracts.Query;
+using Contracts;
+using Contracts.HomeContracts.Query;
 
 public sealed class HomeEndpoint ( IRequestClient<GetHomeContract> getHomeRequestClient )
     : Endpoint<string>
@@ -19,7 +19,7 @@ public sealed class HomeEndpoint ( IRequestClient<GetHomeContract> getHomeReques
     public override async Task HandleAsync ( string request , CancellationToken cancellationToken = default )
     {
         var (response, fault) =
-              await _getHomeRequestClient.GetResponse<GetHomeContract , FaultContract> (
+            await _getHomeRequestClient.GetResponse<GetHomeContract , FaultContract> (
                 new ( request ) ,
                 cancellationToken );
 

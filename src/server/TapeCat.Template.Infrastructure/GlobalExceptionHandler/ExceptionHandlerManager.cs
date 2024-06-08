@@ -111,14 +111,12 @@ public sealed class ExceptionHandlerManager
 			}
 		}
 
-		async Task FormUnexpectableHandlerErrorResponseAsync ( HttpContext httpContext , Exception exception , CancellationToken cancellationToken = default )
-		{
-			await FormExceptionHandlerErrorResponseAsync (
+		Task FormUnexpectableHandlerErrorResponseAsync ( HttpContext httpContext , Exception exception , CancellationToken cancellationToken = default )
+			=> FormExceptionHandlerErrorResponseAsync (
 				exceptionHandler: _defaultExceptionHandler ,
 				httpContext ,
 				exception ,
 				cancellationToken );
-		}
 
 		static async Task FormExceptionHandlerErrorResponseAsync ( IExceptionHandler exceptionHandler ,
 																   HttpContext httpContext ,

@@ -96,7 +96,8 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 					hsts.MaxAge ( days: 365 ).IncludeSubdomains ();
 				} )
 				.UseXContentTypeOptions ()
-				.UsePermissionsPolicy ( siteUrl => [
+				.UsePermissionsPolicy (
+					siteUrl => [
 						$"fullscreen=(self {siteUrl})",
 						$"geolocation=(self {siteUrl})",
 						$"payment=(self {siteUrl})",
