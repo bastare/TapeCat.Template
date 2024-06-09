@@ -183,6 +183,7 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 				}
 			)
 			.UseRedirectValidation ()
+			.UseSpaYarpMiddleware ()
 			.UseRouting ()
 			.UseExceptionHandler ( GlobalExceptionHandlerConfigurator.ExceptionFiltersConfigurator )
 			.UseEndpoints ( endpoints =>
@@ -191,8 +192,7 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 					endpoints.MapSpaYarp ();
 
 				endpoints.MapFallbackToFile (
-					filePath: Path.Combine ( _webHostEnvironment.WebRootPath , "index.html" )
-				);
+					filePath: Path.Combine ( _webHostEnvironment.WebRootPath , "index.html" ) );
 
 				endpoints.MapFastEndpoints ();
 
