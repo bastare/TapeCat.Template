@@ -41,6 +41,6 @@ public sealed class ExceptionHandlerManagerBuilder : IBuilder<ExceptionHandlerMa
 
 	public ExceptionHandlerManager Build ()
 		=> new (
-			exceptionHandlers: _exceptionHandlers.ToImmutableList () ,
+			exceptionHandlers: [ .. _exceptionHandlers ] ,
 			defaultExceptionHandler: _defaultExceptionHandler );
 }

@@ -3,7 +3,6 @@ namespace TapeCat.Template.Infrastructure.Persistence.Repositories.Ef;
 using Common.Exceptions;
 using Common.Extensions;
 using Domain.Core.Models;
-using Domain.Shared.Common.Exceptions;
 using Domain.Shared.Common.Extensions;
 using EFCore.BulkExtensions;
 using Mapster;
@@ -38,90 +37,90 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 			.Entity;
 	}
 
-	public async Task<List<TModel>> GetAllAsync ( bool isTracking , CancellationToken cancellationToken = default )
-		=> await _context.Set<TModel> ( isTracking )
+	public Task<List<TModel>> GetAllAsync ( bool isTracking , CancellationToken cancellationToken = default )
+		=> _context.Set<TModel> ( isTracking )
 			.ToListAsync ( cancellationToken );
 
-	public async Task<List<TTransform>> GetAllAsync<TTransform> ( Expression<Func<TModel , TTransform>> selector ,
-																  bool isTracking ,
-																  CancellationToken cancellationToken = default )
-		=> await _context.Set<TModel> ( isTracking )
+	public Task<List<TTransform>> GetAllAsync<TTransform> ( Expression<Func<TModel , TTransform>> selector ,
+															bool isTracking ,
+															CancellationToken cancellationToken = default )
+		=> _context.Set<TModel> ( isTracking )
 			.Select ( selector )
 
 			.ToListAsync ( cancellationToken );
 
-	public async Task<PagedList<TModel>> GetAllAsync ( int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
-		=> await _context.Set<TModel> ( isTracking )
+	public Task<PagedList<TModel>> GetAllAsync ( int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
+		=> _context.Set<TModel> ( isTracking )
 			.ToPagedListAsync ( offset , limit , cancellationToken );
 
-	public async Task<List<TMappable>> GetAllAsync<TMappable> ( bool isTracking , CancellationToken cancellationToken = default )
-		=> await _context.Set<TModel> ( isTracking )
+	public Task<List<TMappable>> GetAllAsync<TMappable> ( bool isTracking , CancellationToken cancellationToken = default )
+		=> _context.Set<TModel> ( isTracking )
 			.ProjectToType<TMappable> ( _typeAdapterConfig )
 
 			.ToListAsync ( cancellationToken );
 
-	public async Task<PagedList<TMappable>> GetAllAsync<TMappable> ( int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<PagedList<TMappable>> GetAllAsync<TMappable> ( int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
 		where TMappable : class
-			=> await _context.Set<TModel> ( isTracking )
+			=> _context.Set<TModel> ( isTracking )
 				.ProjectToType<TMappable> ( _typeAdapterConfig )
 
 				.ToPagedListAsync ( offset , limit , cancellationToken );
 
-	public async Task<List<TModel>> FilterByAsync ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<List<TModel>> FilterByAsync ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( predicate );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
 
 			.ToListAsync ( cancellationToken );
 	}
 
-	public async Task<PagedList<TModel>> FilterByAsync ( Expression<Func<TModel , bool>> predicate , int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<PagedList<TModel>> FilterByAsync ( Expression<Func<TModel , bool>> predicate , int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( predicate );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
 
 			.ToPagedListAsync ( offset , limit , cancellationToken );
 	}
 
-	public async Task<List<TModel>> FilterByAsync ( Specification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<List<TModel>> FilterByAsync ( Specification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( specification );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
 
 			.ToListAsync ( cancellationToken );
 	}
 
-	public async Task<PagedList<TModel>> FilterByAsync ( PaginationSpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<PagedList<TModel>> FilterByAsync ( PaginationSpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( specification );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
 
 			.ToPagedListAsync ( specification.Offset , specification.Limit , cancellationToken );
 	}
 
-	public async Task<PagedList<object>> FilterByAsync ( InlinePaginationQuerySpecification<TModel , TKey> specification )
+	public Task<PagedList<object>> FilterByAsync ( InlinePaginationQuerySpecification<TModel , TKey> specification )
 	{
 		NotNull ( specification );
 
-		return await _context.Set<TModel> ( isTracking: false )
+		return _context.Set<TModel> ( isTracking: false )
 			.SpecifiedQuery ( specification )
 
 			.ToPagedListAsync ( specification.Offset , specification.Limit );
 	}
 
-	public async Task<List<TMappable>> FilterByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<List<TMappable>> FilterByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( predicate );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
 
 			.ProjectToType<TMappable> ( _typeAdapterConfig )
@@ -129,12 +128,12 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 			.ToListAsync ( cancellationToken );
 	}
 
-	public async Task<PagedList<TMappable>> FilterByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<PagedList<TMappable>> FilterByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , int offset , int limit , bool isTracking , CancellationToken cancellationToken = default )
 		where TMappable : class
 	{
 		NotNull ( predicate );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
 
 			.ProjectToType<TMappable> ( _typeAdapterConfig )
@@ -142,11 +141,11 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 			.ToPagedListAsync ( offset , limit , cancellationToken );
 	}
 
-	public async Task<List<TMappable>> FilterByAsync<TMappable> ( Specification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<List<TMappable>> FilterByAsync<TMappable> ( Specification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( specification );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
 
 			.ProjectToType<TMappable> ( _typeAdapterConfig )
@@ -154,12 +153,12 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 			.ToListAsync ( cancellationToken );
 	}
 
-	public async Task<PagedList<TMappable>> FilterByAsync<TMappable> ( PaginationSpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<PagedList<TMappable>> FilterByAsync<TMappable> ( PaginationSpecification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 		where TMappable : class
 	{
 		NotNull ( specification );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
 
 			.ProjectToType<TMappable> ( _typeAdapterConfig )
@@ -167,19 +166,19 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 			.ToPagedListAsync ( specification.Offset , specification.Limit , cancellationToken );
 	}
 
-	public async Task<TModel?> FindByAsync ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<TModel?> FindByAsync ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( predicate );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.SingleOrDefaultAsync ( predicate , cancellationToken );
 	}
 
-	public async Task<TMappable?> FindByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<TMappable?> FindByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( predicate );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.Where ( predicate )
 
 			.ProjectToType<TMappable> ( _typeAdapterConfig )
@@ -187,21 +186,21 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 			.SingleOrDefaultAsync ( cancellationToken );
 	}
 
-	public async Task<TModel?> FindByAsync ( Specification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<TModel?> FindByAsync ( Specification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( specification );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
 
 			.SingleOrDefaultAsync ( cancellationToken );
 	}
 
-	public async Task<TMappable?> FindByAsync<TMappable> ( Specification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
+	public Task<TMappable?> FindByAsync<TMappable> ( Specification<TModel , TKey> specification , bool isTracking , CancellationToken cancellationToken = default )
 	{
 		NotNull ( specification );
 
-		return await _context.Set<TModel> ( isTracking )
+		return _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
 
 			.ProjectToType<TMappable> ( _typeAdapterConfig )
