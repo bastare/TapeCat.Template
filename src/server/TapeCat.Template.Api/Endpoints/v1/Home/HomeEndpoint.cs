@@ -14,12 +14,13 @@ public sealed class HomeEndpoint ( IRequestClient<GetHomeContract> getHomeReques
     {
         Verbs ( Http.POST );
         Routes ( "api/v1/home" );
+		AllowAnonymous ();
     }
 
     public override async Task HandleAsync ( string request , CancellationToken cancellationToken = default )
     {
         var (response, fault) =
-            await _getHomeRequestClient.GetResponse<GetHomeContract , FaultContract> (
+            await _getHomeRequestClient.GetResponse<SubmitHomeContract , FaultContract> (
                 new ( request ) ,
                 cancellationToken );
 

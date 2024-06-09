@@ -194,6 +194,8 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 					filePath: Path.Combine ( _webHostEnvironment.WebRootPath , "index.html" )
 				);
 
+				endpoints.MapFastEndpoints ();
+
 				if ( WebHostEnvironmentExtensions.IsDevelopment ( _webHostEnvironment ) )
 					applicationBuilder.UseSwaggerGen ();
 			} );
