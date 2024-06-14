@@ -1,8 +1,8 @@
 namespace TapeCat.Template.Infrastructure.loC.Bus.Injectors.Common.Extensions;
 
-using Contracts.Common.Attributes;
 using MassTransit;
 using MoreLinq;
+using TapeCat.Template.Domain.Contracts.Common.Attributes;
 
 public static class MassTransitExtensions
 {

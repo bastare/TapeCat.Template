@@ -2,7 +2,7 @@
     <PropertyGroup>
         <IsPackable>false</IsPackable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <SpaRoot>../../client/</SpaRoot>
+        <SpaRoot></SpaRoot>
         <SpaClientUrl>http://localhost:4200</SpaClientUrl>
         <SpaLaunchCommand>ng serve</SpaLaunchCommand>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -96,6 +96,6 @@
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Infrastructure.CrossCutting\TapeCat.Template.Infrastructure.CrossCutting.csproj" />
-        <ProjectReference Include="..\TapeCat.Template.Contracts\TapeCat.Template.Contracts.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Domain.Contracts\TapeCat.Template.Domain.Contracts.csproj" />
     </ItemGroup>
 </Project>

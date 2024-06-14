@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Contracts.HomeContracts.Query;
+namespace TapeCat.Template.Domain.Contracts.HomeContracts.Query;
 
 using Common.Attributes;
 

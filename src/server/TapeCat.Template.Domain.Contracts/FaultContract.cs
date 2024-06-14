@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Contracts;
+namespace TapeCat.Template.Domain.Contracts;
 
 using System.ComponentModel.DataAnnotations;
 

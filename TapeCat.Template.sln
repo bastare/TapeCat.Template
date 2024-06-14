@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{D40E5E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Api", "src\server\TapeCat.Template.Api\TapeCat.Template.Api.csproj", "{75BDAEB0-72B9-4F7F-8B36-F29202BECAF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Contracts", "src\server\TapeCat.Template.Contracts\TapeCat.Template.Contracts.csproj", "{1DD7742E-257A-42CB-ADE3-B2F39EB2BD72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Domain.Contracts", "src\server\TapeCat.Template.Domain.Contracts\TapeCat.Template.Domain.Contracts.csproj", "{1DD7742E-257A-42CB-ADE3-B2F39EB2BD72}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapeCat.Template.Domain", "src\server\TapeCat.Template.Domain\TapeCat.Template.Domain.csproj", "{F9C45320-DEB0-49CB-99BD-7352384A59B4}"
 EndProject

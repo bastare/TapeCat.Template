@@ -3,6 +3,6 @@
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Domain.Core\TapeCat.Template.Domain.Core.csproj" />
         <ProjectReference Include="..\TapeCat.Template.Infrastructure.Persistence\TapeCat.Template.Infrastructure.Persistence.csproj" />
-        <ProjectReference Include="..\TapeCat.Template.Contracts\TapeCat.Template.Contracts.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Domain.Contracts\TapeCat.Template.Domain.Contracts.csproj" />
     </ItemGroup>
 </Project>

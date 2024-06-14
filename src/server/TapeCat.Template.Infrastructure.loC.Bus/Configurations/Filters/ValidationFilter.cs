@@ -1,7 +1,7 @@
 namespace TapeCat.Template.Infrastructure.loC.Bus.Configurations.Filters;
 
-using Contracts;
 using Domain.Shared.Helpers.AssertGuard.Common.Exceptions;
+using Domain.Contracts;
 using FluentValidation;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;

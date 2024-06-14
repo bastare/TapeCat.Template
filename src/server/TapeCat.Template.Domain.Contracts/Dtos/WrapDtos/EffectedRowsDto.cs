@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Contracts.Dtos.WrapDtos;
+namespace TapeCat.Template.Domain.Contracts.Dtos.WrapDtos;
 
 using Interfaces;
 

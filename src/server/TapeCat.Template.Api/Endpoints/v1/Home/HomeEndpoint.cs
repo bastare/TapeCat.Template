@@ -2,8 +2,8 @@ namespace TapeCat.Template.Api.Endpoints.v1.Home;
 
 using FastEndpoints;
 using MassTransit;
-using Contracts;
-using Contracts.HomeContracts.Query;
+using Domain.Contracts.HomeContracts.Query;
+using Domain.Contracts;
 
 public sealed class HomeEndpoint ( IRequestClient<GetHomeContract> getHomeRequestClient )
     : Endpoint<string>

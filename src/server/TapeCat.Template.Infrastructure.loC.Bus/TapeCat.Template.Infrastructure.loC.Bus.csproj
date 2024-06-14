@@ -6,6 +6,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj" />
 		<ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
-		<ProjectReference Include="..\TapeCat.Template.Contracts\TapeCat.Template.Contracts.csproj" />
+		<ProjectReference Include="..\TapeCat.Template.Domain.Contracts\TapeCat.Template.Domain.Contracts.csproj" />
+
 	</ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Contracts.Dtos.WrapDtos.Interfaces;
+namespace TapeCat.Template.Domain.Contracts.Dtos.WrapDtos.Interfaces;
 
 public interface IEffectedRowsDto
 {

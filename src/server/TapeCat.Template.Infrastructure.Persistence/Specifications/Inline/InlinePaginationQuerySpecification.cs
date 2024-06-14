@@ -1,7 +1,7 @@
 namespace TapeCat.Template.Infrastructure.Persistence.Specifications.Inline;
 
-using Contracts.Dtos.QueryDtos;
 using Domain.Core.Models;
+using Domain.Contracts.Dtos.QueryDtos;
 using DynamicLinqDecorator;
 using Microsoft.EntityFrameworkCore.Query;
 using System;

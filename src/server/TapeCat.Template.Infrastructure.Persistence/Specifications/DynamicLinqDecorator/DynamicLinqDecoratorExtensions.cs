@@ -1,8 +1,8 @@
 namespace TapeCat.Template.Infrastructure.Persistence.Specifications.DynamicLinqDecorator;
 
-using Contracts.Dtos.QueryDtos;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using Domain.Contracts.Dtos.QueryDtos;
 
 public static class DynamicLinqDecoratorExtensions
 {

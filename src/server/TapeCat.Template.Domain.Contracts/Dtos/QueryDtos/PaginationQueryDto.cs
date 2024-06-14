@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Contracts.Dtos.QueryDtos;
+namespace TapeCat.Template.Domain.Contracts.Dtos.QueryDtos;
 
 using System.ComponentModel.DataAnnotations;
 

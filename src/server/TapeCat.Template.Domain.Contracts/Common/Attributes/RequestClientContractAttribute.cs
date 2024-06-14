@@ -1,4 +1,4 @@
-namespace TapeCat.Template.Contracts.Common.Attributes;
+namespace TapeCat.Template.Domain.Contracts.Common.Attributes;
 
 using MassTransit;
 
