@@ -5,5 +5,4 @@
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
     </ItemGroup>
-
 </Project>
