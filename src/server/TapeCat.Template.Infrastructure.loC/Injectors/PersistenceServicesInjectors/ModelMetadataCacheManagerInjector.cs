@@ -22,11 +22,11 @@ public sealed class ModelMetadataCacheManagerInjector : IInjectable
 			=> ModelMetadataCacheManager.Create (
 				assemblies:
 				[
-					typeof ( IModel<> ).Assembly
+					typeof ( IModel ).Assembly
 				] ,
 				isEntityForCaching: ( modelTypeForCaching ) =>
 					modelTypeForCaching.GetInterfaces ()
-						.Contains ( typeof ( IModel<Guid> ) ) );
+						.Contains ( typeof ( IModel ) ) );
 
 		static ModelCreatingConfigurator CreateModelCreatingConfigurator ( ModelMetadataCacheManager modelMetadataCacheManager )
 			=> new ( modelMetadataCacheManager );
