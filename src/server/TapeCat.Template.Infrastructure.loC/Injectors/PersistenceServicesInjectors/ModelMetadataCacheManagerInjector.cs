@@ -20,8 +20,7 @@ public sealed class ModelMetadataCacheManagerInjector : IInjectable
 
 		static ModelMetadataCacheManager CreateModelMetadataCacheManager ()
 			=> ModelMetadataCacheManager.Create (
-				assemblies:
-				[
+				assemblies: [
 					typeof ( IModel ).Assembly
 				] ,
 				isEntityForCaching: ( modelTypeForCaching ) =>
