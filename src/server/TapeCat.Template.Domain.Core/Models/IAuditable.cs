@@ -2,14 +2,21 @@ namespace TapeCat.Template.Domain.Core.Models;
 
 using System;
 
-public interface IAuditable<TKey>
+public interface IAuditable<TKey> : IAuditable
 	where TKey : struct
 {
-	TKey CreatedBy { get; set; }
+	new TKey CreatedBy { get; set; }
+
+	new TKey? LastModifiedBy { get; set; }
+}
+
+public interface IAuditable
+{
+	object CreatedBy { get; set; }
 
 	DateTime Created { get; set; }
 
-	TKey? LastModifiedBy { get; set; }
+	object? LastModifiedBy { get; set; }
 
 	DateTime? LastModified { get; set; }
 }

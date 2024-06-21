@@ -1,6 +1,6 @@
 namespace TapeCat.Template.Api.Filters.Actions.CacheFilters;
 
-using Domain.Shared.Authorization.Session;
+using Domain.Shared.Authorization.Session.Interfaces;
 using Domain.Shared.Common.Extensions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +9,7 @@ public sealed class CacheKeyGenerator
 {
 	private readonly ActionExecutingContext _actionExecutingContext;
 
-	private readonly UserSession _userSession;
+	private readonly IUserSession _userSession;
 
 	private string RequestPath => _actionExecutingContext.HttpContext.Request.Path;
 
@@ -20,9 +20,9 @@ public sealed class CacheKeyGenerator
 		_actionExecutingContext = actionExecutingContext;
 		_userSession = ResolveUserSession ();
 
-		UserSession ResolveUserSession ()
+		IUserSession ResolveUserSession ()
 			=> _actionExecutingContext.HttpContext.RequestServices
-				.GetRequiredService<UserSession> ();
+				.GetRequiredService<IUserSession> ();
 	}
 
 	public static CacheKeyGenerator Create ( ActionExecutingContext actionExecutingContext )

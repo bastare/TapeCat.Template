@@ -46,33 +46,33 @@ public sealed class ErrorHandlerInjector : IInjectable
 								Description: "User have no permission to this resource" )
 					} )
 
-					.WithErrorHandler (
-						exceptionHandler: new ExceptionHandler (
-							id: 3 ,
-							isAllowedException: ( _ , exception ) =>
-								exception.GetType () == typeof ( NotFoundException ) )
-						{
-							InjectStatusCode = ( _ , _ ) => HttpStatusCode.NotFound ,
-							InjectExceptionMessage = ( _ ) =>
-								new PageErrorMessage (
-									StatusCode: ( int ) HttpStatusCode.NotFound ,
-									Message: "The requested url is not found" ,
-									Description: "Sorry, the page you are looking for does not exist." )
-						} )
+				.WithErrorHandler (
+					exceptionHandler: new ExceptionHandler (
+						id: 3 ,
+						isAllowedException: ( _ , exception ) =>
+							exception.GetType () == typeof ( NotFoundException ) )
+					{
+						InjectStatusCode = ( _ , _ ) => HttpStatusCode.NotFound ,
+						InjectExceptionMessage = ( _ ) =>
+							new PageErrorMessage (
+								StatusCode: ( int ) HttpStatusCode.NotFound ,
+								Message: "The requested url is not found" ,
+								Description: "Sorry, the page you are looking for does not exist." )
+					} )
 
-					.WithErrorHandler (
-						exceptionHandler: new ExceptionHandler (
-							id: 4 ,
-							isAllowedException: ( _ , exception ) =>
-								exception.GetType () == typeof ( HttpRequestException ) )
-						{
-							InjectStatusCode = ( httpContext , _ ) => httpContext.ResolveException<HttpRequestException> ()!.StatusCode!.Value ,
-							InjectExceptionMessage = ( exception ) =>
-								new PageErrorMessage (
-									StatusCode: ( int ) ( ( HttpRequestException ) exception ).StatusCode!.Value ,
-									Message: exception.Message )
-						} )
+				.WithErrorHandler (
+					exceptionHandler: new ExceptionHandler (
+						id: 4 ,
+						isAllowedException: ( _ , exception ) =>
+							exception.GetType () == typeof ( HttpRequestException ) )
+					{
+						InjectStatusCode = ( httpContext , _ ) => httpContext.ResolveException<HttpRequestException> ()!.StatusCode!.Value ,
+						InjectExceptionMessage = ( exception ) =>
+							new PageErrorMessage (
+								StatusCode: ( int ) ( ( HttpRequestException ) exception ).StatusCode!.Value ,
+								Message: exception.Message )
+					} )
 
-					.Build ();
+				.Build ();
 	}
 }

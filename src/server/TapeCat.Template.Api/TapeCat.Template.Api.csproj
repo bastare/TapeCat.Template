@@ -92,6 +92,8 @@
         <PackageReference Include="FastEndpoints.Security" Version="5.26.0" />
         <PackageReference Include="LazyCache" Version="2.4.0" />
         <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
+        <PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
+        <PackageReference Include="EntityFrameworkCore.Triggered.Abstractions" Version="3.2.2" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />

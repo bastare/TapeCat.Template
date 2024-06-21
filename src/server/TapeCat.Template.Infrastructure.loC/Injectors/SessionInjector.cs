@@ -1,18 +1,18 @@
 namespace TapeCat.Template.Infrastructure.loC.Injectors;
 
-using Domain.Shared.Authorization.Session;
+using Autofac;
 using Domain.Shared.Authorization.Session.Interfaces;
-using InjectorBuilder.Common.Attributes;
-using InjectorBuilder.Common.Interfaces;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
-[InjectionOrder ( order: 1 )]
-public sealed class SessionInjector : IInjectable
+public sealed class SessionInjector : Module
 {
-	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
+	protected override void Load ( ContainerBuilder builder )
 	{
-		serviceCollection.TryAddTransient<IUserSession , UserSession> ();
+		InjectAllApplicationFacades ( builder );
+
+		static void InjectAllApplicationFacades ( ContainerBuilder builder )
+			=> builder.RegisterAssemblyTypes ( typeof ( IUserSession ).Assembly )
+				.AsImplementedInterfaces ()
+				.AsSelf ()
+				.InstancePerLifetimeScope ();
 	}
 }

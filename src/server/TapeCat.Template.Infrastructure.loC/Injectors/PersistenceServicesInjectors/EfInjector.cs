@@ -1,7 +1,6 @@
-namespace TapeCat.Template.Infrastructure.loC.Injectors;
+namespace TapeCat.Template.Infrastructure.loC.Injectors.PersistenceServicesInjectors;
 
-using Common.Extensions;
-using Configurations.EntityFrameworkTypeConventions.VersionTypeConvention;
+using Configurations.EntityFrameworkInterceptors.AuditionTriggers;
 using InjectorBuilder.Common.Attributes;
 using InjectorBuilder.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,6 @@ using Persistence.Context;
 using Persistence.Uow;
 using Persistence.Uow.Interfaces;
 using System;
-using Thinktecture;
 
 [InjectionOrder ( order: uint.MaxValue )]
 public sealed class EfInjector : IInjectable
@@ -22,23 +20,22 @@ public sealed class EfInjector : IInjectable
 	{
 		serviceCollection.AddDbContext<EfContext> (
 			optionsAction: ( dbContextOptionsBuilder ) =>
-			  {
-				  dbContextOptionsBuilder
-					  .UseLoggerFactory ( loggerFactory: ResolveLoggerFactory ( serviceCollection ) )
+			{
+				dbContextOptionsBuilder
+					.UseLoggerFactory ( loggerFactory: ResolveLoggerFactory ( serviceCollection ) )
 
-					  .UseSqlServer (
-						  connectionString: configuration.GetConnectionString ( string.Empty ) ,
-						  sqlServerOptionsAction: ( sqlServerDbContextOptionsBuilder ) =>
-							{
-								sqlServerDbContextOptionsBuilder
-									.MigrationsAssembly ( typeof ( EfContext ).Assembly.FullName )
-									.UseQuerySplittingBehavior ( QuerySplittingBehavior.SplitQuery );
-							} )
+					.UseSqlServer (
+						connectionString: configuration.GetConnectionString ( string.Empty ) ,
+						sqlServerOptionsAction: ( sqlServerDbContextOptionsBuilder ) =>
+						{
+							sqlServerDbContextOptionsBuilder
+								.MigrationsAssembly ( typeof ( EfContext ).Assembly.FullName )
+								.UseQuerySplittingBehavior ( QuerySplittingBehavior.SplitQuery );
+						} )
 
-					  .AddInterceptors ( serviceCollection )
-
-					  .AddRelationalTypeMappingSourcePlugin<VersionTypeMappingPlugin> ();
-			  } );
+					.UseTriggers ( triggerOptions =>
+						triggerOptions.AddTrigger<OnAuditionTrigger> () );
+			} );
 
 		serviceCollection.TryAddScoped<IUnitOfWork<Guid> , EfUnitOfWork<EfContext , Guid>> ();
 		serviceCollection.TryAddScoped<IEfUnitOfWork<EfContext , Guid> , EfUnitOfWork<EfContext , Guid>> ();

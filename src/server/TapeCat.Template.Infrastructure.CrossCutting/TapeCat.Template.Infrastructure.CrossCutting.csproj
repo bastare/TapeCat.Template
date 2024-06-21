@@ -50,6 +50,8 @@
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Autofac.Configuration" Version="6.0.0" />
         <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
+        <PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
+        <PackageReference Include="EntityFrameworkCore.Triggered.Abstractions" Version="3.2.2" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj" />

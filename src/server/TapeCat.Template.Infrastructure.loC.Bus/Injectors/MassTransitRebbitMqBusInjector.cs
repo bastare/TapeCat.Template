@@ -21,11 +21,11 @@ public sealed class MassTransitRebbitMqBusInjector : IInjectable
 			AddConsumers ( massTransitConfigure );
 
 			massTransitConfigure.UsingRabbitMq ( ( contextAgentExtensions , rabbitMqBusFactoryConfigurator ) =>
-			  {
-				  ConfigureRebbitMqHost ( contextAgentExtensions , rabbitMqBusFactoryConfigurator );
+			{
+				ConfigureRebbitMqHost ( contextAgentExtensions , rabbitMqBusFactoryConfigurator );
 
-				  rabbitMqBusFactoryConfigurator.ConfigureEndpoints ( contextAgentExtensions , KebabCaseEndpointNameFormatter.Instance );
-			  } );
+				rabbitMqBusFactoryConfigurator.ConfigureEndpoints ( contextAgentExtensions , KebabCaseEndpointNameFormatter.Instance );
+			} );
 
 			static void AddConsumers ( IBusRegistrationConfigurator _ )
 			{

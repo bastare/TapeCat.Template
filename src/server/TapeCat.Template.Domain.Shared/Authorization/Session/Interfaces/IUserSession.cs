@@ -1,8 +1,13 @@
 namespace TapeCat.Template.Domain.Shared.Authorization.Session.Interfaces;
 
+public interface IUserSession<TKey> : IUserSession
+{
+	new TKey Id { get; }
+}
+
 public interface IUserSession
 {
-	Guid? Id { get; }
+	object Id { get; }
 
 	bool IsAuthorizedUser ();
 }
