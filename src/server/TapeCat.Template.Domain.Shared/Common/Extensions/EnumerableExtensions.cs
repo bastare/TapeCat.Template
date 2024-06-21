@@ -12,19 +12,19 @@ public static class EnumerableExtensions
             .Any ( element => element is TExpectableType ) ??
                 throw new ArgumentNullException ( nameof ( collection ) , "Collection is null" );
 
-    public static async Task<IEnumerable<T>> WhenAllAsync<T> ( this IEnumerable<T> collection , Func<T , Task<T>> selector )
-        => await Task.WhenAll (
+    public static Task<T[]> WhenAllAsync<T> ( this IEnumerable<T> collection , Func<T , Task<T>> selector )
+        => Task.WhenAll (
             tasks: collection.Select ( selector ) );
 
-	public static async Task<IEnumerable<T>> WhenAllAsync<T> ( this IEnumerable<Task<T>> collection )
-        => await Task.WhenAll ( collection );
+	public static Task<T[]> WhenAllAsync<T> ( this IEnumerable<Task<T>> collection )
+        => Task.WhenAll ( collection );
 
-    public static async Task WhenAllAsync<T> ( this IEnumerable<T> collection , Func<T , Task> selector )
-        => await Task.WhenAll (
+    public static Task WhenAllAsync<T> ( this IEnumerable<T> collection , Func<T , Task> selector )
+        => Task.WhenAll (
             tasks: collection.Select ( selector ) );
 
-	public static async Task WhenAllAsync<T> ( this IEnumerable<Task> collection )
-        => await Task.WhenAll ( collection );
+	public static Task WhenAllAsync<T> ( this IEnumerable<Task> collection )
+        => Task.WhenAll ( collection );
 
     public static async IAsyncEnumerable<T> ToAsyncEnumerable<T> ( this IEnumerable<Task<T>> collection )
     {
