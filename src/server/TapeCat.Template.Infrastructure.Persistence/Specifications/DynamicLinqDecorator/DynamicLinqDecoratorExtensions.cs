@@ -30,7 +30,15 @@ public static class DynamicLinqDecoratorExtensions
 
 		try
 		{
-			return query.OrderBy ( orderQuery!.OrderBy! , orderQuery.IsDescending );
+			return query.OrderBy (
+				ordering: string.Join (
+					separator: ' ' ,
+					orderQuery!.OrderBy ,
+					orderQuery.IsDescending.GetValueOrDefault ()
+						? "desc"
+						: "asc"
+				)
+			);
 		}
 		catch ( Exception exception )
 		{

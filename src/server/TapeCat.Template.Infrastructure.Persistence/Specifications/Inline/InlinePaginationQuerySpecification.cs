@@ -28,24 +28,37 @@ public sealed record InlinePaginationQuerySpecification<TModel, TKey> :
 		ExpressionQueryDto? expressionQuery = default ,
 		OrderQueryDto? orderQuery = default ,
 		PaginationQueryDto? paginationQuery = default ,
-		ProjectionQueryDto? projectionQueryDto = default )
+		ProjectionQueryDto? projectionQuery = default )
 	{
-		if ( expressionQuery?.Expression is not null )
+		if ( HasExpression ( expressionQuery ) )
 			Conditions = query =>
 				query.Where ( expressionQuery );
 
-		if ( orderQuery?.OrderBy is not null )
+		if ( HasOrdering ( orderQuery ) )
 			OrderBy = query =>
 				query.OrderBy ( orderQuery );
 
-		if ( projectionQueryDto?.Projection is not null )
+		if ( HasProjection ( projectionQuery ) )
 			Projection = query =>
-				query.Select ( projectionQueryDto );
+				query.Select ( projectionQuery );
 
-		if ( paginationQuery is not null )
+		if ( HasPagination ( paginationQuery ) )
 		{
-			Offset = paginationQuery.Offset;
-			Limit = paginationQuery.Limit;
+			Offset = paginationQuery!.Offset;
+			Limit = paginationQuery!.Limit;
 		}
+
+		static bool HasExpression ( ExpressionQueryDto? expressionQuery )
+			=> !string.IsNullOrEmpty ( expressionQuery?.Expression );
+
+		static bool HasOrdering ( OrderQueryDto? orderQuery )
+			=> !string.IsNullOrEmpty ( orderQuery?.OrderBy )
+				&& orderQuery?.IsDescending is not null;
+
+		static bool HasProjection ( ProjectionQueryDto? projectionQuery )
+			=> !string.IsNullOrEmpty ( projectionQuery?.Projection );
+
+		static bool HasPagination ( PaginationQueryDto? paginationQuery )
+			=> paginationQuery is not null;
 	}
 }
