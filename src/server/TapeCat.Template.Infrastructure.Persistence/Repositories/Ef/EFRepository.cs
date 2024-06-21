@@ -103,17 +103,23 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 		return _context.Set<TModel> ( isTracking )
 			.SpecifiedQuery ( specification )
 
-			.ToPagedListAsync ( specification.Offset , specification.Limit , cancellationToken );
+			.ToPagedListAsync (
+				specification.Offset ,
+				specification.Limit ,
+				cancellationToken );
 	}
 
-	public Task<PagedList<object>> FilterByAsync ( InlinePaginationQuerySpecification<TModel , TKey> specification )
+	public Task<PagedList<object>> FilterByAsync ( InlinePaginationQuerySpecification<TModel , TKey> specification , CancellationToken cancellationToken = default )
 	{
 		NotNull ( specification );
 
 		return _context.Set<TModel> ( isTracking: false )
 			.SpecifiedQuery ( specification )
 
-			.ToPagedListAsync ( specification.Offset , specification.Limit );
+			.ToPagedListAsync (
+				specification.Offset ,
+				specification.Limit ,
+				cancellationToken );
 	}
 
 	public Task<List<TMappable>> FilterByAsync<TMappable> ( Expression<Func<TModel , bool>> predicate , bool isTracking , CancellationToken cancellationToken = default )

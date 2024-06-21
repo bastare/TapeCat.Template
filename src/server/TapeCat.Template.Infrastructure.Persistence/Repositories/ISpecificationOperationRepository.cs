@@ -3,6 +3,7 @@ namespace TapeCat.Template.Infrastructure.Persistence.Repositories;
 using Domain.Core.Models;
 using Pagination;
 using Specifications;
+using Specifications.Inline;
 
 public interface ISpecificationOperationRepository<TModel, TKey>
 	where TModel : class, IModel<TKey>
@@ -19,4 +20,6 @@ public interface ISpecificationOperationRepository<TModel, TKey>
 	Task<TModel?> FindByAsync ( Specification<TModel , TKey> querySpecification , bool isTracking , CancellationToken cancellationToken = default );
 
 	Task<TMappable?> FindByAsync<TMappable> ( Specification<TModel , TKey> querySpecification , bool isTracking , CancellationToken cancellationToken = default );
+
+	Task<PagedList<object>> FilterByAsync ( InlinePaginationQuerySpecification<TModel , TKey> specification, CancellationToken cancellationToken = default );
 }

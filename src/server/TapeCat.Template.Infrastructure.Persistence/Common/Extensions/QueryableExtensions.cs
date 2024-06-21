@@ -37,13 +37,14 @@ public static class QueryableExtensions
 	public async static Task<PagedList<object>> ToPagedListAsync (
 		this IQueryable queryable ,
 		int offset ,
-		int limit )
+		int limit ,
+		CancellationToken cancellationToken = default)
 	{
 		var count = GetCountOfTableRecords ( queryable );
 
 		var pagedData =
 			await GetPagedRecords ( queryable , offset , limit )
-				.ToDynamicListAsync ();
+				.ToDynamicListAsync ( cancellationToken );
 
 		return PagedList<object>.Create ( pagedData , count , offset , limit );
 
