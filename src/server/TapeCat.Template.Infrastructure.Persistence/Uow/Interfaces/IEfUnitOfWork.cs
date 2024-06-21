@@ -9,4 +9,8 @@ public interface IEfUnitOfWork<TContext, TKey> : IUnitOfWork<TKey>, IAsyncDispos
 {
 	new EfRepository<TModel , TKey , TContext> Repository<TModel> ()
 		where TModel : class, IModel<TKey>;
+
+	Task EnsureCreatedAsync ( CancellationToken cancellationToken = default );
+
+	void EnsureCreated ();
 }

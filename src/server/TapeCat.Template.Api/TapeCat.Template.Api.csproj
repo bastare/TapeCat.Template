@@ -94,6 +94,7 @@
         <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
         <PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
         <PackageReference Include="EntityFrameworkCore.Triggered.Abstractions" Version="3.2.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />

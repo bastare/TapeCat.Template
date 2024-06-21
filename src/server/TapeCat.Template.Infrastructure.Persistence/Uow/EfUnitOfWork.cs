@@ -41,4 +41,12 @@ public sealed class EfUnitOfWork<TContext, TKey> ( TContext context , TypeAdapte
 
 	public ValueTask DisposeAsync ()
 		=> _context.DisposeAsync ();
+
+	public Task EnsureCreatedAsync ( CancellationToken cancellationToken = default )
+		=> _context.Database.EnsureCreatedAsync ( cancellationToken );
+
+	public void EnsureCreated ()
+	{
+		_context.Database.EnsureCreated ();
+	}
 }
