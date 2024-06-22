@@ -125,7 +125,7 @@ public sealed class ExceptionHandlerManager
 		{
 			InvokeStatusCode ( exceptionHandler , httpContext , exception );
 
-			await ExecuteExceptionHandlerCallbackAsync ( exceptionHandler , httpContext , exception );
+			await EmitExceptionHandlerCallbackAsync ( exceptionHandler , httpContext , exception );
 
 			await FormErrorMessageAsync ( exceptionHandler , httpContext , exception , cancellationToken );
 
@@ -134,16 +134,16 @@ public sealed class ExceptionHandlerManager
 				httpContext!.Response.StatusCode = ( int ) exceptionHandler.InjectStatusCode.Invoke ( httpContext , exception );
 			}
 
-			Task ExecuteExceptionHandlerCallbackAsync ( IExceptionHandler exceptionHandler , HttpContext httpContext , Exception exception )
+			Task EmitExceptionHandlerCallbackAsync ( IExceptionHandler exceptionHandler , HttpContext httpContext , Exception exception )
 				=> exceptionHandler.OnHoldAsync?.Invoke ( httpContext , exception , cancellationToken ) ??
 					Task.CompletedTask;
 
-			static async Task FormErrorMessageAsync ( IExceptionHandler exceptionHandler ,
-													  HttpContext httpContext ,
-													  Exception exception ,
-													  CancellationToken cancellationToken = default )
+			static Task FormErrorMessageAsync ( IExceptionHandler exceptionHandler ,
+												HttpContext httpContext ,
+												Exception exception ,
+												CancellationToken cancellationToken = default )
 			{
-				await httpContext.Response.WriteAsync (
+				return httpContext.Response.WriteAsync (
 					text: JsonConvert.SerializeObject ( value: ResolveExceptionMessage ( exceptionHandler , exception ) ) ,
 					cancellationToken );
 
@@ -152,12 +152,12 @@ public sealed class ExceptionHandlerManager
 			}
 		}
 
-		static async Task FormInnerErrorResponseAsync ( HttpContext httpContext ,
-														CancellationToken cancellationToken = default )
+		static Task FormInnerErrorResponseAsync ( HttpContext httpContext ,
+												  CancellationToken cancellationToken = default )
 		{
 			httpContext!.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-			await httpContext.Response.WriteAsync (
+			return httpContext.Response.WriteAsync (
 				text: JsonConvert.SerializeObject (
 					value: new ErrorMessage (
 						Message: "Internal server error" ,
