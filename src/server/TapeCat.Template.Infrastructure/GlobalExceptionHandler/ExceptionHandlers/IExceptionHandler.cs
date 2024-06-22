@@ -2,6 +2,7 @@ namespace TapeCat.Template.Infrastructure.GlobalExceptionHandler.ExceptionHandle
 
 using Microsoft.AspNetCore.Http;
 using System.Net;
+using Delegates;
 
 public interface IExceptionHandler<out TErrorMessage> : IExceptionHandler
 {
@@ -12,7 +13,7 @@ public interface IExceptionHandler
 {
 	int Id { get; }
 
-	Func<HttpContext , Exception, CancellationToken?, Task>? OnHoldAsync { get; }
+	OnExceptionHoldAsync? OnHoldAsync { get; }
 
 	Func<Exception , object> InjectExceptionMessage { get; }
 

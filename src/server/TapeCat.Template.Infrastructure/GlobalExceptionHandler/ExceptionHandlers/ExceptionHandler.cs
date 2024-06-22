@@ -1,6 +1,7 @@
 namespace TapeCat.Template.Infrastructure.GlobalExceptionHandler.ExceptionHandlers;
 
 using Domain.Shared.Common.Classes.HttpMessages.Error;
+using Delegates;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
@@ -9,7 +10,7 @@ public sealed record ExceptionHandler : IExceptionHandler
 {
 	public int Id { get; }
 
-	public Func<HttpContext , Exception, CancellationToken?, Task>? OnHoldAsync { get; init; }
+	public OnExceptionHoldAsync? OnHoldAsync { get; init; }
 
 	public Func<Exception , object> InjectExceptionMessage { get; init; } = DefaultExceptionMessageInjector;
 
