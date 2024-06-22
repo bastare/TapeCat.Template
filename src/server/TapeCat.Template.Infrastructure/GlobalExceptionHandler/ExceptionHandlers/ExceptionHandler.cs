@@ -10,15 +10,15 @@ public sealed record ExceptionHandler : IExceptionHandler
 {
 	public int Id { get; }
 
-	public OnExceptionHoldAsync? OnHoldAsync { get; init; }
+	public OnExceptionHoldAsyncDelegate? OnHoldAsync { get; init; }
 
-	public Func<Exception , object> InjectExceptionMessage { get; init; } = DefaultExceptionMessageInjector;
+	public InjectExceptionMessageDelegate<object> InjectExceptionMessage { get; init; } = DefaultExceptionMessageInjector;
 
-	public Func<HttpContext , Exception , HttpStatusCode> InjectStatusCode { get; init; } = DefaultStatusCodeInjector;
+	public InjectStatusCodeDelegate InjectStatusCode { get; init; } = DefaultStatusCodeInjector;
 
-	private Func<HttpContext , Exception , bool> IsAllowedException { get; }
+	private IsAllowedExceptionDelegate IsAllowedException { get; }
 
-	public ExceptionHandler ( int id , Func<HttpContext , Exception , bool>? isAllowedException )
+	public ExceptionHandler ( int id , IsAllowedExceptionDelegate? isAllowedException )
 	{
 		NotNull ( isAllowedException );
 
