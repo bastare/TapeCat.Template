@@ -13,7 +13,7 @@ public static class GlobalExceptionHandlerConfigurator
 			httpContext =>
 				ExceptionFiltersConfigurator (
 					httpContext ,
-				  	exception: httpContext.ResolveException () ));
+					exception: httpContext.ResolveException () ) );
 	}
 
 	public static async Task ExceptionFiltersConfigurator ( HttpContext? httpContext , Exception? exception )

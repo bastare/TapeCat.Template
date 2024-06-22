@@ -6,6 +6,7 @@ using GlobalExceptionHandler;
 using GlobalExceptionHandler.Builders;
 using GlobalExceptionHandler.ExceptionHandlers;
 using InjectorBuilder.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
@@ -27,7 +28,7 @@ public sealed class ErrorHandlerInjector : IInjectable
 						InjectStatusCode = ( _ , _ ) => HttpStatusCode.BadRequest ,
 						InjectExceptionMessage = ( _ ) =>
 							new PageErrorMessage (
-								StatusCode: ( int ) HttpStatusCode.BadRequest ,
+								StatusCode: StatusCodes.Status400BadRequest ,
 								Message: "Unexpected format" ,
 								Description: "Sorry, try use other format." )
 					} )
@@ -41,7 +42,7 @@ public sealed class ErrorHandlerInjector : IInjectable
 						InjectStatusCode = ( _ , _ ) => HttpStatusCode.Forbidden ,
 						InjectExceptionMessage = ( _ ) =>
 							new PageErrorMessage (
-								StatusCode: ( int ) HttpStatusCode.Forbidden ,
+								StatusCode: StatusCodes.Status403Forbidden ,
 								Message: "Forbidden" ,
 								Description: "User have no permission to this resource" )
 					} )
@@ -55,7 +56,7 @@ public sealed class ErrorHandlerInjector : IInjectable
 						InjectStatusCode = ( _ , _ ) => HttpStatusCode.NotFound ,
 						InjectExceptionMessage = ( _ ) =>
 							new PageErrorMessage (
-								StatusCode: ( int ) HttpStatusCode.NotFound ,
+								StatusCode: StatusCodes.Status404NotFound ,
 								Message: "The requested url is not found" ,
 								Description: "Sorry, the page you are looking for does not exist." )
 					} )
