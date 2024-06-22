@@ -125,7 +125,7 @@ public sealed class ExceptionHandlerManager
 		{
 			InvokeStatusCode ( exceptionHandler , httpContext , exception );
 
-			ExecuteExceptionHandlerCallback ( exceptionHandler , httpContext , exception );
+			await ExecuteExceptionHandlerCallbackAsync ( exceptionHandler , httpContext , exception );
 
 			await FormErrorMessageAsync ( exceptionHandler , httpContext , exception , cancellationToken );
 
@@ -134,10 +134,9 @@ public sealed class ExceptionHandlerManager
 				httpContext!.Response.StatusCode = ( int ) exceptionHandler.InjectStatusCode.Invoke ( httpContext , exception );
 			}
 
-			static void ExecuteExceptionHandlerCallback ( IExceptionHandler exceptionHandler , HttpContext httpContext , Exception exception )
-			{
-				exceptionHandler.OnHold?.Invoke ( httpContext , exception );
-			}
+			Task ExecuteExceptionHandlerCallbackAsync ( IExceptionHandler exceptionHandler , HttpContext httpContext , Exception exception )
+				=> exceptionHandler.OnHoldAsync?.Invoke ( httpContext , exception , cancellationToken )
+					?? Task.CompletedTask;
 
 			static async Task FormErrorMessageAsync ( IExceptionHandler exceptionHandler ,
 													  HttpContext httpContext ,

@@ -12,7 +12,7 @@ public interface IExceptionHandler
 {
 	int Id { get; }
 
-	Action<HttpContext , Exception>? OnHold { get; }
+	Func<HttpContext , Exception, CancellationToken?, Task>? OnHoldAsync { get; }
 
 	Func<Exception , object> InjectExceptionMessage { get; }
 

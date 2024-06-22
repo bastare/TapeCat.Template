@@ -19,7 +19,7 @@ public sealed class ExceptionHandlerManagerBuilder : IBuilder<ExceptionHandlerMa
 				id: 0 ,
 				isAllowedException: ( _ , _ ) => true )
 			{
-				OnHold = ( _ , _ ) => { } ,
+				OnHoldAsync = ( _ , _ , _ ) => Task.CompletedTask ,
 				InjectStatusCode = ( _ , _ ) => HttpStatusCode.InternalServerError ,
 				InjectExceptionMessage =
 					( _ ) =>

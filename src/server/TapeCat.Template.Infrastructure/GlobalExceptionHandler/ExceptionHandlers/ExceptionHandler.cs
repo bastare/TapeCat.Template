@@ -9,7 +9,7 @@ public sealed record ExceptionHandler : IExceptionHandler
 {
 	public int Id { get; }
 
-	public Action<HttpContext , Exception>? OnHold { get; init; }
+	public Func<HttpContext , Exception, CancellationToken?, Task>? OnHoldAsync { get; init; }
 
 	public Func<Exception , object> InjectExceptionMessage { get; init; } = DefaultExceptionMessageInjector;
 
