@@ -23,7 +23,7 @@ public sealed record PagedList<T> : IPagedList<T>
 		=> GetEnumerator ();
 
 	private PagedList ( IEnumerable<T> items )
-		=> _immutablePagedList = ImmutableList.CreateRange ( items );
+		=> _immutablePagedList = [ ..items ];
 
 	public static PagedList<T> Create ( IEnumerable<T> items , int count , int offset , int limit )
 	{
