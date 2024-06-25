@@ -12,16 +12,11 @@ public sealed class ValidationFilter<TMessage> ( IServiceProvider serviceProvide
 {
 	private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-	public async Task Send ( ConsumeContext<TMessage> context , IPipe<ConsumeContext<TMessage>> next )
+	public Task Send ( ConsumeContext<TMessage> context , IPipe<ConsumeContext<TMessage>> next )
 	{
-		if ( !TryValidateContract ( context , out var sendContractException ) )
-		{
-			await RespondFaultAsync ( context , sendContractException! );
-
-			return;
-		}
-
-		await next.Send ( context );
+		return !TryValidateContract ( context , out var sendContractException )
+			? RespondFaultAsync ( context , sendContractException! )
+			: next.Send ( context );
 
 		bool TryValidateContract ( ConsumeContext<TMessage> context , out Exception? exception )
 		{
