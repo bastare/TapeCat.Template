@@ -13,19 +13,19 @@ public sealed class LoggerFactoryInjector : IInjectable
 	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
 	{
 		serviceCollection.AddLogging ( loggingBuilder =>
-		  {
-			  loggingBuilder.AddSerilog (
-				logger: CreateLogger () ,
-				dispose: true );
-		  } );
+		{
+			loggingBuilder.AddSerilog (
+			logger: CreateLogger () ,
+			dispose: true );
+		} );
 
 		static Logger CreateLogger ()
 			=> new LoggerConfiguration ()
 				.Enrich.FromLogContext ()
 				.WriteTo.Async ( loggerSinkConfiguration =>
-				  {
-					  loggerSinkConfiguration.Console ();
-				  } )
+				{
+					loggerSinkConfiguration.Console ();
+				} )
 				.CreateLogger ();
 	}
 }

@@ -3,8 +3,8 @@
         <IsPackable>false</IsPackable>
         <ImplicitUsings>enable</ImplicitUsings>
         <SpaRoot></SpaRoot>
-        <SpaClientUrl>http://localhost:4200</SpaClientUrl>
-        <SpaLaunchCommand>ng serve</SpaLaunchCommand>
+        <SpaClientUrl></SpaClientUrl>
+        <SpaLaunchCommand></SpaLaunchCommand>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
 

@@ -15,20 +15,20 @@ builder.Host
 	.UseServiceProviderFactory ( new AutofacServiceProviderFactory () )
 	.ConfigureContainer<ContainerBuilder> ( startup.ConfigureContainer )
 	.ConfigureAppConfiguration ( ( hostBuilderContext , config ) =>
-	  {
-		  config
-			  .AddJsonFile (
-				  path: "./appsettings.json" ,
-				  optional: false ,
-				  reloadOnChange: true )
+	{
+		config
+			.AddJsonFile (
+				path: "./appsettings.json" ,
+				optional: false ,
+				reloadOnChange: true )
 
-			  .AddJsonFile (
-				  path: $"./appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json" ,
-				  optional: true ,
-				  reloadOnChange: true )
+			.AddJsonFile (
+				path: $"./appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json" ,
+				optional: true ,
+				reloadOnChange: true )
 
-			  .AddEnvironmentVariables ();
-	  } );
+			.AddEnvironmentVariables ();
+	} );
 
 startup.ConfigureServices ( builder.Services );
 

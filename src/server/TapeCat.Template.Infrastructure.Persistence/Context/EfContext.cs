@@ -1,21 +1,17 @@
 namespace TapeCat.Template.Infrastructure.Persistence.Context;
 
 using AgileObjects.NetStandardPolyfills;
-using Configurations.ConfigurationBootstrapper;
 using Configurations.ModelConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 public sealed class EfContext (
-	DbContextOptions<EfContext> options ,
-	ModelCreatingConfigurator modelCreatingConfigurator )
+	DbContextOptions<EfContext> options )
 		: DbContext( options )
 {
-	private readonly ModelCreatingConfigurator _modelCreatingConfigurator = modelCreatingConfigurator;
 
 	protected override void OnModelCreating ( ModelBuilder modelBuilder )
 	{
 		ApplyConfigurationsFromAssembly ( modelBuilder );
-		ApplyConfigurationsFromConfigurator ( modelBuilder );
 
 		static void ApplyConfigurationsFromAssembly ( ModelBuilder modelBuilder )
 		{
@@ -24,11 +20,6 @@ public sealed class EfContext (
 			static Assembly GetAssemblyWithConfigurations ()
 				=> typeof ( ModelEntityTypeConfiguration<,> )
 					.GetAssembly ();
-		}
-
-		void ApplyConfigurationsFromConfigurator ( ModelBuilder modelBuilder )
-		{
-			_modelCreatingConfigurator.Configure ( modelBuilder );
 		}
 	}
 }

@@ -48,10 +48,7 @@ public sealed class ValidationFilter<TMessage> ( IServiceProvider serviceProvide
 					=> new InlineValidator<TMessage> ()
 						.Validate (
 							message ,
-							( options ) =>
-							  {
-								  options.IncludeAllRuleSets ();
-							  } );
+							options => options.IncludeAllRuleSets () );
 			}
 		}
 

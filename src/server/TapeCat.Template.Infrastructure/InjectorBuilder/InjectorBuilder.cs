@@ -52,9 +52,7 @@ public static class InjectorBuilder
 			injectorTypes
 				.Where ( injectorType => IsInjectable ( injectorType , serviceCollection , configuration ) )
 				.ForEach ( injectorType =>
-				  {
-					  Inject ( injectorType , serviceCollection , configuration );
-				  } );
+					Inject ( injectorType , serviceCollection , configuration ) );
 
 			return serviceCollection;
 

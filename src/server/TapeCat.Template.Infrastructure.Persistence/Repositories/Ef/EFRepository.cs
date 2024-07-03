@@ -237,30 +237,30 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 		return ( await FindByAsync ( predicate , isTracking: true , cancellationToken ) )!
 
 			.Tap ( entityToRemove =>
-			  {
-				  if ( entityToRemove is null )
-					  return;
+			{
+				if ( entityToRemove is null )
+					return;
 
-				  var entityState = _context.Set<TModel> ()
-					 .Remove ( entityToRemove );
+				var entityState = _context.Set<TModel> ()
+					.Remove ( entityToRemove );
 
-				  if ( entityState is { State: not EntityState.Deleted } )
-					  throw new RepositoryException ( "Entity wasn`t removed" );
-			  } )!;
+				if ( entityState is { State: not EntityState.Deleted } )
+					throw new RepositoryException ( "Entity wasn`t removed" );
+			} )!;
 	}
 
 	public Task<TModel?> RemoveAsync ( TModel model , CancellationToken cancellationToken = default )
 		=> Task.FromResult (
 			result: model.Tap ( model =>
-			  {
-				  NotNull ( model , nameof ( model ) );
+			{
+				NotNull ( model , nameof ( model ) );
 
-				  var entityState = _context.Set<TModel> ()
-					  .Remove ( model! );
+				var entityState = _context.Set<TModel> ()
+					.Remove ( model! );
 
-				  if ( entityState is { State: not EntityState.Deleted } )
-					  throw new RepositoryException ( "Entity wasn`t removed" );
-			  } ) )!;
+				if ( entityState is { State: not EntityState.Deleted } )
+					throw new RepositoryException ( "Entity wasn`t removed" );
+			} ) )!;
 
 	public Task RemoveRangeAsync ( IEnumerable<TModel> models , CancellationToken cancellationToken = default )
 	{
@@ -325,13 +325,13 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 	public Task<TModel> UpdateAsync ( TModel model , CancellationToken _ = default )
 		=> Task.FromResult (
 			result: model.Tap ( model =>
-			  {
-				  NotNull ( model );
+			{
+				NotNull ( model );
 
-				  _context.Entry ( model! ).State = EntityState.Modified;
+				_context.Entry ( model! ).State = EntityState.Modified;
 
-				  return _context.Entry ( model! ).Entity;
-			  } ) )!;
+				return _context.Entry ( model! ).Entity;
+			} ) )!;
 
 	public Task BulkAddAsync ( IEnumerable<TModel> models , CancellationToken cancellationToken = default )
 		=> _context.BulkInsertAsync (
@@ -365,9 +365,9 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 		CancellationToken cancellationToken = default )
 			=> ( await FilterByAsync ( predicate , isTracking: true , cancellationToken ) )
 				.Tap ( self =>
-				  {
-					  self.ForEach ( model => projectionAction ( model , source ) );
-				  } );
+				{
+					self.ForEach ( model => projectionAction ( model , source ) );
+				} );
 
 	public async Task<List<TModel>> ProjectionUpdateAsync<TSource> (
 		IEnumerable<TSource> source ,
@@ -376,9 +376,9 @@ public sealed class EfRepository<TModel, TKey, TContext> ( TContext context , Ty
 		CancellationToken cancellationToken = default )
 			=> ( await FilterByAsync ( predicate , isTracking: true , cancellationToken ) )
 				.Tap ( self =>
-				  {
-					  self.ForEach ( model => projectionAction ( model , source ) );
-				  } );
+				{
+					self.ForEach ( model => projectionAction ( model , source ) );
+				} );
 
 	public async Task<long> CountAsync ( Expression<Func<TModel , bool>> predicate , CancellationToken cancellationToken = default )
 		=> await _context.Set<TModel> ()

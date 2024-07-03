@@ -21,7 +21,6 @@ public abstract class AuditableEntityTypeConfiguration<TAuditableEntity, TKey> :
 
 			builder.Property ( auditableModel => auditableModel.Created )
 				.HasColumnType ( "datetime2" )
-				.HasDefaultValueSql ( "GETDATE()" )
 				.IsRequired ();
 
 			builder.Property ( auditableModel => auditableModel.LastModifiedBy )

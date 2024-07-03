@@ -12,7 +12,7 @@ public sealed class SessionInjector : Module
 			.As ( typeof ( IUserSession<> ) )
 			.InstancePerLifetimeScope ();
 
-		// ? Change id to ur entity
+		// ? Change id to ur entity id
 		builder.Register ( context => context.Resolve<IUserSession<object>> () )
 			.As<IUserSession> ()
 			.InstancePerLifetimeScope ();

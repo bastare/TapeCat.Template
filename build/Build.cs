@@ -31,29 +31,29 @@ public class Build : NukeBuild
 		_ => _
 			.Before ( Restore )
 			.Executes ( () =>
-			  {
-				  SourceDirectory.GlobDirectories ( "**/bin" , "**/obj" ).ForEach ( DeleteDirectory );
-				  TestsDirectory.GlobDirectories ( "**/bin" , "**/obj" ).ForEach ( DeleteDirectory );
+			{
+				SourceDirectory.GlobDirectories ( "**/bin" , "**/obj" ).ForEach ( DeleteDirectory );
+				TestsDirectory.GlobDirectories ( "**/bin" , "**/obj" ).ForEach ( DeleteDirectory );
 
-				  EnsureCleanDirectory ( ArtifactsDirectory );
-			  } );
+				EnsureCleanDirectory ( ArtifactsDirectory );
+			} );
 
 	public Target Restore =>
 		_ => _
 			.Executes ( () =>
-			  {
-				  DotNetRestore ( dotNetRestoreSettings => dotNetRestoreSettings
-					  .SetProjectFile ( Solution ) );
-			  } );
+			{
+				DotNetRestore ( dotNetRestoreSettings => dotNetRestoreSettings
+					.SetProjectFile ( Solution ) );
+			} );
 
 	public Target Compile =>
 		_ => _
 			.DependsOn ( Restore )
 			.Executes ( () =>
-			  {
-				  DotNetBuild ( dotNetBuildSettings => dotNetBuildSettings
-					.SetProjectFile ( Solution )
-					.SetConfiguration ( Configuration )
-					.EnableNoRestore () );
-			  } );
+			{
+				DotNetBuild ( dotNetBuildSettings => dotNetBuildSettings
+				.SetProjectFile ( Solution )
+				.SetConfiguration ( Configuration )
+				.EnableNoRestore () );
+			} );
 }

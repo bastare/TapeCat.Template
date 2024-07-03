@@ -14,11 +14,11 @@ public sealed class JsonSerializerSettingsInjector : IInjectable
 	{
 		JsonConversationSettings.DefaultSerializerSettings
 			.Tap ( jsonSerializerSettings =>
-			  {
-				  JsonConvert.DefaultSettings =
+			{
+				JsonConvert.DefaultSettings =
 					() => jsonSerializerSettings;
 
-				  serviceCollection.TryAddSingleton ( jsonSerializerSettings );
-			  } );
+				serviceCollection.TryAddSingleton ( jsonSerializerSettings );
+			} );
 	}
 }

@@ -10,12 +10,11 @@ public abstract class ModelEntityTypeConfiguration<TModelEntity, TKey> : IEntity
 {
 	public virtual void Configure ( EntityTypeBuilder<TModelEntity> builder )
 	{
-		ConfigureMSSQLPrimaryKey ();
+		ConfigurePrimaryKey ();
 
-		void ConfigureMSSQLPrimaryKey ()
+		void ConfigurePrimaryKey ()
 		{
 			builder.Property ( model => model.Id )
-				.HasDefaultValueSql ( "NEWID()" )
 				.IsRequired ();
 		}
 	}
