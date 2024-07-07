@@ -2,18 +2,18 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using TapeCat.Template.Api;
 
-var builder_ = WebApplication.CreateBuilder (
+var builder = WebApplication.CreateBuilder (
 	options: new ()
 	{
 		Args = args ,
 		WebRootPath = "webroot"
 	} );
 
-var startup_ = new Startup ( builder_.Configuration , builder_.Environment );
+var startup = new Startup ( builder.Configuration , builder.Environment );
 
-builder_.Host
+builder.Host
 	.UseServiceProviderFactory ( new AutofacServiceProviderFactory () )
-	.ConfigureContainer<ContainerBuilder> ( startup_.ConfigureContainer )
+	.ConfigureContainer<ContainerBuilder> ( startup.ConfigureContainer )
 	.ConfigureAppConfiguration ( ( hostBuilderContext , config ) =>
 	{
 		config
@@ -30,10 +30,10 @@ builder_.Host
 			.AddEnvironmentVariables ();
 	} );
 
-startup_.ConfigureServices ( builder_.Services );
+startup.ConfigureServices ( builder.Services );
 
-var webApplication_ = builder_.Build ();
+var webApplication = builder.Build ();
 
-startup_.Configure ( webApplication_ );
+startup.Configure ( webApplication );
 
-await webApplication_.RunAsync ();
+await webApplication.RunAsync ();

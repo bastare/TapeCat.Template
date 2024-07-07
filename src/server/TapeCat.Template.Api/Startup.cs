@@ -1,7 +1,6 @@
 namespace TapeCat.Template.Api;
 
 using System.IO.Compression;
-using System.Linq;
 using Asp.Versioning;
 using Autofac;
 using FastEndpoints;
@@ -43,10 +42,9 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 
 				options.Providers.Add<BrotliCompressionProvider> ();
 
-				options.MimeTypes = Enumerable.Concat (
-					first: ResponseCompressionDefaults.MimeTypes ,
-					second: [
-						MimeTypesMap.GetMimeType("svg"),
+				options.MimeTypes = [
+					.. ResponseCompressionDefaults.MimeTypes,
+					MimeTypesMap.GetMimeType("svg"),
 						MimeTypesMap.GetMimeType("gif"),
 						MimeTypesMap.GetMimeType("html"),
 						MimeTypesMap.GetMimeType("txt"),
@@ -58,13 +56,12 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 						MimeTypesMap.GetMimeType("ico"),
 						MimeTypesMap.GetMimeType("woff"),
 						MimeTypesMap.GetMimeType("woff2")
-					]
-				);
+				];
 			} )
 			.InjectLayersDependency ( _configuration )
 			.AddFastEndpoints ();
 
-		if ( WebHostEnvironmentExtensions.IsDevelopment ( _webHostEnvironment ) )
+		if ( _webHostEnvironment.IsDevelopment () )
 		{
 			serviceCollection
 				.SwaggerDocument ()
@@ -78,20 +75,20 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 		containerBuilder.InjectLayersDependency ();
 	}
 
-	public void Configure ( IApplicationBuilder applicationBuilder )
+	public void Configure ( WebApplication webApplication )
 	{
-		if ( WebHostEnvironmentExtensions.IsProduction ( _webHostEnvironment ) )
-			applicationBuilder.UseSecureHeaders ();
+		if ( _webHostEnvironment.IsProduction () )
+			webApplication.UseSecureHeaders ();
 
-		if ( WebHostEnvironmentExtensions.IsDevelopment ( _webHostEnvironment ) )
-			applicationBuilder
+		if ( _webHostEnvironment.IsDevelopment () )
+			webApplication
 				.UseCors ( builder =>
 					builder
 						.AllowAnyOrigin ()
 						.AllowAnyHeader ()
 						.AllowAnyMethod () );
 
-		applicationBuilder
+		webApplication
 			.UseResponseCompression ()
 			.UseDefaultFiles ()
 			.UseStaticFiles (
@@ -122,16 +119,16 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 					3. Uncomment it back
 					4. Launch server again & don't close previously opened tab with swagger (step 1)
 				*/
-				if ( WebHostEnvironmentExtensions.IsDevelopment ( _webHostEnvironment ) )
+				if ( _webHostEnvironment.IsDevelopment () )
 					endpoints.MapSpaYarp ();
 
-				if ( WebHostEnvironmentExtensions.IsProduction ( _webHostEnvironment ) )
+				if ( _webHostEnvironment.IsProduction () )
 					endpoints.MapFallbackToFile ( "index.html" );
 
 				endpoints.MapFastEndpoints ();
 
-				if ( WebHostEnvironmentExtensions.IsDevelopment ( _webHostEnvironment ) )
-					applicationBuilder.UseSwaggerGen ();
+				if ( _webHostEnvironment.IsDevelopment () )
+					webApplication.UseSwaggerGen ();
 			} );
 	}
 }
