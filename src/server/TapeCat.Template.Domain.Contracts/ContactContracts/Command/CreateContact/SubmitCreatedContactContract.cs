@@ -2,4 +2,4 @@ namespace TapeCat.Template.Domain.Contracts.ContactContracts.Command.CreateConta
 
 using Dtos;
 
-public sealed record SubmitCreatedContactContract(ContactFromCreationDto CreatedContact);
+public sealed record SubmitCreatedContactContract ( ContactFromCreationDto CreatedContact );

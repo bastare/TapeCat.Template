@@ -9,15 +9,15 @@ using System.Reflection;
 
 public static class EndpointRouteBuilderExtensions
 {
-    public static void MapHub<THub>(this IEndpointRouteBuilder endpointRouteBuilder)
-        where THub : Hub
-    {
-        var routePath = ResolveHubRoutePath(typeof(THub));
+	public static void MapHub<THub> ( this IEndpointRouteBuilder endpointRouteBuilder )
+		where THub : Hub
+	{
+		var routePath = ResolveHubRoutePath ( typeof ( THub ) );
 
-        endpointRouteBuilder.MapHub<THub>(routePath);
-    }
+		endpointRouteBuilder.MapHub<THub> ( routePath );
+	}
 
-    private static string ResolveHubRoutePath(Type hubType)
-        => hubType.GetCustomAttribute<SignalRHubRouteAttribute>()?.Path ??
-            throw new ArgumentNullException(nameof(hubType), $"No required attribute: {nameof(SignalRHubRouteAttribute)}");
+	private static string ResolveHubRoutePath ( Type hubType )
+		=> hubType.GetCustomAttribute<SignalRHubRouteAttribute> ()?.Path ??
+			throw new ArgumentNullException ( nameof ( hubType ) , $"No required attribute: {nameof ( SignalRHubRouteAttribute )}" );
 }

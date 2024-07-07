@@ -9,39 +9,39 @@ using Domain.Core.Models.Contact;
 using Domain.Contracts.ContactContracts.Command.CreateContact.Dtos;
 using Domain.Contracts.ContactContracts.Command.CreateContact;
 
-public sealed class CreateContactConsumer(EfContext efContext) :
-    IConsumer<CreateContactContract>
+public sealed class CreateContactConsumer ( EfContext efContext ) :
+	IConsumer<CreateContactContract>
 {
-    private readonly EfContext _efContext = efContext;
+	private readonly EfContext _efContext = efContext;
 
-    public async Task Consume(ConsumeContext<CreateContactContract> context)
-    {
-        try
-        {
-            var createdContact_ =
-                await CreateContactsAsync(context.Message.ContactForCreation);
+	public async Task Consume ( ConsumeContext<CreateContactContract> context )
+	{
+		try
+		{
+			var createdContact_ =
+				await CreateContactsAsync ( context.Message.ContactForCreation );
 
-            await _efContext.SaveChangesAsync(context.CancellationToken);
+			await _efContext.SaveChangesAsync ( context.CancellationToken );
 
-            await context.RespondAsync<SubmitCreatedContactContract>(
-                new(CreatedContact: createdContact_.Adapt<ContactFromCreationDto>()));
-        }
-        catch (Exception exception)
-        {
-            await context.RespondAsync<FaultContract>(
-                new(exception));
-        }
+			await context.RespondAsync<SubmitCreatedContactContract> (
+				new ( CreatedContact: createdContact_.Adapt<ContactFromCreationDto> () ) );
+		}
+		catch ( Exception exception )
+		{
+			await context.RespondAsync<FaultContract> (
+				new ( exception ) );
+		}
 
-        async Task<Contact> CreateContactsAsync(ContactForCreationDto contactForCreation)
-        {
-            var modelContactForCreation_ = contactForCreation.Adapt<Contact>();
+		async Task<Contact> CreateContactsAsync ( ContactForCreationDto contactForCreation )
+		{
+			var modelContactForCreation_ = contactForCreation.Adapt<Contact> ();
 
-            await _efContext.Contacts
-                .AddAsync(
-                    modelContactForCreation_,
-                    context.CancellationToken);
+			await _efContext.Contacts
+				.AddAsync (
+					modelContactForCreation_ ,
+					context.CancellationToken );
 
-            return modelContactForCreation_;
-        }
-    }
+			return modelContactForCreation_;
+		}
+	}
 }

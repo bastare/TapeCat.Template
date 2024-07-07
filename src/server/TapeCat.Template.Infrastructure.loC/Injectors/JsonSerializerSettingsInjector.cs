@@ -10,15 +10,15 @@ using Newtonsoft.Json;
 
 public sealed class JsonSerializerSettingsInjector : IInjectable
 {
-    public void Inject(IServiceCollection serviceCollection, IConfiguration _)
-    {
-        JsonConversationSettings.DefaultSerializerSettings
-            .Tap(jsonSerializerSettings =>
-            {
-                JsonConvert.DefaultSettings =
-                    () => jsonSerializerSettings;
+	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
+	{
+		JsonConversationSettings.DefaultSerializerSettings
+			.Tap ( jsonSerializerSettings =>
+			{
+				JsonConvert.DefaultSettings =
+					() => jsonSerializerSettings;
 
-                serviceCollection.TryAddSingleton(jsonSerializerSettings);
-            });
-    }
+				serviceCollection.TryAddSingleton ( jsonSerializerSettings );
+			} );
+	}
 }

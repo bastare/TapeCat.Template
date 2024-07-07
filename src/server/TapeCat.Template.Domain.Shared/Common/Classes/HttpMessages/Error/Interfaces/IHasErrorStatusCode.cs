@@ -2,5 +2,5 @@ namespace TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages.Error.Inter
 
 public interface IHasErrorStatusCode
 {
-    public int? StatusCode { get; }
+	public int? StatusCode { get; }
 }

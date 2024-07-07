@@ -5,18 +5,18 @@ using Microsoft.AspNetCore.Http;
 
 public interface IExceptionHandler<out TErrorMessage> : IExceptionHandler
 {
-    new InjectExceptionMessageDelegate<TErrorMessage> InjectExceptionMessage { get; }
+	new InjectExceptionMessageDelegate<TErrorMessage> InjectExceptionMessage { get; }
 }
 
 public interface IExceptionHandler
 {
-    int Id { get; }
+	int Id { get; }
 
-    OnExceptionHoldAsyncDelegate? OnHoldAsync { get; }
+	OnExceptionHoldAsyncDelegate? OnHoldAsync { get; }
 
-    InjectExceptionMessageDelegate<object> InjectExceptionMessage { get; }
+	InjectExceptionMessageDelegate<object> InjectExceptionMessage { get; }
 
-    InjectStatusCodeDelegate InjectStatusCode { get; }
+	InjectStatusCodeDelegate InjectStatusCode { get; }
 
-    bool IsHold(HttpContext context, Exception exception);
+	bool IsHold ( HttpContext context , Exception exception );
 }

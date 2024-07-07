@@ -7,38 +7,38 @@ using Microsoft.Extensions.DependencyInjection;
 
 public sealed class CacheKeyGenerator
 {
-    private readonly ActionExecutingContext _actionExecutingContext;
+	private readonly ActionExecutingContext _actionExecutingContext;
 
-    private readonly IUserSession _userSession;
+	private readonly IUserSession _userSession;
 
-    private string RequestPath => _actionExecutingContext.HttpContext.Request.Path;
+	private string RequestPath => _actionExecutingContext.HttpContext.Request.Path;
 
-    private string RequestQuery => _actionExecutingContext.HttpContext.Request.QueryString.ToString();
+	private string RequestQuery => _actionExecutingContext.HttpContext.Request.QueryString.ToString ();
 
-    private CacheKeyGenerator(ActionExecutingContext actionExecutingContext)
-    {
-        _actionExecutingContext = actionExecutingContext;
-        _userSession = ResolveUserSession();
+	private CacheKeyGenerator ( ActionExecutingContext actionExecutingContext )
+	{
+		_actionExecutingContext = actionExecutingContext;
+		_userSession = ResolveUserSession ();
 
-        IUserSession ResolveUserSession()
-            => _actionExecutingContext.HttpContext.RequestServices
-                .GetRequiredService<IUserSession>();
-    }
+		IUserSession ResolveUserSession ()
+			=> _actionExecutingContext.HttpContext.RequestServices
+				.GetRequiredService<IUserSession> ();
+	}
 
-    public static CacheKeyGenerator Create(ActionExecutingContext actionExecutingContext)
-        => new(actionExecutingContext);
+	public static CacheKeyGenerator Create ( ActionExecutingContext actionExecutingContext )
+		=> new ( actionExecutingContext );
 
-    public string GenerateUserRelatedCacheKey()
-    {
-        return string.Concat(RequestPath, ResolveUserId(), RequestQuery)
-            .ToSHA256();
+	public string GenerateUserRelatedCacheKey ()
+	{
+		return string.Concat ( RequestPath , ResolveUserId () , RequestQuery )
+			.ToSHA256 ();
 
-        string ResolveUserId()
-            => _userSession.Id?.ToString() ??
-                throw new ArgumentException("No authorization token");
-    }
+		string ResolveUserId ()
+			=> _userSession.Id?.ToString () ??
+				throw new ArgumentException ( "No authorization token" );
+	}
 
-    public string GenerateUserNonRelatedCacheKey()
-        => string.Concat(RequestPath, RequestQuery)
-            .ToSHA256();
+	public string GenerateUserNonRelatedCacheKey ()
+		=> string.Concat ( RequestPath , RequestQuery )
+			.ToSHA256 ();
 }

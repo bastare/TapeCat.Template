@@ -12,37 +12,37 @@ using Persistence.Specifications.Evaluator.Common.Extensions;
 using Persistence.Specifications;
 using Persistence.Common.Extensions;
 
-public sealed class GetContactsConsumer(EfContext efContext) :
-    IConsumer<GetContactsContract>
+public sealed class GetContactsConsumer ( EfContext efContext ) :
+	IConsumer<GetContactsContract>
 {
-    private readonly EfContext _efContext = efContext;
+	private readonly EfContext _efContext = efContext;
 
-    public async Task Consume(ConsumeContext<GetContactsContract> context)
-    {
-        try
-        {
-            var contacts_ = await GetContactsAsync(context.Message);
+	public async Task Consume ( ConsumeContext<GetContactsContract> context )
+	{
+		try
+		{
+			var contacts_ = await GetContactsAsync ( context.Message );
 
-            await context.RespondAsync<SubmitContactsContract>(
-                new(ContactsForQueryResponse: contacts_.Adapt<IPaginationRowsDto>()));
-        }
-        catch (Exception exception)
-        {
-            await context.RespondAsync<FaultContract>(
-                new(exception));
-        }
+			await context.RespondAsync<SubmitContactsContract> (
+				new ( ContactsForQueryResponse: contacts_.Adapt<IPaginationRowsDto> () ) );
+		}
+		catch ( Exception exception )
+		{
+			await context.RespondAsync<FaultContract> (
+				new ( exception ) );
+		}
 
-        async Task<IPagedList> GetContactsAsync(GetContactsContract getContactsContract)
-            => await _efContext.Contacts
-                .SpecifiedQuery(
-                    inlineSpecification: new InlineQuerySpecification(
-                        getContactsContract.ExpressionQuery,
-                        getContactsContract.OrderQuery,
-                        getContactsContract.ProjectionQuery))
+		async Task<IPagedList> GetContactsAsync ( GetContactsContract getContactsContract )
+			=> await _efContext.Contacts
+				.SpecifiedQuery (
+					inlineSpecification: new InlineQuerySpecification (
+						getContactsContract.ExpressionQuery ,
+						getContactsContract.OrderQuery ,
+						getContactsContract.ProjectionQuery ) )
 
-                .ToPagedListAsync(
-                    getContactsContract.PaginationQuery!.Offset,
-                    getContactsContract.PaginationQuery!.Limit,
-                    context.CancellationToken);
-    }
+				.ToPagedListAsync (
+					getContactsContract.PaginationQuery!.Offset ,
+					getContactsContract.PaginationQuery!.Limit ,
+					context.CancellationToken );
+	}
 }

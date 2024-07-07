@@ -4,4 +4,4 @@ using Common.Attributes;
 using Dtos;
 
 [RequestClientContract]
-public sealed record PatchContactContract(ContactForPatchDto ContactForPatch);
+public sealed record PatchContactContract ( ContactForPatchDto ContactForPatch );

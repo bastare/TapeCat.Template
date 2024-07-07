@@ -2,7 +2,7 @@ namespace TapeCat.Template.Api.Queries.Interfaces;
 
 public interface IOrderQuery
 {
-    bool? IsDescending { get; }
+	bool? IsDescending { get; }
 
-    string? OrderBy { get; }
+	string? OrderBy { get; }
 }

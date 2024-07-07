@@ -3,20 +3,20 @@ namespace TapeCat.Template.Infrastructure.Persistence.Context.Configurations.Mod
 using Domain.Core.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public abstract class AuditableEntityTypeConfiguration<TAuditableEntity, TKey> : ModelEntityTypeConfiguration<TAuditableEntity, TKey>
-    where TAuditableEntity : class, IAuditableModel<TKey>
-    where TKey : struct
+public abstract class AuditableEntityTypeConfiguration<TAuditableEntity, TKey> : ModelEntityTypeConfiguration<TAuditableEntity , TKey>
+	where TAuditableEntity : class, IAuditableModel<TKey>
+	where TKey : struct
 {
-    public override void Configure(EntityTypeBuilder<TAuditableEntity> builder)
-    {
-        ConfigureAuditableFields();
+	public override void Configure ( EntityTypeBuilder<TAuditableEntity> builder )
+	{
+		ConfigureAuditableFields ();
 
-        base.Configure(builder);
+		base.Configure ( builder );
 
-        void ConfigureAuditableFields()
-        {
-            builder.Property(auditableModel => auditableModel.Created)
-                .IsRequired();
-        }
-    }
+		void ConfigureAuditableFields ()
+		{
+			builder.Property ( auditableModel => auditableModel.Created )
+				.IsRequired ();
+		}
+	}
 }

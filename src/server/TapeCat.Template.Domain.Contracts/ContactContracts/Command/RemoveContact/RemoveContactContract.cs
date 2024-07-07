@@ -3,4 +3,4 @@ namespace TapeCat.Template.Domain.Contracts.ContactContracts.Command.RemoveConta
 using Common.Attributes;
 
 [RequestClientContract]
-public sealed record RemoveContactContract(int Id);
+public sealed record RemoveContactContract ( int Id );
