@@ -2,6 +2,7 @@
     <ItemGroup>
         <PackageReference Include="LazyCache" Version="2.4.0" />
         <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
+        <PackageReference Include="FastEndpoints" Version="5.27.0" />
     </ItemGroup>
 
     <ItemGroup>

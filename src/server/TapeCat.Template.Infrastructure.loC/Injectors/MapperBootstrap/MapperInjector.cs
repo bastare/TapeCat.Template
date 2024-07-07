@@ -30,7 +30,7 @@ public sealed class MapperInjector : IInjectable
 			TypeAdapterConfig.GlobalSettings.Scan (
 				assemblies: [
 					Assembly.GetEntryAssembly ()!,
-					typeof (PaginationConfiguration).GetAssembly()
+					typeof ( PaginationConfiguration ).GetAssembly()
 				] );
 
 			injectTypeAdapterConfig ( TypeAdapterConfig.GlobalSettings );
