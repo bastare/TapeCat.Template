@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Pipes.SecurityPipes;
 using Common.Extensions;
 
 public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment webHostEnvironment )
@@ -36,14 +35,8 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 		} );
 
 		serviceCollection
-			.Configure<BrotliCompressionProviderOptions> ( options =>
-			{
-				options.Level = CompressionLevel.Fastest;
-			} )
-			.Configure<ApiBehaviorOptions> ( options =>
-			{
-				options.SuppressModelStateInvalidFilter = true;
-			} )
+			.Configure<BrotliCompressionProviderOptions> ( options => options.Level = CompressionLevel.Fastest )
+			.Configure<ApiBehaviorOptions> ( options => options.SuppressModelStateInvalidFilter = true )
 			.AddResponseCompression ( options =>
 			{
 				options.EnableForHttps = true;
@@ -88,81 +81,15 @@ public sealed class Startup ( IConfiguration configuration , IWebHostEnvironment
 	public void Configure ( IApplicationBuilder applicationBuilder )
 	{
 		if ( WebHostEnvironmentExtensions.IsProduction ( _webHostEnvironment ) )
-		{
-			applicationBuilder
-				.UseHttpsRedirection ()
-				.UseHsts ( hsts =>
-				{
-					hsts.MaxAge ( days: 365 ).IncludeSubdomains ();
-				} )
-				.UseXContentTypeOptions ()
-				.UsePermissionsPolicy (
-					siteUrl => [
-						$"fullscreen=(self {siteUrl})",
-						$"geolocation=(self {siteUrl})",
-						$"payment=(self {siteUrl})",
-						"camera=()",
-						"microphone=()",
-						"usb=()"
-					]
-				)
-				.UseXfo ( xfo =>
-				{
-					xfo.SameOrigin ();
-				} )
-				.UseReferrerPolicy ( options =>
-				{
-					options.NoReferrer ();
-				} )
-				.UseXXssProtection ( options =>
-				{
-					options.EnabledWithBlockMode ();
-				} )
-				.UseCsp ( options =>
-				{
-					options
-						.StyleSources ( configure =>
-						{
-							configure
-								.Self ()
-								.CustomSources (
-									"www.google.com" ,
-									"platform.twitter.com" ,
-									"cdn.syndication.twimg.com" ,
-									"fonts.googleapis.com"
-								)
-								.UnsafeInline ();
-						} )
-						.ScriptSources ( configure =>
-						{
-							configure
-								.Self ()
-								.CustomSources (
-									"www.google.com" ,
-									"cse.google.com" ,
-									"cdn.syndication.twimg.com" ,
-									"platform.twitter.com" ,
-									"https://www.google-analytics.com" ,
-									"https://connect.facebook.net" ,
-									"https://www.youtube.com"
-								)
-								.UnsafeInline ()
-								.UnsafeEval ();
-						} );
-				} );
-		}
+			applicationBuilder.UseSecureHeaders ();
 
 		if ( WebHostEnvironmentExtensions.IsDevelopment ( _webHostEnvironment ) )
-		{
 			applicationBuilder
 				.UseCors ( builder =>
-				{
 					builder
 						.AllowAnyOrigin ()
 						.AllowAnyHeader ()
-						.AllowAnyMethod ();
-				} );
-		}
+						.AllowAnyMethod () );
 
 		applicationBuilder
 			.UseResponseCompression ()

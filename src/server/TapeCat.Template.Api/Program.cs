@@ -2,38 +2,38 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using TapeCat.Template.Api;
 
-var builder = WebApplication.CreateBuilder (
-	options: new ()
-	{
-		Args = args ,
-		WebRootPath = "webroot"
-	} );
+var builder_ = WebApplication.CreateBuilder (
+    options: new ()
+    {
+        Args = args ,
+        WebRootPath = "webroot"
+    } );
 
-var startup = new Startup ( builder.Configuration , builder.Environment );
+var startup_ = new Startup ( builder_.Configuration , builder_.Environment );
 
-builder.Host
-	.UseServiceProviderFactory ( new AutofacServiceProviderFactory () )
-	.ConfigureContainer<ContainerBuilder> ( startup.ConfigureContainer )
-	.ConfigureAppConfiguration ( ( hostBuilderContext , config ) =>
-	  {
-		  config
-			  .AddJsonFile (
-				  path: "./appsettings.json" ,
-				  optional: false ,
-				  reloadOnChange: true )
+builder_.Host
+    .UseServiceProviderFactory ( new AutofacServiceProviderFactory () )
+    .ConfigureContainer<ContainerBuilder> ( startup_.ConfigureContainer )
+    .ConfigureAppConfiguration ( ( hostBuilderContext , config ) =>
+    {
+        config
+            .AddJsonFile (
+                path: "./appsettings.json" ,
+                optional: false ,
+                reloadOnChange: true )
 
-			  .AddJsonFile (
-				  path: $"./appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json" ,
-				  optional: true ,
-				  reloadOnChange: true )
+            .AddJsonFile (
+                path: $"./appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json" ,
+                optional: true ,
+                reloadOnChange: true )
 
-			  .AddEnvironmentVariables ();
-	  } );
+            .AddEnvironmentVariables ();
+    } );
 
-startup.ConfigureServices ( builder.Services );
+startup_.ConfigureServices ( builder_.Services );
 
-var webApplication = builder.Build ();
+var webApplication = builder_.Build ();
 
-startup.Configure ( webApplication );
+startup_.Configure ( webApplication );
 
 await webApplication.RunAsync ();
