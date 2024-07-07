@@ -49,11 +49,10 @@
 
     <ItemGroup>
         <PackageReference Include="AspNetCore.SpaYarp" Version="2.0.1" />
-        <PackageReference Include="FastEndpoints" Version="5.26.0" />
-        <PackageReference Include="FastEndpoints.Swagger" Version="5.26.0" />
+        <PackageReference Include="FastEndpoints" Version="5.27.0" />
+        <PackageReference Include="FastEndpoints.Swagger" Version="5.27.0" />
         <PackageReference Include="Autofac" Version="8.0.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
-        <PackageReference Include="Mapster" Version="7.4.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
         <PackageReference Include="CaseExtensions" Version="1.1.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
@@ -68,19 +67,14 @@
         <PackageReference Include="Serilog.Sinks.Async" Version="2.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
-        <PackageReference Include="FastEndpoints.Security" Version="5.26.0" />
+        <PackageReference Include="FastEndpoints.Security" Version="5.27.0" />
         <PackageReference Include="LazyCache" Version="2.4.0" />
         <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
-        <PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
-        <PackageReference Include="EntityFrameworkCore.Triggered.Abstractions" Version="3.2.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />

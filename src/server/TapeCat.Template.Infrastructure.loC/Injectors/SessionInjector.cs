@@ -10,6 +10,10 @@ public sealed class SessionInjector : Module
 	{
 		builder.RegisterGeneric ( typeof ( UserSession<> ) )
 			.As ( typeof ( IUserSession<> ) )
+
+			.InstancePerLifetimeScope ();
+
+		builder.RegisterType ( typeof ( UserSession<object> ) )
 			.As ( typeof ( IUserSession ) )
 
 			.InstancePerLifetimeScope ();
