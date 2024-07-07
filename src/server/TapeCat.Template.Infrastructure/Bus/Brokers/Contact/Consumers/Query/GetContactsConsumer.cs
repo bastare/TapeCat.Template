@@ -1,16 +1,16 @@
 namespace TapeCat.Template.Infrastructure.Bus.Brokers.Contact.Consumers.Query;
 
-using MassTransit;
 using System.Threading.Tasks;
 using Domain.Contracts;
 using Domain.Contracts.ContactContracts.Query.GetContacts;
-using Mapster;
+using Domain.Pagination.Common.Extensions;
+using Domain.Shared.Interfaces;
 using Domain.Contracts.Dtos.WrapDtos.Interfaces;
+using MassTransit;
+using Mapster;
 using Persistence.Context;
-using Persistence.Pagination.Interfaces;
 using Persistence.Specifications.Evaluator.Common.Extensions;
 using Persistence.Specifications;
-using Persistence.Common.Extensions;
 
 public sealed class GetContactsConsumer ( EfContext efContext ) :
 	IConsumer<GetContactsContract>

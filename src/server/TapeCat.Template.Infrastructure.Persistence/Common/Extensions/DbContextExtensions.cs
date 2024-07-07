@@ -1,6 +1,6 @@
 namespace TapeCat.Template.Infrastructure.Persistence.Common.Extensions;
 
-using TapeCat.Template.Infrastructure.Persistence.Common.Exceptions;
+using Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 public static class DbContextExtensions

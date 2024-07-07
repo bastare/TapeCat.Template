@@ -1,9 +1,9 @@
 namespace TapeCat.Template.Infrastructure.loC.Bus.Injectors;
 
+using Configurations.Filters;
+using Common.Extensions;
 using Domain.Contracts.ContactContracts.Query.GetContacts;
 using Infrastructure.Bus.Brokers.Contact.Consumers.Query;
-using Infrastructure.loC.Bus.Configurations.Filters;
-using Infrastructure.loC.Bus.Injectors.Common.Extensions;
 using InjectorBuilder.Common.Interfaces;
 using MassTransit;
 using Microsoft.Extensions.Configuration;

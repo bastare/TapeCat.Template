@@ -1,3 +1,3 @@
 namespace TapeCat.Template.Domain.Contracts.Dtos.QueryDtos;
 
-public sealed record PaginationQueryDto ( ulong Offset = 1 , ulong Limit = 100 );
+public sealed record PaginationQueryDto ( long Offset = 1 , long Limit = 100 );

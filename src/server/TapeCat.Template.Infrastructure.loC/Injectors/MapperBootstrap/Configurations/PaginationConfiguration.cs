@@ -2,7 +2,7 @@ namespace TapeCat.Template.Infrastructure.loC.Injectors.MapperBootstrap.Configur
 
 using Domain.Contracts.Dtos.WrapDtos.Interfaces;
 using Mapster;
-using Persistence.Pagination.Interfaces;
+using Domain.Shared.Interfaces;
 
 public sealed class PaginationConfiguration : IRegister
 {
