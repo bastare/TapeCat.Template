@@ -2,4 +2,4 @@ namespace TapeCat.Template.Domain.Contracts.ContactContracts.Command.PatchContac
 
 using Dtos;
 
-public sealed record SubmitPatchedContactsContract(ContactFromPatchDto ContactFromPatch);
+public sealed record SubmitPatchedContactsContract ( ContactFromPatchDto ContactFromPatch );

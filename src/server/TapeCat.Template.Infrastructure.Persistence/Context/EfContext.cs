@@ -5,22 +5,22 @@ using Configurations.ModelConfigurations;
 using TapeCat.Template.Domain.Core.Models.Contact;
 using Microsoft.EntityFrameworkCore;
 
-public sealed class EfContext(DbContextOptions<EfContext> options) :
-    DbContext(options)
+public sealed class EfContext ( DbContextOptions<EfContext> options ) :
+	DbContext ( options )
 {
-    public DbSet<Contact> Contacts { get; set; }
+	public DbSet<Contact> Contacts { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        ApplyConfigurationsFromAssembly(modelBuilder);
+	protected override void OnModelCreating ( ModelBuilder modelBuilder )
+	{
+		ApplyConfigurationsFromAssembly ( modelBuilder );
 
-        static void ApplyConfigurationsFromAssembly(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(assembly: GetAssemblyWithConfigurations());
+		static void ApplyConfigurationsFromAssembly ( ModelBuilder modelBuilder )
+		{
+			modelBuilder.ApplyConfigurationsFromAssembly ( assembly: GetAssemblyWithConfigurations () );
 
-            static Assembly GetAssemblyWithConfigurations()
-                => typeof(ModelEntityTypeConfiguration<,>)
-                    .GetAssembly();
-        }
-    }
+			static Assembly GetAssemblyWithConfigurations ()
+				=> typeof ( ModelEntityTypeConfiguration<,> )
+					.GetAssembly ();
+		}
+	}
 }

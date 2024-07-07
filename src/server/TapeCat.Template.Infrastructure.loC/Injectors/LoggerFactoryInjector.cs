@@ -7,25 +7,25 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
 
-[InjectionOrder(order: 2)]
+[InjectionOrder ( order: 2 )]
 public sealed class LoggerFactoryInjector : IInjectable
 {
-    public void Inject(IServiceCollection serviceCollection, IConfiguration _)
-    {
-        serviceCollection.AddLogging(loggingBuilder =>
-        {
-            loggingBuilder.AddSerilog(
-            logger: CreateLogger(),
-            dispose: true);
-        });
+	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
+	{
+		serviceCollection.AddLogging ( loggingBuilder =>
+		{
+			loggingBuilder.AddSerilog (
+			logger: CreateLogger () ,
+			dispose: true );
+		} );
 
-        static Logger CreateLogger()
-            => new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.Async(loggerSinkConfiguration =>
-                {
-                    loggerSinkConfiguration.Console();
-                })
-                .CreateLogger();
-    }
+		static Logger CreateLogger ()
+			=> new LoggerConfiguration ()
+				.Enrich.FromLogContext ()
+				.WriteTo.Async ( loggerSinkConfiguration =>
+				{
+					loggerSinkConfiguration.Console ();
+				} )
+				.CreateLogger ();
+	}
 }

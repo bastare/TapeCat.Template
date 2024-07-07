@@ -7,63 +7,63 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-public sealed class ValidationFilter<TMessage>(IServiceProvider serviceProvider) : IFilter<ConsumeContext<TMessage>>
-    where TMessage : class
+public sealed class ValidationFilter<TMessage> ( IServiceProvider serviceProvider ) : IFilter<ConsumeContext<TMessage>>
+	where TMessage : class
 {
-    private readonly IServiceProvider _serviceProvider = serviceProvider;
+	private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-    public Task Send(ConsumeContext<TMessage> context, IPipe<ConsumeContext<TMessage>> next)
-    {
-        return !TryValidateContract(context, out var sendContractException)
-            ? RespondFaultAsync(context, sendContractException!)
-            : next.Send(context);
+	public Task Send ( ConsumeContext<TMessage> context , IPipe<ConsumeContext<TMessage>> next )
+	{
+		return !TryValidateContract ( context , out var sendContractException )
+			? RespondFaultAsync ( context , sendContractException! )
+			: next.Send ( context );
 
-        bool TryValidateContract(ConsumeContext<TMessage> context, out Exception? exception)
-        {
-            var validationResult = ValidateContract(context);
+		bool TryValidateContract ( ConsumeContext<TMessage> context , out Exception? exception )
+		{
+			var validationResult = ValidateContract ( context );
 
-            if (validationResult.IsValid)
-            {
-                exception = default;
+			if ( validationResult.IsValid )
+			{
+				exception = default;
 
-                return true;
-            }
+				return true;
+			}
 
-            exception = new AssertValidationException(
-                errorMessages: validationResult.Errors
-                    .Select(error => error.ErrorMessage));
+			exception = new AssertValidationException (
+				errorMessages: validationResult.Errors
+					.Select ( error => error.ErrorMessage ) );
 
-            return false;
+			return false;
 
-            FluentValidation.Results.ValidationResult ValidateContract(ConsumeContext<TMessage> context)
-            {
-                var setupValidator =
-                    _serviceProvider.GetService<IValidator<TMessage>>();
+			FluentValidation.Results.ValidationResult ValidateContract ( ConsumeContext<TMessage> context )
+			{
+				var setupValidator =
+					_serviceProvider.GetService<IValidator<TMessage>> ();
 
-                return setupValidator is not null
-                    ? setupValidator.Validate(context.Message)
-                    : InlineValidate(context.Message);
+				return setupValidator is not null
+					? setupValidator.Validate ( context.Message )
+					: InlineValidate ( context.Message );
 
-                FluentValidation.Results.ValidationResult InlineValidate(TMessage message)
-                    => new InlineValidator<TMessage>()
-                        .Validate(
-                            message,
-                            (options) =>
-                              {
-                                  options.IncludeAllRuleSets();
-                              });
-            }
-        }
+				FluentValidation.Results.ValidationResult InlineValidate ( TMessage message )
+					=> new InlineValidator<TMessage> ()
+						.Validate (
+							message ,
+							( options ) =>
+							  {
+								  options.IncludeAllRuleSets ();
+							  } );
+			}
+		}
 
-        static async Task RespondFaultAsync(ConsumeContext<TMessage> context, Exception exception)
-        {
-            await context.RespondAsync<FaultContract>(
-                new(exception));
+		static async Task RespondFaultAsync ( ConsumeContext<TMessage> context , Exception exception )
+		{
+			await context.RespondAsync<FaultContract> (
+				new ( exception ) );
 
-            await context.NotifyConsumed(context, TimeSpan.Zero, "Filtered");
-        }
-    }
+			await context.NotifyConsumed ( context , TimeSpan.Zero , "Filtered" );
+		}
+	}
 
-    public void Probe(ProbeContext _)
-    { }
+	public void Probe ( ProbeContext _ )
+	{ }
 }

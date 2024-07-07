@@ -4,4 +4,4 @@ using Common.Attributes;
 using Dtos;
 
 [RequestClientContract]
-public sealed record CreateContactContract(ContactForCreationDto ContactForCreation);
+public sealed record CreateContactContract ( ContactForCreationDto ContactForCreation );

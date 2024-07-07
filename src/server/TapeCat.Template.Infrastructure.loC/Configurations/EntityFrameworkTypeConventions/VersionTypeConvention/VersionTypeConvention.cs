@@ -6,18 +6,18 @@ using System;
 
 public sealed class VersionTypeMapping : RelationalTypeMapping
 {
-    private static readonly ValueConverter<Version, string> _valueConverter =
-        new(convertToProviderExpression: version => version.ToString(),
-              convertFromProviderExpression: value => Version.Parse(value));
+	private static readonly ValueConverter<Version , string> _valueConverter =
+		new ( convertToProviderExpression: version => version.ToString () ,
+			  convertFromProviderExpression: value => Version.Parse ( value ) );
 
-    private static readonly RelationalTypeMappingParameters _relationalTypeMappingParameters =
-        new(coreParameters: new(clrType: typeof(Version), _valueConverter),
-              storeType: "char(20)");
+	private static readonly RelationalTypeMappingParameters _relationalTypeMappingParameters =
+		new ( coreParameters: new ( clrType: typeof ( Version ) , _valueConverter ) ,
+			  storeType: "char(20)" );
 
-    public VersionTypeMapping()
-        : base(_relationalTypeMappingParameters)
-    { }
+	public VersionTypeMapping ()
+		: base ( _relationalTypeMappingParameters )
+	{ }
 
-    protected override RelationalTypeMapping Clone(RelationalTypeMappingParameters _) =>
-        new VersionTypeMapping();
+	protected override RelationalTypeMapping Clone ( RelationalTypeMappingParameters _ ) =>
+		new VersionTypeMapping ();
 }

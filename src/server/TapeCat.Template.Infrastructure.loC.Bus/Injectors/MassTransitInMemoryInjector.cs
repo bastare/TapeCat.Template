@@ -11,24 +11,24 @@ using Microsoft.Extensions.DependencyInjection;
 
 public sealed class MassTransitInMemoryInjector : IInjectable
 {
-    public void Inject(IServiceCollection serviceCollection, IConfiguration _)
-    {
-        serviceCollection.AddMediator(mediatorRegistrationConfigurator =>
-        {
-            mediatorRegistrationConfigurator.AddConsumers(
-                assemblies: [
-                    typeof ( GetContactsConsumer ).Assembly
-                ]);
+	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
+	{
+		serviceCollection.AddMediator ( mediatorRegistrationConfigurator =>
+		{
+			mediatorRegistrationConfigurator.AddConsumers (
+				assemblies: [
+					typeof ( GetContactsConsumer ).Assembly
+				] );
 
-            mediatorRegistrationConfigurator.AddRequestClient(
-                assembliesWithRequestClients: [
-                    typeof ( GetContactsContract ).Assembly
-                ]);
+			mediatorRegistrationConfigurator.AddRequestClient (
+				assembliesWithRequestClients: [
+					typeof ( GetContactsContract ).Assembly
+				] );
 
-            mediatorRegistrationConfigurator.ConfigureMediator((mediatorRegistrationContext, mediatorConfigurator) =>
-            {
-                mediatorConfigurator.UseConsumeFilter(typeof(ValidationFilter<>), mediatorRegistrationContext);
-            });
-        });
-    }
+			mediatorRegistrationConfigurator.ConfigureMediator ( ( mediatorRegistrationContext , mediatorConfigurator ) =>
+			{
+				mediatorConfigurator.UseConsumeFilter ( typeof ( ValidationFilter<> ) , mediatorRegistrationContext );
+			} );
+		} );
+	}
 }

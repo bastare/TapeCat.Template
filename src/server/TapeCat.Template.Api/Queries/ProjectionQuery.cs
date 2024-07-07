@@ -4,5 +4,5 @@ using Interfaces;
 
 public sealed record ProjectionQuery : IProjectionQuery
 {
-    public string? Projection { get; init; }
+	public string? Projection { get; init; }
 }

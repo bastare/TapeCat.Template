@@ -2,14 +2,14 @@ namespace TapeCat.Template.Domain.Shared.Authorization.Session;
 
 using Interfaces;
 using Microsoft.AspNetCore.Http;
-public sealed class UserSession<TKey>(IHttpContextAccessor httpContextAccessor) : IUserSession<TKey>
+public sealed class UserSession<TKey> ( IHttpContextAccessor httpContextAccessor ) : IUserSession<TKey>
 {
-    private readonly IHttpContextAccessor _ = httpContextAccessor;
+	private readonly IHttpContextAccessor _ = httpContextAccessor;
 
-    public TKey Id => default!;
+	public TKey Id => default!;
 
-    object IUserSession.Id => Id!;
+	object IUserSession.Id => Id!;
 
-    public bool IsAuthorizedUser()
-        => false;
+	public bool IsAuthorizedUser ()
+		=> false;
 }

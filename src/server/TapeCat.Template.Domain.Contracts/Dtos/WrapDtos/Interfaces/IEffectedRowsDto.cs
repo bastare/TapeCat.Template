@@ -2,12 +2,12 @@ namespace TapeCat.Template.Domain.Contracts.Dtos.WrapDtos.Interfaces;
 
 public interface IEffectedRowsDto
 {
-    IEnumerable<object> Rows { get; }
+	IEnumerable<object> Rows { get; }
 
-    long EffectedRows { get; }
+	long EffectedRows { get; }
 }
 
 public interface IEffectedRowsDto<out T> : IEffectedRowsDto
 {
-    new IEnumerable<T> Rows { get; }
+	new IEnumerable<T> Rows { get; }
 }

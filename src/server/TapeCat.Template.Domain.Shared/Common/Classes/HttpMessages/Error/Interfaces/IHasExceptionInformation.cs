@@ -2,11 +2,11 @@ namespace TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages.Error.Inter
 
 public interface IHasExceptionInformation
 {
-    string? TechnicalErrorMessage { get; }
+	string? TechnicalErrorMessage { get; }
 
-    string? ExceptionType { get; }
+	string? ExceptionType { get; }
 
-    string? InnerMessage { get; }
+	string? InnerMessage { get; }
 
-    string? InnerExceptionType { get; }
+	string? InnerExceptionType { get; }
 }

@@ -2,7 +2,7 @@ namespace TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages.Error.Inter
 
 public interface IHasErrorDescription
 {
-    public string? Message { get; }
+	public string? Message { get; }
 
-    public string? Description { get; }
+	public string? Description { get; }
 }

@@ -11,29 +11,29 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 public sealed class MapperInjector : IInjectable
 {
-    public void Inject(IServiceCollection serviceCollection, IConfiguration _)
-    {
-        BootstrapTypeAdapterConfig(typeAdapterConfig =>
-          {
-              serviceCollection.TryAddSingleton(typeAdapterConfig);
+	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
+	{
+		BootstrapTypeAdapterConfig ( typeAdapterConfig =>
+		  {
+			  serviceCollection.TryAddSingleton ( typeAdapterConfig );
 
-              serviceCollection.TryAddScoped<IMapper, ServiceMapper>();
-          });
+			  serviceCollection.TryAddScoped<IMapper , ServiceMapper> ();
+		  } );
 
-        static void BootstrapTypeAdapterConfig(Action<TypeAdapterConfig> injectTypeAdapterConfig)
-        {
-            TypeAdapterConfig.GlobalSettings.AllowImplicitDestinationInheritance = true;
-            TypeAdapterConfig.GlobalSettings.AllowImplicitSourceInheritance = true;
+		static void BootstrapTypeAdapterConfig ( Action<TypeAdapterConfig> injectTypeAdapterConfig )
+		{
+			TypeAdapterConfig.GlobalSettings.AllowImplicitDestinationInheritance = true;
+			TypeAdapterConfig.GlobalSettings.AllowImplicitSourceInheritance = true;
 
-            TypeAdapterConfig.GlobalSettings.Default.AvoidInlineMapping(value: true);
+			TypeAdapterConfig.GlobalSettings.Default.AvoidInlineMapping ( value: true );
 
-            TypeAdapterConfig.GlobalSettings.Scan(
-                assemblies: [
-                    Assembly.GetEntryAssembly ()!,
-                    typeof (PaginationConfiguration).GetAssembly()
-                ]);
+			TypeAdapterConfig.GlobalSettings.Scan (
+				assemblies: [
+					Assembly.GetEntryAssembly ()!,
+					typeof (PaginationConfiguration).GetAssembly()
+				] );
 
-            injectTypeAdapterConfig(TypeAdapterConfig.GlobalSettings);
-        }
-    }
+			injectTypeAdapterConfig ( TypeAdapterConfig.GlobalSettings );
+		}
+	}
 }

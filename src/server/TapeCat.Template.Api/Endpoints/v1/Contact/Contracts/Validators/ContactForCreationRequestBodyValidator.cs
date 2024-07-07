@@ -6,22 +6,22 @@ using FluentValidation;
 
 public sealed class ContactForCreationRequestBodyValidator : Validator<ContactForCreationRequestBody>
 {
-    public ContactForCreationRequestBodyValidator()
-    {
-        RuleFor(contactForCreationRequestBody => contactForCreationRequestBody.FirstName)
-            .NotEmpty();
+	public ContactForCreationRequestBodyValidator ()
+	{
+		RuleFor ( contactForCreationRequestBody => contactForCreationRequestBody.FirstName )
+			.NotEmpty ();
 
-        RuleFor(contactForCreationRequestBody => contactForCreationRequestBody.LastName)
-            .NotEmpty();
+		RuleFor ( contactForCreationRequestBody => contactForCreationRequestBody.LastName )
+			.NotEmpty ();
 
-        RuleFor(contactForCreationRequestBody => contactForCreationRequestBody.Email)
-            .NotEmpty()
-            .EmailAddress();
+		RuleFor ( contactForCreationRequestBody => contactForCreationRequestBody.Email )
+			.NotEmpty ()
+			.EmailAddress ();
 
-        RuleFor(contactForCreationRequestBody => contactForCreationRequestBody.Phone)
-            .NotEmpty();
+		RuleFor ( contactForCreationRequestBody => contactForCreationRequestBody.Phone )
+			.NotEmpty ();
 
-        RuleFor(contactForCreationRequestBody => contactForCreationRequestBody.Title)
-            .NotEmpty();
-    }
+		RuleFor ( contactForCreationRequestBody => contactForCreationRequestBody.Title )
+			.NotEmpty ();
+	}
 }
