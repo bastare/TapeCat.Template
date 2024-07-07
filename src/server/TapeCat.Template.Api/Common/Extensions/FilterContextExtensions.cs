@@ -6,6 +6,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 public static class FilterContextExtensions
 {
-	public static bool HasAuthorization ( this FilterContext filterContext )
-		=> filterContext.ActionDescriptor.EndpointMetadata.ContainType<AuthorizeAttribute> ();
+    public static bool HasAuthorization(this FilterContext filterContext)
+        => filterContext.ActionDescriptor.EndpointMetadata.ContainType<AuthorizeAttribute>();
 }

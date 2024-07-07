@@ -1,7 +1,3 @@
 namespace TapeCat.Template.Domain.Contracts.Dtos.QueryDtos;
 
-using System.ComponentModel.DataAnnotations;
-
-public sealed record PaginationQueryDto (
-	[Range ( 1 , int.MaxValue )] int Offset = 1 ,
-	[Range ( 1 , int.MaxValue )] int Limit = 100 );
+public sealed record PaginationQueryDto(ulong Offset = 1, ulong Limit = 100);

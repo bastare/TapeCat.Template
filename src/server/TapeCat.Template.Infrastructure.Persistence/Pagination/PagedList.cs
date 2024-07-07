@@ -4,47 +4,47 @@ using Interfaces;
 
 public sealed record PagedList<T> : IPagedList<T>
 {
-	private readonly IImmutableList<T> _immutablePagedList;
+    private readonly IReadOnlyList<T> _immutablePagedList;
 
-	public T? this[ int index ] => _immutablePagedList[ index ];
+    public T? this[int index] => _immutablePagedList[index];
 
-	public int CurrentOffset { get; private set; }
+    public ulong CurrentOffset { get; private set; }
 
-	public int TotalPages { get; private set; }
+    public ulong TotalPages { get; private set; }
 
-	public int Limit { get; private set; }
+    public ulong Limit { get; private set; }
 
-	public int TotalCount { get; private set; }
+    public ulong TotalCount { get; private set; }
 
-	public IEnumerator<T> GetEnumerator ()
-		=> _immutablePagedList.GetEnumerator ();
+    public IEnumerator<T> GetEnumerator()
+        => _immutablePagedList.GetEnumerator();
 
-	IEnumerator IEnumerable.GetEnumerator ()
-		=> GetEnumerator ();
+    IEnumerator IEnumerable.GetEnumerator()
+        => GetEnumerator();
 
-	private PagedList ( IEnumerable<T> items )
-		=> _immutablePagedList = [ ..items ];
+    private PagedList(IEnumerable<T> items)
+        => _immutablePagedList = [.. items];
 
-	public static PagedList<T> Create ( IEnumerable<T> items , int count , int offset , int limit )
-	{
-		NotNull ( items );
-		ParametersAreValid ( limit );
+    public static PagedList<T> Create(IEnumerable<T> items, ulong count, ulong offset, ulong limit)
+    {
+        NotNull(items);
+        ParametersAreValid(limit);
 
-		return new ( items )
-		{
-			CurrentOffset = offset ,
-			TotalPages = CalculateTotalPages ( count , limit ) ,
-			Limit = limit ,
-			TotalCount = count
-		};
+        return new(items)
+        {
+            CurrentOffset = offset,
+            TotalPages = (ulong)CalculateTotalPages(count, limit),
+            Limit = limit,
+            TotalCount = count
+        };
 
-		static void ParametersAreValid ( int limit )
-		{
-			if ( limit <= 0 )
-				throw new ArgumentException ( $"{nameof ( limit )}: {limit}, has the `zero` or negative value" );
-		}
+        static void ParametersAreValid(ulong limit)
+        {
+            if (limit <= 0)
+                throw new ArgumentException($"{nameof(limit)}: {limit}, has the `zero` or negative value");
+        }
 
-		static int CalculateTotalPages ( int count , int limit )
-			=> ( int ) Math.Ceiling ( count / ( double ) limit );
-	}
+        static double CalculateTotalPages(ulong count, ulong limit)
+            => Math.Ceiling(count / (double)limit);
+    }
 }

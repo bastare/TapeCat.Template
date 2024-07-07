@@ -12,7 +12,7 @@
         "language": "C#",
         "type": "project"
     },
-    "sourceName": "TapeCat.Template",
+    "sourceName": "TapeCat.Template.Template",
     "preferNameDirectory": true,
     "sources": [
         {
