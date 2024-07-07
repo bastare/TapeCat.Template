@@ -14,11 +14,11 @@ public sealed class MapperInjector : IInjectable
 	public void Inject ( IServiceCollection serviceCollection , IConfiguration _ )
 	{
 		BootstrapTypeAdapterConfig ( typeAdapterConfig =>
-		  {
-			  serviceCollection.TryAddSingleton ( typeAdapterConfig );
+		{
+			serviceCollection.TryAddSingleton ( typeAdapterConfig );
 
-			  serviceCollection.TryAddScoped<IMapper , ServiceMapper> ();
-		  } );
+			serviceCollection.TryAddScoped<IMapper , ServiceMapper> ();
+		} );
 
 		static void BootstrapTypeAdapterConfig ( Action<TypeAdapterConfig> injectTypeAdapterConfig )
 		{
