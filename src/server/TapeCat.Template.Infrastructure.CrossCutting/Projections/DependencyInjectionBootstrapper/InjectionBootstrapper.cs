@@ -14,22 +14,22 @@ public static class InjectionBootstrapper
 		typeof ( MassTransitConfigurationInjector ).Assembly
 	];
 
-	public static IServiceCollection InjectLayersDependency(this IServiceCollection serviceCollection, IConfiguration configuration)
+	public static IServiceCollection InjectLayersDependency ( this IServiceCollection serviceCollection , IConfiguration configuration )
 	{
-		NotNull(serviceCollection);
-		NotNull(configuration);
+		NotNull ( serviceCollection );
+		NotNull ( configuration );
 
-		return InjectorBuilder.CreateDependency(
-			serviceCollection,
-			configuration,
-			assemblies: AssembliesForScanning);
+		return InjectorBuilder.CreateDependency (
+			serviceCollection ,
+			configuration ,
+			assemblies: AssembliesForScanning );
 	}
 
-	public static void InjectLayersDependency(this ContainerBuilder containerBuilder)
+	public static void InjectLayersDependency ( this ContainerBuilder containerBuilder )
 	{
-		NotNull(containerBuilder);
+		NotNull ( containerBuilder );
 
-		containerBuilder.RegisterAssemblyOpenGenericTypes(AssembliesForScanning);
-		containerBuilder.RegisterAssemblyModules(AssembliesForScanning);
+		containerBuilder.RegisterAssemblyOpenGenericTypes ( AssembliesForScanning );
+		containerBuilder.RegisterAssemblyModules ( AssembliesForScanning );
 	}
 }

@@ -27,7 +27,6 @@ public static class StringExtensions
 			.ToString ();
 
 		static byte[] GetSHA256Hash ( string inputString )
-			=> SHA256.Create ()
-				.ComputeHash ( buffer: Encoding.UTF8.GetBytes ( inputString ) );
+			=> SHA256.HashData ( source: Encoding.UTF8.GetBytes ( inputString ) );
 	}
 }

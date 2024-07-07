@@ -7,7 +7,6 @@ using GlobalExceptionHandler.Builders;
 using GlobalExceptionHandler.ExceptionHandlers;
 using InjectorBuilder.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
@@ -87,20 +86,6 @@ public sealed class ErrorHandlerInjector : IInjectable
 							new PageErrorMessage (
 								StatusCode: ( int ) HttpStatusCode.BadRequest ,
 								Message: exception.Message )
-					} )
-
-				.WithErrorHandler (
-					exceptionHandler: new ExceptionHandler (
-						id: 6 ,
-						isAllowedException: ( _ , exception ) =>
-							exception.GetType () == typeof ( DbUpdateException )
-								&& exception.InnerException!.Message.Contains ( "UNIQUE constraint failed: Contact.Email" ) )
-					{
-						InjectStatusCode = ( _ , _ ) => HttpStatusCode.BadRequest ,
-						InjectExceptionMessage = ( exception ) =>
-							new PageErrorMessage (
-								StatusCode: StatusCodes.Status400BadRequest ,
-								Message: "The user with this email created already" )
 					} )
 
 				.Build ();

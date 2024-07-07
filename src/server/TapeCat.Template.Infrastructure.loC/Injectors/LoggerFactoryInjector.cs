@@ -15,8 +15,8 @@ public sealed class LoggerFactoryInjector : IInjectable
 		serviceCollection.AddLogging ( loggingBuilder =>
 		{
 			loggingBuilder.AddSerilog (
-			logger: CreateLogger () ,
-			dispose: true );
+				logger: CreateLogger () ,
+				dispose: true );
 		} );
 
 		static Logger CreateLogger ()
