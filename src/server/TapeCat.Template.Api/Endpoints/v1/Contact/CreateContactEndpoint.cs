@@ -9,8 +9,8 @@ using Domain.Contracts.ContactContracts.Command.CreateContact;
 using Domain.Shared.Common.Classes.HttpMessages.Error;
 using Mapster;
 
-public sealed class CreateContactsEndpoint ( IRequestClient<CreateContactContract> requestClient )
-	: Endpoint<ContactForCreationRequestBody , ContactFromCreationDto>
+public sealed class CreateContactsEndpoint ( IRequestClient<CreateContactContract> requestClient ) :
+	Endpoint<ContactForCreationRequestBody , ContactFromCreationDto>
 {
 	private readonly IRequestClient<CreateContactContract> _requestClient = requestClient;
 

@@ -5,7 +5,7 @@ using Domain.Contracts;
 using Domain.Contracts.ContactContracts.Query.GetContacts;
 using Domain.Pagination.Common.Extensions;
 using Domain.Shared.Interfaces;
-using Domain.Contracts.Dtos.WrapDtos.Interfaces;
+using Domain.Contracts.Dtos.Decorators.Interfaces;
 using MassTransit;
 using Mapster;
 using Persistence.Context;
@@ -24,7 +24,7 @@ public sealed class GetContactsConsumer ( EfContext efContext ) :
 			var contacts_ = await GetContactsAsync ( context.Message );
 
 			await context.RespondAsync<SubmitContactsContract> (
-				new ( ContactsForQueryResponse: contacts_.Adapt<IPaginationRowsDto> () ) );
+				new ( ContactsForQueryResponse: contacts_.Adapt<IPaginationRowsDecoratorDto> () ) );
 		}
 		catch ( Exception exception )
 		{

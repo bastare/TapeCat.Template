@@ -8,8 +8,8 @@ using Domain.Contracts.ContactContracts.Command.PatchContact;
 using Domain.Shared.Common.Classes.HttpMessages.Error;
 using Domain.Contracts.ContactContracts.Command.PatchContact.Dtos;
 
-public sealed class PatchContactEndpoint ( IRequestClient<PatchContactContract> requestClient )
-	: Endpoint<ContactForPatchRequestBody , ContactFromPatchDto>
+public sealed class PatchContactEndpoint ( IRequestClient<PatchContactContract> requestClient ) :
+	Endpoint<ContactForPatchRequestBody , ContactFromPatchDto>
 {
 	private readonly IRequestClient<PatchContactContract> _requestClient = requestClient;
 

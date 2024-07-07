@@ -7,8 +7,8 @@ using Domain.Contracts;
 using Domain.Contracts.ContactContracts.Command.RemoveContact;
 using Domain.Shared.Common.Classes.HttpMessages.Error;
 
-public sealed class RemoveContactEndpoint ( IRequestClient<RemoveContactContract> requestClient )
-	: Endpoint<RemoveContactRoute>
+public sealed class RemoveContactEndpoint ( IRequestClient<RemoveContactContract> requestClient ) :
+	Endpoint<RemoveContactRoute>
 {
 	private readonly IRequestClient<RemoveContactContract> _requestClient = requestClient;
 
