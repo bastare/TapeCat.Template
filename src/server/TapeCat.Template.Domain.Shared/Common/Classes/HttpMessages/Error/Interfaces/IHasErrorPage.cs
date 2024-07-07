@@ -2,5 +2,5 @@ namespace TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages.Error.Inter
 
 public interface IHasErrorPage
 {
-	bool IsErrorPage { get; }
+    bool IsErrorPage { get; }
 }

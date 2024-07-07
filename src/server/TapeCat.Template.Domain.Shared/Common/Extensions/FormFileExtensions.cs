@@ -4,21 +4,21 @@ using Microsoft.AspNetCore.Http;
 
 public static class FormFileExtensions
 {
-	public static async Task<byte[]> ToByteArrayAsync ( this IFormFile formFile , CancellationToken cancellationToken = default )
-	{
-		using var memoryStream = new MemoryStream ();
+    public static async Task<byte[]> ToByteArrayAsync(this IFormFile formFile, CancellationToken cancellationToken = default)
+    {
+        using var memoryStream = new MemoryStream();
 
-		await formFile.CopyToAsync ( memoryStream , cancellationToken );
+        await formFile.CopyToAsync(memoryStream, cancellationToken);
 
-		return memoryStream.ToArray ();
-	}
+        return memoryStream.ToArray();
+    }
 
-	public static byte[] ToByteArray ( this IFormFile formFile )
-	{
-		using var memoryStream = new MemoryStream ();
+    public static byte[] ToByteArray(this IFormFile formFile)
+    {
+        using var memoryStream = new MemoryStream();
 
-		formFile.CopyTo ( memoryStream );
+        formFile.CopyTo(memoryStream);
 
-		return memoryStream.ToArray ();
-	}
+        return memoryStream.ToArray();
+    }
 }

@@ -1,12 +1,15 @@
 namespace TapeCat.Template.Infrastructure.Persistence.Pagination.Interfaces;
 
-public interface IPagedList<out T> : IEnumerable<T>
+public interface IPagedList : IEnumerable
 {
-	int CurrentOffset { get; }
+    ulong CurrentOffset { get; }
 
-	int TotalPages { get; }
+    ulong TotalPages { get; }
 
-	int Limit { get; }
+    ulong Limit { get; }
 
-	int TotalCount { get; }
+    ulong TotalCount { get; }
 }
+
+public interface IPagedList<out T> : IPagedList, IEnumerable<T>
+{ }

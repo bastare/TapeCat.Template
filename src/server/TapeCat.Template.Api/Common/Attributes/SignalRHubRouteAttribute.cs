@@ -1,14 +1,14 @@
 namespace TapeCat.Template.Api.Common.Attributes;
 
-[AttributeUsage ( AttributeTargets.Class , AllowMultiple = false )]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public sealed class SignalRHubRouteAttribute : Attribute
 {
-	public string Path { get; }
+    public string Path { get; }
 
-	public SignalRHubRouteAttribute ( string? path )
-	{
-		NotNullOrEmpty ( path );
+    public SignalRHubRouteAttribute(string? path)
+    {
+        NotNullOrEmpty(path);
 
-		Path = path!;
-	}
+        Path = path!;
+    }
 }

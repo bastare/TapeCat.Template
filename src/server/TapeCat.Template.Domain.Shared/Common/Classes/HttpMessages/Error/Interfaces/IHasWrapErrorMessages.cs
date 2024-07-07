@@ -2,5 +2,5 @@ namespace TapeCat.Template.Domain.Shared.Common.Classes.HttpMessages.Error.Inter
 
 public interface IHasWrapErrorMessages
 {
-	ImmutableList<InnerErrorMessage> ErrorMessages { get; }
+    ImmutableList<InnerErrorMessage> ErrorMessages { get; }
 }

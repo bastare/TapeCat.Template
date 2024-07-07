@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<ItemGroup>
-		<PackageReference Include="MassTransit.RabbitMQ" Version="8.2.2" />
-		<PackageReference Include="MassTransit" Version="8.2.2" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj" />
-		<ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
-		<ProjectReference Include="..\TapeCat.Template.Domain.Contracts\TapeCat.Template.Domain.Contracts.csproj" />
-
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.2" />
+        <PackageReference Include="MassTransit" Version="8.2.2" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\TapeCat.Template.Infrastructure\TapeCat.Template.Infrastructure.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Domain.Shared\TapeCat.Template.Domain.Shared.csproj" />
+        <ProjectReference Include="..\TapeCat.Template.Domain.Contracts\TapeCat.Template.Domain.Contracts.csproj" />
+    </ItemGroup>
 </Project>

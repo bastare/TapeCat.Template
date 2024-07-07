@@ -5,8 +5,8 @@ using System;
 
 public sealed class VersionTypeMappingPlugin : IRelationalTypeMappingSourcePlugin
 {
-	public RelationalTypeMapping? FindMapping ( in RelationalTypeMappingInfo mappingInfo ) =>
-		mappingInfo.ClrType == typeof ( Version )
-			? new VersionTypeMapping ()
-			: default;
+    public RelationalTypeMapping? FindMapping(in RelationalTypeMappingInfo mappingInfo) =>
+        mappingInfo.ClrType == typeof(Version)
+            ? new VersionTypeMapping()
+            : default;
 }
